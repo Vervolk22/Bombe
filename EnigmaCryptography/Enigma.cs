@@ -8,7 +8,7 @@ namespace EnigmaCryptography
 {
     public class Enigma
     {
-        private readonly string[] ROTORS_LAYOUT = {
+        protected readonly string[] ROTORS_LAYOUT = {
                                                    "BDFHJLCPRTXVZNYEIWGAKMUSQO",
                                                    "AJDKSIRUXBLHWTMCQGZNPYFVOE",
                                                    "EKMFLGDQVZNTOWYHXUSPAIBRCJ",
@@ -16,10 +16,10 @@ namespace EnigmaCryptography
                                                    "CKPESOHXVUMJRFYALGQBTIDZWN",
                                                    "YRUHQSLDPXNGOKMIEBFZCWVJAT"
                                                };
-        private readonly char[] NOTCH_POSITIONS = { 'V', 'E', 'Q', 'D', 'W' };
+        protected readonly char[] NOTCH_POSITIONS = { 'V', 'E', 'Q', 'D', 'W' };
 
-        Rotor[] rotors;
-        Rotor reflector, first;
+        protected Rotor[] rotors;
+        protected Rotor reflector, first;
 
         public Enigma(int rotorsCount, int[] offsets)
         {
@@ -57,7 +57,7 @@ namespace EnigmaCryptography
             string result = "";
             foreach (char ch in s)
             {
-                result += encrypt(ch);
+                result += ch == ' ' ? ch : encrypt(ch);
             }
             return result;
         }

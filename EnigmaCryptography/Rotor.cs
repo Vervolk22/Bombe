@@ -10,6 +10,7 @@ namespace EnigmaCryptography
     {
         private string layout;
         private byte offset;
+        private byte savedOffset;
         private Rotor previous, next;
         //private Label lbl;
         private char cIn = '\0', notchPos;
@@ -18,8 +19,8 @@ namespace EnigmaCryptography
         public Rotor(string layout, char notchPos)
         {
             this.layout = layout;
-            this.previous = previous;
-            this.next = next;
+            //this.previous = previous;
+            //this.next = next;
             //this.lbl = lbl;
             this.notchPos = notchPos;
             offset = 0;
@@ -157,6 +158,17 @@ namespace EnigmaCryptography
             return c;
         }
 
+        public void saveOffset()
+        {
+            savedOffset = offset;
+            if (next != null) next.saveOffset();
+        }
+
+        public void restoreOffset()
+        {
+            offset = savedOffset;
+            if (next != null) next.restoreOffset();
+        }
     }
 
 }
