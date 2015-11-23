@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Enigma")]
+[assembly: AssemblyTitle("EnigmaCryptography")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Infobel 2010")]
-[assembly: AssemblyProduct("Enigma")]
+[assembly: AssemblyProduct("EnigmaCryptography")]
 [assembly: AssemblyCopyright("Copyright © Infobel 2010 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("0966859d-acb4-44d5-8e88-ca6ec8587fb5")]
+[assembly: Guid("a3e4a4e6-246c-4927-9001-21b570feecba")]
 
 // Version information for an assembly consists of the following four values:
 //

@@ -7,9 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bombe", "Bombe\Bombe.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BombeClient", "BombeClient\BombeClient.csproj", "{A6E2EE8B-E739-41B8-874B-EFDED26ED7E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enigma", "Enigma\Enigma.csproj", "{11BA7D12-053F-4463-A330-73D07061A219}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComputingHelpers", "ComputingHelpers\ComputingHelpers.csproj", "{7DF16CC4-8CED-4374-AC59-E9653FA71A9A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{7306D959-4925-4700-8DFE-C4382A16C2F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnigmaCryptography", "EnigmaCryptography\EnigmaCryptography.csproj", "{F73FB33E-6EAD-4114-9753-876097CF4E03}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,14 +27,18 @@ Global
 		{A6E2EE8B-E739-41B8-874B-EFDED26ED7E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6E2EE8B-E739-41B8-874B-EFDED26ED7E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6E2EE8B-E739-41B8-874B-EFDED26ED7E5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{11BA7D12-053F-4463-A330-73D07061A219}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{11BA7D12-053F-4463-A330-73D07061A219}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{11BA7D12-053F-4463-A330-73D07061A219}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{11BA7D12-053F-4463-A330-73D07061A219}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7DF16CC4-8CED-4374-AC59-E9653FA71A9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7DF16CC4-8CED-4374-AC59-E9653FA71A9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DF16CC4-8CED-4374-AC59-E9653FA71A9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DF16CC4-8CED-4374-AC59-E9653FA71A9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7306D959-4925-4700-8DFE-C4382A16C2F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7306D959-4925-4700-8DFE-C4382A16C2F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7306D959-4925-4700-8DFE-C4382A16C2F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7306D959-4925-4700-8DFE-C4382A16C2F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F73FB33E-6EAD-4114-9753-876097CF4E03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F73FB33E-6EAD-4114-9753-876097CF4E03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F73FB33E-6EAD-4114-9753-876097CF4E03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F73FB33E-6EAD-4114-9753-876097CF4E03}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
