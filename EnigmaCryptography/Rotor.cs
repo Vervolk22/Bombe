@@ -169,6 +169,17 @@ namespace EnigmaCryptography
             offset = savedOffset;
             if (next != null) next.restoreOffset();
         }
+
+        public void setOffset(byte offset)
+        {
+            this.offset = offset;
+        }
+
+        public void printOffset()
+        {
+            Console.Write(layout[offset]);
+            if (next != null) next.printOffset();
+        }
     }
 
 }

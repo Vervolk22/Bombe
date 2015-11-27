@@ -21,7 +21,7 @@ namespace EnigmaCryptography
         protected Rotor[] rotors;
         protected Rotor reflector, first;
 
-        public Enigma(int rotorsCount, int[] offsets)
+        public Enigma(int rotorsCount, byte[] offsets)
         {
             rotors = new Rotor[rotorsCount];
             createRotors(rotorsCount, offsets);
@@ -29,12 +29,14 @@ namespace EnigmaCryptography
             first = rotors[0];
         }
 
-        protected void createRotors(int rotorsCount, int[] offsets)
+        protected void createRotors(int rotorsCount, byte[] offsets)
         {
             for (int i = 0; i < rotorsCount; i++)
             {
-                rotors[i] = new Rotor(ROTORS_LAYOUT[i].Substring(offsets[i], 26 - offsets[i]) +
-                                      ROTORS_LAYOUT[i].Substring(0, offsets[i]), NOTCH_POSITIONS[i]);
+                //rotors[i] = new Rotor(ROTORS_LAYOUT[i].Substring(offsets[i], 26 - offsets[i]) +
+                //                      ROTORS_LAYOUT[i].Substring(0, offsets[i]), NOTCH_POSITIONS[i]);
+                rotors[i] = new Rotor(ROTORS_LAYOUT[i], NOTCH_POSITIONS[i]);
+                rotors[i].setOffset(offsets[i]);
             }
             reflector = new Rotor(ROTORS_LAYOUT[ROTORS_LAYOUT.Length - 1], '\0');
         }
@@ -67,7 +69,9 @@ namespace EnigmaCryptography
             ch = Char.ToUpper(ch);
             first.Move();
             first.PutDataIn(ch);
-            return first.GetDataOut();
+            char outt = first.GetDataOut();
+            return outt;
+            //return first.GetDataOut();
         }
 
     }

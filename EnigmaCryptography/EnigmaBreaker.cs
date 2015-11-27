@@ -11,7 +11,7 @@ namespace EnigmaCryptography
         private readonly string STOP_WORD = "RATEUSTEN";
         int iterationsCount;
 
-        public EnigmaBreaker(int rotorsCount, int[] offsets) : base(rotorsCount, offsets)
+        public EnigmaBreaker(int rotorsCount, byte[] offsets) : base(rotorsCount, offsets)
         {
             iterationsCount = pow(26, rotorsCount);
         }
@@ -23,6 +23,8 @@ namespace EnigmaCryptography
             char ch;
             while (i < iterationsCount)
             {
+                first.printOffset();
+                Console.WriteLine();
                 i++;
                 ch = encrypt(message[offset]);
                 if (ch != STOP_WORD[offset])
@@ -43,6 +45,8 @@ namespace EnigmaCryptography
                     else if (offset == STOP_WORD.Length)
                     {
                         Console.WriteLine("SOLUTION FOUNDED");
+                        first.restoreOffset();
+                        first.MoveBack();
                         Console.WriteLine(encrypt(s));
                         Console.WriteLine("exit");
                         return this;
