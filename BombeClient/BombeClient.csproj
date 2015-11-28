@@ -99,6 +99,10 @@
       <Project>{7df16cc4-8ced-4374-ac59-e9653fa71a9a}</Project>
       <Name>ComputingHelpers</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EnigmaCryptography\EnigmaCryptography.csproj">
+      <Project>{f73fb33e-6ead-4114-9753-876097cf4e03}</Project>
+      <Name>EnigmaCryptography</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

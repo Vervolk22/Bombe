@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net.Sockets;
-using Enigma;
+using EnigmaCryptography;
 using ComputingHelpers;
 
 namespace BombeClient
 {
-    class ClientSocketWorker
+    internal class ClientSocketWorker
     {
         static void Main(string[] args)
         {

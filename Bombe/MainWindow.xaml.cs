@@ -20,9 +20,19 @@ namespace Bombe
     /// </summary>
     public partial class MainWindow : Window
     {
+        private ComputingScheduler scheduler;
+
         public MainWindow()
         {
             InitializeComponent();
+            scheduler = new ComputingScheduler(this);
+            makePreparations();
+            //scheduler.run();
+        }
+
+        private void makePreparations()
+        {
+            iplabel.Content = scheduler.getLocalIP();
         }
     }
 }

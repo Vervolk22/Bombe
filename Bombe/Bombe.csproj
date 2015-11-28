@@ -53,6 +53,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Client.cs" />
+    <Compile Include="ComputingScheduler.cs" />
     <Compile Include="SocketWorker.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -98,6 +100,10 @@
     <ProjectReference Include="..\ComputingHelpers\ComputingHelpers.csproj">
       <Project>{7df16cc4-8ced-4374-ac59-e9653fa71a9a}</Project>
       <Name>ComputingHelpers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EnigmaCryptography\EnigmaCryptography.csproj">
+      <Project>{f73fb33e-6ead-4114-9753-876097cf4e03}</Project>
+      <Name>EnigmaCryptography</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
