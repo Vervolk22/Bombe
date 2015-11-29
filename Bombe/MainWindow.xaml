@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="400" Width="700" Left="20" Top="20">
     <Grid>
-        <TextBox Name="mainlist" HorizontalAlignment="Left" Height="350" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="310"/>
+        <TextBox Name="mainlist" HorizontalAlignment="Left" Height="350" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="310" VerticalScrollBarVisibility="Auto" AcceptsReturn="True"/>
         <Label Name="iplabel" Content="Label" HorizontalAlignment="Left" Height="25" Margin="339,41,0,0" VerticalAlignment="Top" Width="198"/>
         <TextBox Name="port" HorizontalAlignment="Left" Height="25" Margin="569,41,0,0" TextWrapping="Wrap" Text="6133" VerticalAlignment="Top" Width="101"/>
         <Label Content="Local IP address:" HorizontalAlignment="Left" Height="25" Margin="339,10,0,0" VerticalAlignment="Top" Width="103"/>

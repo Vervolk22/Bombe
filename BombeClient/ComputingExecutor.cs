@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
+using ComputingHelpers;
 
 namespace BombeClient
 {
@@ -29,6 +31,11 @@ namespace BombeClient
                 worker.establishConnection();
             }
             isConnected = !isConnected;
+        }
+
+        public string getLocalIP()
+        {
+            return SocketHelper.getLocalIP();
         }
     }
 }

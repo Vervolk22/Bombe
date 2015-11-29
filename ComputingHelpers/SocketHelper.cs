@@ -18,19 +18,25 @@ namespace ComputingHelpers
             return bytes;
         }
 
-        public static string getString(byte[] bytes)
+        public static string getString(byte[] bytes, int iRx)
         {
-            char[] chars = new char[bytes.Length / sizeof(char) + 2];
-            System.Buffer.BlockCopy(bytes, 0, chars, 0, bytes.Length);
+            char[] chars = new char[iRx / sizeof(char)];
+            System.Buffer.BlockCopy(bytes, 0, chars, 0, iRx);
             return new string(chars);
         }
 
-        public static bool isAlive(Socket s)
+        public static bool isAlive(Socket socket)
         {
-            if (s.Connected == false || (s.Poll(1000, SelectMode.SelectRead) && s.Available == 0))
-                return false;
+            return !(socket.Poll(0, SelectMode.SelectRead) && socket.Available == 0);
+        }
+
+        public static string getLocalIP()
+        {
+            IPAddress[] addr = Dns.GetHostAddresses(Dns.GetHostName());
+            if (addr.Length > 1)
+                return addr[1].ToString();
             else
-                return true;
+                return addr[0].ToString();
         }
     }
 }

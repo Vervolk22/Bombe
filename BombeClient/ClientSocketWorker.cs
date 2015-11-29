@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Data;
 using System.Net;
@@ -31,22 +32,39 @@ namespace BombeClient
             {
                 //create a new client socket ...
                 socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                String szIPSelected = window.ip.Text;
+                String szIPSelected = window.iplabel.Text;
                 String szPort = window.port.Text;
                 int alPort = System.Convert.ToInt16(szPort, 10);
 
-                //System.Net.IPAddress remoteIPAddress = System.Net.IPAddress.Parse(szIPSelected);
-                System.Net.IPAddress remoteIPAddress = System.Net.IPAddress.Loopback;
+                System.Net.IPAddress remoteIPAddress = System.Net.IPAddress.Parse(szIPSelected);
+                //System.Net.IPAddress remoteIPAddress = System.Net.IPAddress.Loopback;
                 System.Net.IPEndPoint remoteEndPoint = new System.Net.IPEndPoint(remoteIPAddress, alPort);
+                
                 socket.Connect(remoteEndPoint);
+                /*IAsyncResult result = socket.BeginConnect(remoteEndPoint, null, null);
+
+                bool success = result.AsyncWaitHandle.WaitOne(2000, true);
+
+                if (!success)
+                {
+                    // NOTE, MUST CLOSE THE SOCKET
+
+                    socket.Close();
+                    throw new ApplicationException("Failed to connect server.");
+                }*/
                 sendMessageToForm(String.Format("Connected to {0}.\n", remoteEndPoint));
-                String szData = "Hello There";
-                byte[] byData = System.Text.Encoding.ASCII.GetBytes(szData);
-                socket.Send(byData);
+                window.status.Content = "connected";
+                window.status.Foreground = System.Windows.Media.Brushes.Green;
+                window.cmdReceiveConnections.Content = "Disconnect";
+                //String szData = "Hello There";
+                //byte[] byData = System.Text.Encoding.ASCII.GetBytes(szData);
+                //socket.Send(byData);
+                new Thread(() => sendData(socket, "Hello There")).Start();
+                //sendData(socket, "Hello There");
             }
-            catch (SocketException se)
+            catch (Exception e)
             {
-                sendMessageToForm(se.Message);
+                sendMessageToForm(e.Message);
             }
         }
 
@@ -62,10 +80,13 @@ namespace BombeClient
         {
             try
             {
-                socket.Close();
-                //socket.Disconnect(false);
+                //socket.Close();
+                socket.Disconnect(false);
                 sendMessageToForm("Connection closed.\n");
                 socket = null;
+                window.status.Content = "not connected";
+                window.status.Foreground = System.Windows.Media.Brushes.Red;
+                window.cmdReceiveConnections.Content = "Connect";
             }
             catch (Exception e)
             {
@@ -80,10 +101,52 @@ namespace BombeClient
 
         private void sendMessageToForm(string s)
         {
-            window.Dispatcher.Invoke((Action)(() =>
+            try
             {
-                window.mainlist.AppendText(s);
-            }));
+                window.Dispatcher.Invoke((Action)(() =>
+                {
+                    window.mainlist.AppendText(s);
+                    window.mainlist.Focus();
+                    window.mainlist.CaretIndex = window.mainlist.Text.Length;
+                    window.mainlist.ScrollToEnd();
+                }));
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
+        private void sendData(Socket socket, string s)
+        {
+            try
+            {
+                sendMessageToForm("Message sent: " + s + "\n");
+                byte[] byData = SocketHelper.getBytes(s);
+                socket.Send(byData);
+                receiveData(socket);
+            }
+            catch (SocketException se)
+            {
+                sendMessageToForm(se.Message);
+            }
+        }
+
+        private void receiveData(Socket socket)
+        {
+            try
+            {
+                byte[] buffer = new byte[1024];
+                int iRx = socket.Receive(buffer);
+                string szData = SocketHelper.getString(buffer, iRx);
+                sendMessageToForm("Message received: " + szData + "\n");
+                System.Threading.Thread.Sleep(2000);
+                sendData(socket, "Hello there");
+            }
+            catch (SocketException se)
+            {
+                sendMessageToForm(se.Message);
+            }
         }
     }
 }

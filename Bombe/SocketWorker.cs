@@ -76,10 +76,11 @@ namespace Bombe
         {
             try
             {
-            connectionsList.Add(sockListener.EndAccept(asyn), connectionsList.Count + 1);
-            sockListener.BeginAccept(new AsyncCallback(establishConnection), null);
-            sendMessageToForm(String.Format("Client {0} connected.\n", connectionsList.Count));
-
+                connectionsList.Add(sockListener.EndAccept(asyn), connectionsList.Count + 1);
+                sockListener.BeginAccept(new AsyncCallback(establishConnection), null);
+                sendMessageToForm(String.Format("Client {0} connected.\n", connectionsList.Count));
+                //sendData(connectionsList.Keys.ElementAt(connectionsList.Count - 1), "Hello new client!");
+                receiveData(connectionsList.Keys.ElementAt(connectionsList.Count - 1));
             }
             catch (Exception e)
             {
@@ -99,6 +100,7 @@ namespace Bombe
             int i = 0;
             while (i < connectionsList.Count)
             {
+                //sendMessageToForm(connectionsList.Keys.ElementAt(i).Connected.ToString() + '\n');
                 if (!SocketHelper.isAlive(connectionsList.Keys.ElementAt(i)))
                 {
                     sendMessageToForm(String.Format("Client {0} disconnected.\n", connectionsList.Values.ElementAt(i)));
@@ -114,21 +116,47 @@ namespace Bombe
 
         }
 
-        public string getLocalIP()
-        {
-            IPAddress[] addr = Dns.GetHostAddresses(Dns.GetHostName());
-            if (addr.Length > 1)
-                return addr[1].ToString();
-            else
-                return addr[0].ToString();
-        }
-
         private void sendMessageToForm(string s)
         {
             window.Dispatcher.Invoke((Action)(() =>
             {
                 window.mainlist.AppendText(s);
+                window.mainlist.Focus();
+                window.mainlist.CaretIndex = window.mainlist.Text.Length;
+                window.mainlist.ScrollToEnd();
             }));
+        }
+
+        private void sendData(Socket socket, string s)
+        {
+            try
+            {
+                sendMessageToForm("Message sent: " + s + "\n");
+                byte[] byData = SocketHelper.getBytes(s);
+                socket.Send(byData);
+                receiveData(socket);
+            }
+            catch (SocketException se)
+            {
+                sendMessageToForm(se.Message);
+            }
+        }
+
+        private void receiveData(Socket socket)
+        {
+            try
+            {
+                byte[] buffer = new byte[1024];
+                int iRx = socket.Receive(buffer);
+                string szData = SocketHelper.getString(buffer, iRx);
+                sendMessageToForm("Message received: " + szData + "\n");
+                System.Threading.Thread.Sleep(2000);
+                sendData(socket, "Hi new client!");
+            }
+            catch (SocketException se)
+            {
+                sendMessageToForm(se.Message);
+            }
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using ComputingHelpers;
 
 namespace Bombe
 {
@@ -34,7 +35,7 @@ namespace Bombe
 
         public string getLocalIP()
         {
-            return worker.getLocalIP();
+            return SocketHelper.getLocalIP();
         }
     }
 }
