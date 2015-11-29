@@ -26,7 +26,7 @@ namespace BombeClient
             aliveTimer.Enabled = true;
         }
 
-        public void establishConnection()
+        public bool establishConnection()
         {
             try
             {
@@ -59,12 +59,14 @@ namespace BombeClient
                 //String szData = "Hello There";
                 //byte[] byData = System.Text.Encoding.ASCII.GetBytes(szData);
                 //socket.Send(byData);
-                new Thread(() => sendData(socket, "Hello There")).Start();
+                //new Thread(() => sendData(socket, "Hello There")).Start();
+                return true;
                 //sendData(socket, "Hello There");
             }
             catch (Exception e)
             {
                 sendMessageToForm(e.Message);
+                return false;
             }
         }
 
@@ -117,14 +119,13 @@ namespace BombeClient
             }
         }
 
-        private void sendData(Socket socket, string s)
+        internal void sendData(string s)
         {
             try
             {
                 sendMessageToForm("Message sent: " + s + "\n");
                 byte[] byData = SocketHelper.getBytes(s);
                 socket.Send(byData);
-                receiveData(socket);
             }
             catch (SocketException se)
             {
@@ -132,20 +133,18 @@ namespace BombeClient
             }
         }
 
-        private void receiveData(Socket socket)
+        internal string receiveData()
         {
             try
             {
                 byte[] buffer = new byte[1024];
                 int iRx = socket.Receive(buffer);
-                string szData = SocketHelper.getString(buffer, iRx);
-                sendMessageToForm("Message received: " + szData + "\n");
-                System.Threading.Thread.Sleep(2000);
-                sendData(socket, "Hello there");
+                return SocketHelper.getString(buffer, iRx);
             }
             catch (SocketException se)
             {
                 sendMessageToForm(se.Message);
+                return null;
             }
         }
     }

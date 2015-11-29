@@ -13,18 +13,18 @@ namespace EnigmaCryptography
 
         public EnigmaBreaker(int rotorsCount, byte[] offsets) : base(rotorsCount, offsets)
         {
-            iterationsCount = pow(26, rotorsCount);
+            iterationsCount = pow(26, rotorsCount - 1);
         }
 
-        public Enigma tryBreak(string s)
+        public bool tryBreak(string s)
         {
             string message = deleteSpaces(s);
             int i = 0, offset = 0;
             char ch;
             while (i < iterationsCount)
             {
-                first.printOffset();
-                Console.WriteLine();
+                //first.printOffset();
+                //Console.WriteLine();
                 i++;
                 ch = encrypt(message[offset]);
                 if (ch != STOP_WORD[offset])
@@ -44,22 +44,23 @@ namespace EnigmaCryptography
                     }
                     else if (offset == STOP_WORD.Length)
                     {
-                        Console.WriteLine("SOLUTION FOUNDED");
+                        //Console.WriteLine("SOLUTION FOUNDED");
                         first.restoreOffset();
                         first.MoveBack();
-                        Console.WriteLine(encrypt(s));
-                        Console.WriteLine("exit");
-                        return this;
+                        //Console.WriteLine(encrypt(s));
+                        //Console.WriteLine("exit");
+                        return true;
                     }
                 }
                 if (i % 100 == 0)
                 {
-                    Console.WriteLine("A: " + rotors[0].GetOffset() + "B: " + rotors[1].GetOffset() +
-                        "C: " + rotors[2].GetOffset() + "I: " + i);
+                    //Console.WriteLine("A: " + rotors[0].GetOffset() + "B: " + rotors[1].GetOffset() +
+                    //    "C: " + rotors[2].GetOffset() + "D: " + rotors[3].GetOffset() + "E: " + rotors[4].GetOffset() + 
+                    //    "I: " + i);
                 }
             }
 
-            return this;
+            return false;
         }
 
         protected int pow(int x, int e) 

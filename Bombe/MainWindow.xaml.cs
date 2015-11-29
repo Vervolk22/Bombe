@@ -40,12 +40,18 @@ namespace Bombe
         private void bindHandlers()
         {
             //this.cmdReceiveConnections.MouseUp += new RoutedEventHandler(this.cmdListen_Click);
-            this.cmdReceiveConnections.MouseUp += new MouseButtonEventHandler(this.cmdListen_Click);
+            //this.cmdReceiveConnections.MouseUp += new MouseButtonEventHandler(this.cmdListen_Click);
+            //this.cmdCompute.MouseUp += new
         }
 
         private void cmdListen_Click(object sender, System.EventArgs e)
         {
             scheduler.changeServerStatus();
+        }
+
+        private void cmdCompute_Click(object sender, System.EventArgs e)
+        {
+            scheduler.startBreaking();
         }
 
         public void mainListAppendText(string s)

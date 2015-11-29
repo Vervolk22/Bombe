@@ -11,5 +11,6 @@
         <Label Content="Status:" HorizontalAlignment="Left" Height="25" Margin="339,70,0,0" VerticalAlignment="Top" Width="49"/>
         <Label Name="status" Content="offline" HorizontalAlignment="Left" Height="24" Margin="409,71,0,0" VerticalAlignment="Top" Width="71" Foreground="Red"/>
         <Button Name="cmdReceiveConnections" Click="cmdListen_Click" Content="Start receive connections" HorizontalAlignment="Left" Margin="499,71,0,0" VerticalAlignment="Top" Width="171" Height="24"/>
+        <Button Name="cmdCompute" Click="cmdCompute_Click" Content="Compute" HorizontalAlignment="Left" Margin="399,125,0,0" VerticalAlignment="Top" Width="162"/>
     </Grid>
 </Window>

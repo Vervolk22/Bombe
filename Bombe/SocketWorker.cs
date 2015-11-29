@@ -18,7 +18,7 @@ namespace Bombe
 
         private MainWindow window;
         private Socket sockListener;
-        private Dictionary<Socket, int> connectionsList = new Dictionary<Socket, int>();
+        public Dictionary<Socket, int> connectionsList = new Dictionary<Socket, int>();
         private System.Timers.Timer aliveTimer;
 
         public SocketWorker(MainWindow window)
@@ -127,14 +127,13 @@ namespace Bombe
             }));
         }
 
-        private void sendData(Socket socket, string s)
+        internal void sendData(Socket socket, string s)
         {
             try
             {
-                sendMessageToForm("Message sent: " + s + "\n");
+                //sendMessageToForm("Message sent: " + s + "\n");
                 byte[] byData = SocketHelper.getBytes(s);
                 socket.Send(byData);
-                receiveData(socket);
             }
             catch (SocketException se)
             {
@@ -142,20 +141,18 @@ namespace Bombe
             }
         }
 
-        private void receiveData(Socket socket)
+        internal string receiveData(Socket socket)
         {
             try
             {
                 byte[] buffer = new byte[1024];
                 int iRx = socket.Receive(buffer);
-                string szData = SocketHelper.getString(buffer, iRx);
-                sendMessageToForm("Message received: " + szData + "\n");
-                System.Threading.Thread.Sleep(2000);
-                sendData(socket, "Hi new client!");
+                return SocketHelper.getString(buffer, iRx);
             }
             catch (SocketException se)
             {
                 sendMessageToForm(se.Message);
+                return null;
             }
         }
     }
