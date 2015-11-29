@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data;
+using System.Net;
+using System.Net.Sockets;
 
 namespace ComputingHelpers
 {
@@ -20,6 +23,14 @@ namespace ComputingHelpers
             char[] chars = new char[bytes.Length / sizeof(char) + 2];
             System.Buffer.BlockCopy(bytes, 0, chars, 0, bytes.Length);
             return new string(chars);
+        }
+
+        public static bool isAlive(Socket s)
+        {
+            if (s.Connected == false || (s.Poll(1000, SelectMode.SelectRead) && s.Available == 0))
+                return false;
+            else
+                return true;
         }
     }
 }

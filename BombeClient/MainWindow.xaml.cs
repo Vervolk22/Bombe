@@ -20,9 +20,28 @@ namespace BombeClient
     /// </summary>
     public partial class MainWindow : Window
     {
+        private ComputingExecutor executor;
+
         public MainWindow()
         {
             InitializeComponent();
+            executor = new ComputingExecutor(this);
+        }
+
+        private void makePreparations()
+        {
+            bindHandlers();
+        }
+
+        private void bindHandlers()
+        {
+            //this.cmdReceiveConnections.MouseUp += new RoutedEventHandler(this.cmdListen_Click);
+            this.cmdReceiveConnections.MouseUp += new MouseButtonEventHandler(this.cmdListen_Click);
+        }
+
+        private void cmdListen_Click(object sender, System.EventArgs e)
+        {
+            executor.changeClientStatus();
         }
     }
 }

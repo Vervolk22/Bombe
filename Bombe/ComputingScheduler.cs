@@ -11,18 +11,25 @@ namespace Bombe
     {
         private MainWindow window;
         private SocketWorker worker;
+        private bool isServerRunning = false;
 
         public ComputingScheduler(MainWindow window)
         {
             this.window = window;
-            worker = new SocketWorker();
+            worker = new SocketWorker(window);
         }
 
-        internal void run()
+        public void changeServerStatus()
         {
-            //window.mainlist.AppendText("PTER)");
-            SocketWorker worker = new SocketWorker();
-            //worker.start();
+            if (isServerRunning)
+            {
+                worker.closeAllConnections();
+            }
+            else
+            {
+                worker.waitForConnections();
+            }
+            isServerRunning = !isServerRunning;
         }
 
         public string getLocalIP()
