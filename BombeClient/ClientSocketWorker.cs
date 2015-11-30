@@ -137,9 +137,12 @@ namespace BombeClient
         {
             try
             {
+                sendMessageToForm("Message received:\n");
                 byte[] buffer = new byte[1024];
                 int iRx = socket.Receive(buffer);
-                return SocketHelper.getString(buffer, iRx);
+                string str = SocketHelper.getString(buffer, iRx);
+                sendMessageToForm("---" + str + '\n');
+                return str;
             }
             catch (SocketException se)
             {

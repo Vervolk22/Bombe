@@ -61,10 +61,10 @@ namespace Bombe
             while (!isDone)
             {
                 byte index = (byte)getUncheckedPart();
-                sendMessageToForm("Sended: " + index + '\n');
+                //sendMessageToForm("Sended: " + index + '\n');
                 worker.sendData(socket, getQueryString(index));
                 string result = worker.receiveData(socket);
-                sendMessageToForm("Received: " + result);
+                //sendMessageToForm("Received: " + result);
                 string[] array = getCommand(result);
                 switch (array[0])
                 {

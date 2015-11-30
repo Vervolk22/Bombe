@@ -21,6 +21,7 @@ namespace EnigmaCryptography
             string message = deleteSpaces(s);
             int i = 0, offset = 0;
             char ch;
+            //iterationsCount = 10000;
             while (i < iterationsCount)
             {
                 //first.printOffset();

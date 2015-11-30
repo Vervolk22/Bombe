@@ -26,6 +26,7 @@ namespace BombeClient
         {
             InitializeComponent();
             executor = new ComputingExecutor(this);
+            makePreparations();
         }
 
         private void makePreparations()

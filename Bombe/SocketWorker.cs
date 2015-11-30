@@ -80,7 +80,7 @@ namespace Bombe
                 sockListener.BeginAccept(new AsyncCallback(establishConnection), null);
                 sendMessageToForm(String.Format("Client {0} connected.\n", connectionsList.Count));
                 //sendData(connectionsList.Keys.ElementAt(connectionsList.Count - 1), "Hello new client!");
-                receiveData(connectionsList.Keys.ElementAt(connectionsList.Count - 1));
+                //receiveData(connectionsList.Keys.ElementAt(connectionsList.Count - 1));
             }
             catch (Exception e)
             {
@@ -131,7 +131,7 @@ namespace Bombe
         {
             try
             {
-                //sendMessageToForm("Message sent: " + s + "\n");
+                sendMessageToForm("Message sent: " + s + "\n");
                 byte[] byData = SocketHelper.getBytes(s);
                 socket.Send(byData);
             }
@@ -145,9 +145,12 @@ namespace Bombe
         {
             try
             {
+                sendMessageToForm("Message received:\n");
                 byte[] buffer = new byte[1024];
                 int iRx = socket.Receive(buffer);
-                return SocketHelper.getString(buffer, iRx);
+                string str = SocketHelper.getString(buffer, iRx);
+                sendMessageToForm("---" + str + '\n');
+                return str;
             }
             catch (SocketException se)
             {

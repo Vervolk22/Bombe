@@ -54,7 +54,7 @@ namespace BombeClient
                     case "done":
                         return;
                     case "compute":
-                        sendMessageToForm("Received command: " + parameters[2] + '\n');
+                        //sendMessageToForm("Received command: " + parameters[2] + '\n');
                         compute(parameters);
                         break;
                     case "wait":
@@ -94,7 +94,7 @@ namespace BombeClient
         {
             byte[] array = new byte[rotorsCount];
             array.Initialize();
-            array[rotorsCount - 1] = 20;
+            array[rotorsCount - 1] = offset;
             return array;
         }
 
