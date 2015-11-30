@@ -28,15 +28,18 @@ namespace BombeClient
             {
                 worker.closeConnection();
                 computingThread.Abort();
+                isConnected = false;
             }
             else
             {
                 if (!worker.establishConnection())
+                {
                     return;
+                }
                 computingThread = new Thread(startComputing);
+                isConnected = true;
                 computingThread.Start();
             }
-            isConnected = !isConnected;
         }
 
         public string getLocalIP()
