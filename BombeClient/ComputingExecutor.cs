@@ -63,6 +63,9 @@ namespace BombeClient
                     case "wait":
                         Thread.Sleep(10000);
                         continue;
+                    default:
+                        changeConnectionStatus();
+                        return;
                 }
             }
         }
@@ -72,8 +75,20 @@ namespace BombeClient
             return worker.receiveData();
         }
 
+        private void changeConnectionStatus()
+        {
+            window.Dispatcher.Invoke((Action)(() =>
+            {
+                changeClientStatus();
+            }));
+        }
+
         private string[] getCommand(string s)
         {
+            if (s == null)
+            {
+                return new string[] { null };
+            }
             return s.Split(':');
         }
 
