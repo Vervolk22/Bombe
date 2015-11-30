@@ -17,13 +17,16 @@ namespace Bombe
         private const int MAX_CONNECTIONS = 2;
 
         private MainWindow window;
+        private ComputingScheduler scheduler;
         private Socket sockListener;
+        private int clientsCounter = 0;
         public Dictionary<Socket, int> connectionsList = new Dictionary<Socket, int>();
         private System.Timers.Timer aliveTimer;
 
-        public SocketWorker(MainWindow window)
+        public SocketWorker(MainWindow window, ComputingScheduler scheduler)
         {
             this.window = window;
+            this.scheduler = scheduler;
             aliveTimer = new System.Timers.Timer(1000);
             aliveTimer.Elapsed += new System.Timers.ElapsedEventHandler(checkAliveConnections);
             aliveTimer.Enabled = true;
@@ -76,9 +79,11 @@ namespace Bombe
         {
             try
             {
-                connectionsList.Add(sockListener.EndAccept(asyn), connectionsList.Count + 1);
+                Socket socket = sockListener.EndAccept(asyn);
+                connectionsList.Add(socket, ++clientsCounter);
                 sockListener.BeginAccept(new AsyncCallback(establishConnection), null);
                 sendMessageToForm(String.Format("Client {0} connected.\n", connectionsList.Count));
+                scheduler.newClient(socket);
                 //sendData(connectionsList.Keys.ElementAt(connectionsList.Count - 1), "Hello new client!");
                 //receiveData(connectionsList.Keys.ElementAt(connectionsList.Count - 1));
             }

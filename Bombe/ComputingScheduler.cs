@@ -18,6 +18,7 @@ namespace Bombe
         private MainWindow window;
         private SocketWorker worker;
         private bool isServerRunning = false;
+        private byte solutionStatus = 0;
 
         private bool isDone;
         private byte[] statuses;
@@ -26,7 +27,7 @@ namespace Bombe
         public ComputingScheduler(MainWindow window)
         {
             this.window = window;
-            worker = new SocketWorker(window);
+            worker = new SocketWorker(window, this);
         }
 
         public void changeServerStatus()
@@ -51,11 +52,25 @@ namespace Bombe
 
             foreach (Socket socket in worker.connectionsList.Keys)
             {
-                Thread thread = new Thread(useSingleClient);
-                thread.IsBackground = true;
-                thread.Start(socket);
+                solutionStatus = 1;
+                startNewSchedulingThread(socket);
                 //new Thread(useSingleClient).Start(socket);
             }
+        }
+
+        public void newClient(Socket socket)
+        {
+            if (solutionStatus == 1)
+            {
+                startNewSchedulingThread(socket);
+            }
+        }
+
+        private void startNewSchedulingThread(Socket socket)
+        {
+            Thread thread = new Thread(useSingleClient);
+            thread.IsBackground = true;
+            thread.Start(socket);
         }
 
         private void useSingleClient(Object sock)
@@ -75,11 +90,13 @@ namespace Bombe
                         statuses[index] = 2;
                         continue;
                     case "success":
+                        solutionStatus = 2;
                         sendMessageToForm("Message decrypted! Message: " + array[1]);
                         statuses[index] = 3;
                         isDone = true;
                         break;
                     default:
+                        setPart(index, 0);
                         return;
                 }
             }
@@ -106,7 +123,20 @@ namespace Bombe
                 else
                 {
                     statuses[index] = 1;
+                    lastChecked = index + 1;
                     return index;
+                }
+            }
+        }
+
+        private void setPart(int index, byte value)
+        {
+            lock (this)
+            {
+                statuses[index] = value;
+                if (value == 0)
+                {
+                    lastChecked = index;
                 }
             }
         }
