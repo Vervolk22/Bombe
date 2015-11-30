@@ -127,7 +127,7 @@ namespace BombeClient
                 byte[] byData = SocketHelper.getBytes(s);
                 socket.Send(byData);
             }
-            catch (SocketException se)
+            catch (Exception se)
             {
                 sendMessageToForm(se.Message);
             }

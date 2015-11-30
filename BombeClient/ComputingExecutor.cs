@@ -38,6 +38,7 @@ namespace BombeClient
                 }
                 computingThread = new Thread(startComputing);
                 isConnected = true;
+                computingThread.IsBackground = true;
                 computingThread.Start();
             }
         }

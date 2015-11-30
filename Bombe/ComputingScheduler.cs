@@ -51,7 +51,10 @@ namespace Bombe
 
             foreach (Socket socket in worker.connectionsList.Keys)
             {
-                new Thread(useSingleClient).Start(socket);
+                Thread thread = new Thread(useSingleClient);
+                thread.IsBackground = true;
+                thread.Start(socket);
+                //new Thread(useSingleClient).Start(socket);
             }
         }
 
@@ -76,6 +79,8 @@ namespace Bombe
                         statuses[index] = 3;
                         isDone = true;
                         break;
+                    default:
+                        return;
                 }
             }
         }
@@ -113,6 +118,10 @@ namespace Bombe
 
         private string[] getCommand(string s)
         {
+            if (s == null)
+            {
+                return new string[] { null };
+            }
             return s.Split(':');
         }
 

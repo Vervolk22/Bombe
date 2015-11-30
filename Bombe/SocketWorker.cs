@@ -118,13 +118,20 @@ namespace Bombe
 
         private void sendMessageToForm(string s)
         {
-            window.Dispatcher.Invoke((Action)(() =>
+            try
             {
-                window.mainlist.AppendText(s);
-                window.mainlist.Focus();
-                window.mainlist.CaretIndex = window.mainlist.Text.Length;
-                window.mainlist.ScrollToEnd();
-            }));
+                window.Dispatcher.Invoke((Action)(() =>
+                {
+                    window.mainlist.AppendText(s);
+                    window.mainlist.Focus();
+                    window.mainlist.CaretIndex = window.mainlist.Text.Length;
+                    window.mainlist.ScrollToEnd();
+                }));
+            }
+            catch (Exception e)
+            {
+
+            }
         }
 
         internal void sendData(Socket socket, string s)
