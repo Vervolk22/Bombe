@@ -19,6 +19,7 @@ namespace Bombe
         private MainWindow window;
         private ComputingScheduler scheduler;
         private Socket sockListener;
+        protected byte[] buffer = new byte[256];
         private int clientsCounter = 0;
         public Dictionary<Socket, int> connectionsList = new Dictionary<Socket, int>();
         private System.Timers.Timer aliveTimer;
@@ -145,9 +146,10 @@ namespace Bombe
             {
                 sendMessageToForm("Message sent: " + s + "\n");
                 byte[] byData = SocketHelper.getBytes(s);
+                socket.Send(SocketHelper.getBytes(byData.Length));
                 socket.Send(byData);
             }
-            catch (SocketException se)
+            catch (Exception se)
             {
                 sendMessageToForm(se.Message);
             }
@@ -158,13 +160,13 @@ namespace Bombe
             try
             {
                 sendMessageToForm("Message received:\n");
-                byte[] buffer = new byte[1024];
-                int iRx = socket.Receive(buffer);
+                int iRx = socket.Receive(buffer, 1, SocketFlags.None);
+                iRx = socket.Receive(buffer, buffer[0], SocketFlags.None);
                 string str = SocketHelper.getString(buffer, iRx);
                 sendMessageToForm("---" + str + '\n');
                 return str;
             }
-            catch (SocketException se)
+            catch (Exception se)
             {
                 sendMessageToForm(se.Message);
                 return null;

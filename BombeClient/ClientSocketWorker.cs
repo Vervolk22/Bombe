@@ -16,6 +16,7 @@ namespace BombeClient
     {
         private MainWindow window;
         private Socket socket;
+        protected byte[] buffer = new byte[256];
         private System.Timers.Timer aliveTimer;
 
         public ClientSocketWorker(MainWindow window)
@@ -125,6 +126,7 @@ namespace BombeClient
             {
                 sendMessageToForm("Message sent: " + s + "\n");
                 byte[] byData = SocketHelper.getBytes(s);
+                socket.Send(SocketHelper.getBytes(byData.Length));
                 socket.Send(byData);
             }
             catch (Exception se)
@@ -138,8 +140,8 @@ namespace BombeClient
             try
             {
                 sendMessageToForm("Message received:\n");
-                byte[] buffer = new byte[1024];
-                int iRx = socket.Receive(buffer);
+                int iRx = socket.Receive(buffer, 1, SocketFlags.None);
+                iRx = socket.Receive(buffer, buffer[0], SocketFlags.None);
                 string str = SocketHelper.getString(buffer, iRx);
                 sendMessageToForm("---" + str + '\n');
                 return str;

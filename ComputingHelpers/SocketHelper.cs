@@ -18,9 +18,24 @@ namespace ComputingHelpers
             return bytes;
         }
 
+        public static byte[] getBytes(byte b)
+        {
+            byte[] bytes = new byte[1];
+            bytes[0] = b;
+            return bytes;
+        }
+
+        public static byte[] getBytes(int i)
+        {
+            byte[] bytes = new byte[1];
+            bytes[0] = (byte)i;
+            return bytes;
+        }
+
         public static string getString(byte[] bytes, int iRx)
         {
             char[] chars = new char[iRx / sizeof(char)];
+            if (iRx % 2 == 1) iRx -= 1;
             System.Buffer.BlockCopy(bytes, 0, chars, 0, iRx);
             return new string(chars);
         }

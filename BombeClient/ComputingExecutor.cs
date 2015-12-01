@@ -15,6 +15,7 @@ namespace BombeClient
         private ClientSocketWorker worker;
         private bool isConnected = false;
         private Thread computingThread;
+        private string encryptedMessage;
 
         public ComputingExecutor(MainWindow window)
         {
@@ -58,8 +59,10 @@ namespace BombeClient
                     case "done":
                         return;
                     case "compute":
-                        //sendMessageToForm("Received command: " + parameters[2] + '\n');
                         compute(parameters);
+                        break;
+                    case "setmessage":
+                        setEncryptedMessage(parameters[1]);
                         break;
                     case "wait":
                         Thread.Sleep(10000);
@@ -69,6 +72,11 @@ namespace BombeClient
                         return;
                 }
             }
+        }
+
+        protected void setEncryptedMessage(string message)
+        {
+            encryptedMessage = message;
         }
 
         private string newCommand()
@@ -96,11 +104,11 @@ namespace BombeClient
         private void compute(string[] parameters)
         {
             int rotorsCount = int.Parse(parameters[1]);
-            byte offset = byte.Parse(parameters[2]);
-            EnigmaBreaker breaker = new EnigmaBreaker(rotorsCount, getOffsets(rotorsCount, offset));
-            if (breaker.tryBreak(parameters[3]))
+            EnigmaBreaker breaker = new EnigmaBreaker(rotorsCount, rotorsCount - 1, 
+                    getOffsets(rotorsCount, parameters));
+            if (breaker.tryBreak(encryptedMessage))
             {
-                worker.sendData("success:" + breaker.encrypt(parameters[3]));
+                worker.sendData("success:" + breaker.encrypt(encryptedMessage));
             }
             else
             {
@@ -109,11 +117,14 @@ namespace BombeClient
             //sendMessageToForm("Sended answer: " + parameters[2]);
         }
 
-        private byte[] getOffsets(int rotorsCount, byte offset)
+        private byte[] getOffsets(int rotorsCount, string[] parameters)
         {
             byte[] array = new byte[rotorsCount];
             array.Initialize();
-            array[rotorsCount - 1] = offset;
+            for (int i = rotorsCount - 1; i > (rotorsCount - 1 ) - (parameters.Length - 2); i--)
+            {
+                array[i] = byte.Parse(parameters[2 + (rotorsCount - 1) - i]);
+            }
             return array;
         }
 

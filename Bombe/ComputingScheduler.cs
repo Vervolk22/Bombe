@@ -19,6 +19,7 @@ namespace Bombe
         private SocketWorker worker;
         private bool isServerRunning = false;
         private byte solutionStatus = 0;
+        protected string encryptedMessage = "VKRO HO HGH ITZEAA";
 
         private bool isDone;
         private byte[] statuses;
@@ -76,6 +77,7 @@ namespace Bombe
         private void useSingleClient(Object sock)
         {
             Socket socket = (Socket)sock;
+            worker.sendData(socket, "setmessage:" + encryptedMessage);
             while (!isDone)
             {
                 byte index = (byte)getUncheckedPart();
@@ -104,8 +106,7 @@ namespace Bombe
 
         private string getQueryString(byte index)
         {
-            string s = "compute:5:" + index + ':';
-            s += "VKRO HO HGH ITZEAA";
+            string s = "compute:5:" + index;
             return s;
         }
 
