@@ -12,19 +12,15 @@ using ComputingHelpers;
 
 namespace BombeClient
 {
-    internal class ClientSocketWorker
+    internal class ClientSocketWorker : SocketWorker
     {
-        private MainWindow window;
-        private Socket socket;
-        protected byte[] buffer = new byte[256];
-        private System.Timers.Timer aliveTimer;
+        protected new MainWindow window;
+        protected Socket socket;
 
         public ClientSocketWorker(MainWindow window)
+            : base(window)
         {
             this.window = window;
-            aliveTimer = new System.Timers.Timer(1000);
-            aliveTimer.Elapsed += new System.Timers.ElapsedEventHandler(checkAlive);
-            aliveTimer.Enabled = true;
         }
 
         public bool establishConnection()
@@ -71,9 +67,9 @@ namespace BombeClient
             }
         }
 
-        private void checkAlive(object source, System.Timers.ElapsedEventArgs e)
+        protected override void checkAlive(object source, System.Timers.ElapsedEventArgs e)
         {
-            if (socket != null && !SocketHelper.isAlive(socket))
+            if (socket != null && !isAlive(socket))
             {
                 closeConnection();
             }
@@ -97,12 +93,7 @@ namespace BombeClient
             }
         }
 
-        public void waitingForData()
-        {
-
-        }
-
-        private void sendMessageToForm(string s)
+        protected override void sendMessageToForm(string s)
         {
             try
             {
@@ -120,37 +111,14 @@ namespace BombeClient
             }
         }
 
-        internal void sendData(string s)
+        public void sendData(string s)
         {
-            try
-            {
-                sendMessageToForm("Message sent: " + s + "\n");
-                byte[] byData = SocketHelper.getBytes(s);
-                socket.Send(SocketHelper.getBytes(byData.Length));
-                socket.Send(byData);
-            }
-            catch (Exception se)
-            {
-                sendMessageToForm(se.Message);
-            }
+            sendData(socket, s);
         }
 
-        internal string receiveData()
+        public string receiveData()
         {
-            try
-            {
-                sendMessageToForm("Message received:\n");
-                int iRx = socket.Receive(buffer, 1, SocketFlags.None);
-                iRx = socket.Receive(buffer, buffer[0], SocketFlags.None);
-                string str = SocketHelper.getString(buffer, iRx);
-                sendMessageToForm("---" + str + '\n');
-                return str;
-            }
-            catch (SocketException se)
-            {
-                sendMessageToForm(se.Message);
-                return null;
-            }
+            return receiveData(socket);
         }
     }
 }

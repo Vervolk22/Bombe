@@ -46,7 +46,7 @@ namespace BombeClient
 
         public string getLocalIP()
         {
-            return SocketHelper.getLocalIP();
+            return worker.getLocalIP();
         }
 
         private void startComputing()

@@ -12,25 +12,20 @@ using ComputingHelpers;
 
 namespace Bombe
 {
-    internal class SocketWorker
+    internal class ServerSocketWorker : SocketWorker
     {
-        private const int MAX_CONNECTIONS = 2;
+        private const int MAX_CONNECTIONS = 2; //TODO implement real max connections
+        protected new MainWindow window;
 
-        private MainWindow window;
         private ComputingScheduler scheduler;
         private Socket sockListener;
-        protected byte[] buffer = new byte[256];
         private int clientsCounter = 0;
         public Dictionary<Socket, int> connectionsList = new Dictionary<Socket, int>();
-        private System.Timers.Timer aliveTimer;
 
-        public SocketWorker(MainWindow window, ComputingScheduler scheduler)
+        public ServerSocketWorker(MainWindow window, ComputingScheduler scheduler) : base(window)
         {
             this.window = window;
             this.scheduler = scheduler;
-            aliveTimer = new System.Timers.Timer(1000);
-            aliveTimer.Elapsed += new System.Timers.ElapsedEventHandler(checkAliveConnections);
-            aliveTimer.Enabled = true;
         }
 
         public void waitForConnections()
@@ -65,7 +60,7 @@ namespace Bombe
             sockListener.Close();
             foreach (Socket sock in connectionsList.Keys)
             {
-                if (SocketHelper.isAlive(sock))
+                if (isAlive(sock))
                     sock.Close();
             }
             sendMessageToForm(String.Format("Closed {0} connections.\n", connectionsList.Count));
@@ -101,13 +96,13 @@ namespace Bombe
             socket.Close();
         }
 
-        private void checkAliveConnections(object source, System.Timers.ElapsedEventArgs e)
+        protected override void checkAlive(object source, System.Timers.ElapsedEventArgs e)
         {
             int i = 0;
             while (i < connectionsList.Count)
             {
                 //sendMessageToForm(connectionsList.Keys.ElementAt(i).Connected.ToString() + '\n');
-                if (!SocketHelper.isAlive(connectionsList.Keys.ElementAt(i)))
+                if (!isAlive(connectionsList.Keys.ElementAt(i)))
                 {
                     sendMessageToForm(String.Format("Client {0} disconnected.\n", connectionsList.Values.ElementAt(i)));
                     closeConnection(connectionsList.Keys.ElementAt(i));
@@ -117,12 +112,7 @@ namespace Bombe
             }
         }
 
-        public void waitingForData()
-        {
-
-        }
-
-        private void sendMessageToForm(string s)
+        protected override void sendMessageToForm(string s)
         {
             try
             {
@@ -137,39 +127,6 @@ namespace Bombe
             catch (Exception e)
             {
 
-            }
-        }
-
-        internal void sendData(Socket socket, string s)
-        {
-            try
-            {
-                sendMessageToForm("Message sent: " + s + "\n");
-                byte[] byData = SocketHelper.getBytes(s);
-                socket.Send(SocketHelper.getBytes(byData.Length));
-                socket.Send(byData);
-            }
-            catch (Exception se)
-            {
-                sendMessageToForm(se.Message);
-            }
-        }
-
-        internal string receiveData(Socket socket)
-        {
-            try
-            {
-                sendMessageToForm("Message received:\n");
-                int iRx = socket.Receive(buffer, 1, SocketFlags.None);
-                iRx = socket.Receive(buffer, buffer[0], SocketFlags.None);
-                string str = SocketHelper.getString(buffer, iRx);
-                sendMessageToForm("---" + str + '\n');
-                return str;
-            }
-            catch (Exception se)
-            {
-                sendMessageToForm(se.Message);
-                return null;
             }
         }
     }

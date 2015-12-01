@@ -16,7 +16,7 @@ namespace Bombe
     class ComputingScheduler
     {
         private MainWindow window;
-        private SocketWorker worker;
+        private ServerSocketWorker worker;
         private bool isServerRunning = false;
         private byte solutionStatus = 0;
         protected string encryptedMessage = "VKRO HO HGH ITZEAA";
@@ -28,7 +28,7 @@ namespace Bombe
         public ComputingScheduler(MainWindow window)
         {
             this.window = window;
-            worker = new SocketWorker(window, this);
+            worker = new ServerSocketWorker(window, this);
         }
 
         public void changeServerStatus()
@@ -144,7 +144,7 @@ namespace Bombe
 
         public string getLocalIP()
         {
-            return SocketHelper.getLocalIP();
+            return worker.getLocalIP();
         }
 
         private string[] getCommand(string s)
