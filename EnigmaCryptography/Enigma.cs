@@ -14,9 +14,10 @@ namespace EnigmaCryptography
                                                    "EKMFLGDQVZNTOWYHXUSPAIBRCJ",
                                                    "NQDJXVLSPHUFACKOIYRWZMEBGT",
                                                    "CKPESOHXVUMJRFYALGQBTIDZWN",
+                                                   "PGUYIOTMBXKFAHVRLZDNSWECJQ",
                                                    "YRUHQSLDPXNGOKMIEBFZCWVJAT"
                                                };
-        protected readonly char[] NOTCH_POSITIONS = { 'V', 'E', 'Q', 'D', 'W' };
+        protected readonly char[] NOTCH_POSITIONS = { 'V', 'E', 'Q', 'D', 'W', 'O' };
 
         protected Rotor[] rotors;
         protected Rotor reflector, first;
@@ -33,8 +34,6 @@ namespace EnigmaCryptography
         {
             for (int i = 0; i < rotorsCount; i++)
             {
-                //rotors[i] = new Rotor(ROTORS_LAYOUT[i].Substring(offsets[i], 26 - offsets[i]) +
-                //                      ROTORS_LAYOUT[i].Substring(0, offsets[i]), NOTCH_POSITIONS[i]);
                 rotors[i] = new Rotor(ROTORS_LAYOUT[i], NOTCH_POSITIONS[i]);
                 rotors[i].setOffset(offsets[i]);
             }

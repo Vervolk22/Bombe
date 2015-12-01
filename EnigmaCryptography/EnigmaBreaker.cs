@@ -8,12 +8,12 @@ namespace EnigmaCryptography
 {
     public class EnigmaBreaker : Enigma
     {
-        private readonly string STOP_WORD = "RATEUSTEN";
-        int iterationsCount;
+        protected readonly string STOP_WORD = "RATEUSTEN";
+        protected int iterationsCount;
 
-        public EnigmaBreaker(int rotorsCount, byte[] offsets) : base(rotorsCount, offsets)
+        public EnigmaBreaker(int rotorsCount, int rotorsToCompute, byte[] offsets) : base(rotorsCount, offsets)
         {
-            iterationsCount = pow(26, rotorsCount - 1);
+            iterationsCount = pow(26, rotorsToCompute);
         }
 
         public bool tryBreak(string s)
