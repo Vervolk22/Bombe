@@ -1,18 +1,52 @@
 ﻿<Window x:Class="Bombe.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Server" Height="400" Width="700" Left="20" Top="20" Background="LightBlue">
-    <Grid>
-        <StackPanel Background="AliceBlue" HorizontalAlignment="Left" Height="127" Margin="332,11,0,0" VerticalAlignment="Top" Width="337"/>
-        <TextBox Name="mainlist" HorizontalAlignment="Left" Height="350" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="310" VerticalScrollBarVisibility="Auto" AcceptsReturn="True"/>
-        <Label Name="iplabel" Content="Label" HorizontalAlignment="Left" Height="25" Margin="484,18,0,0" VerticalAlignment="Top" Width="146"/>
-        <TextBox Name="port" HorizontalAlignment="Left" Height="25" Margin="484,53,0,0" TextWrapping="Wrap" Text="6133" VerticalAlignment="Top" Width="146"/>
-        <Label Content="Local IP address:" HorizontalAlignment="Left" Height="25" Margin="339,18,0,0" VerticalAlignment="Top" Width="103"/>
-        <Label Content="Port:" HorizontalAlignment="Left" Margin="339,53,0,0" VerticalAlignment="Top" Width="90"/>
-        <Label Content="Status:" HorizontalAlignment="Left" Height="25" Margin="339,89,0,0" VerticalAlignment="Top" Width="49"/>
-        <Label Name="status" Content="offline" HorizontalAlignment="Left" Height="24" Margin="408,89,0,0" VerticalAlignment="Top" Width="71" Foreground="Red" RenderTransformOrigin="0.532,1.618"/>
-        <Button Name="cmdReceiveConnections" Click="cmdListen_Click" Content="Start receive connections" HorizontalAlignment="Left" Margin="484,89,0,0" VerticalAlignment="Top" Width="146" Height="24"/>
-        <Canvas Name="canvas" Background="AliceBlue" HorizontalAlignment="Left" Height="203" Margin="332,157,0,0" VerticalAlignment="Top" Width="337"/>
-        <Button Name="cmdCompute" Click="cmdCompute_Click" Content="Compute" HorizontalAlignment="Left" Margin="399,125,0,0" VerticalAlignment="Top" Width="162"/>
-    </Grid>
+        Title="Server" Height="500" Width="700" Left="20" Top="20" Background="LightBlue">
+    <TabControl Background="LightBlue" FontSize="20">
+        <TabItem Header="Task">
+            <Grid>
+                <StackPanel Background="AliceBlue" HorizontalAlignment="Left" Height="198" Margin="332,11,0,0" VerticalAlignment="Top" Width="337"/>
+                <TextBox Name="mainlist" FontSize="16" HorizontalAlignment="Left" Height="407" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="310" VerticalScrollBarVisibility="Auto" AcceptsReturn="True"/>
+                <Label Name="iplabel" FontSize="16" Content="Label" HorizontalAlignment="Left" Height="30" Margin="484,18,0,0" VerticalAlignment="Top" Width="146"/>
+                <TextBox Name="port" FontSize="16" HorizontalAlignment="Left" Height="25" Margin="484,59,0,0" TextWrapping="Wrap" Text="6133" VerticalAlignment="Top" Width="146"/>
+                <Label Content="Local IP address:" FontSize="16" HorizontalAlignment="Left" Height="30" Margin="339,18,0,0" VerticalAlignment="Top" Width="124"/>
+                <Label Content="Port:" HorizontalAlignment="Left" FontSize="16" Margin="339,56,0,0" VerticalAlignment="Top" Width="90"/>
+                <Label Content="Status:" FontSize="16" HorizontalAlignment="Left" Height="31" Margin="339,89,0,0" VerticalAlignment="Top" Width="69"/>
+                <Label Name="status" FontSize="16" Content="offline" HorizontalAlignment="Left" Height="52" Margin="484,89,0,0" VerticalAlignment="Top" Width="71" Foreground="Red" RenderTransformOrigin="0.532,1.618"/>
+                <Button Name="cmdReceiveConnections" FontSize="16" Click="cmdListen_Click" Content="Start receive connections" HorizontalAlignment="Left" Margin="413,117,0,0" VerticalAlignment="Top" Width="192" Height="35"/>
+
+                <Canvas Name="canvas" Background="AliceBlue" HorizontalAlignment="Left" Height="203" Margin="332,214,0,0" VerticalAlignment="Top" Width="337"/>
+                <Label Content="Where is the 'Compute' button???" FontSize="16" HorizontalAlignment="Left" Margin="381,178,0,0" VerticalAlignment="Top"/>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Create a task">
+            <Grid>
+                <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top">I think better to do create/save a task statement using Toolbar. I will try do it tomorrow. So, this tab is empty</TextBlock>
+
+            </Grid>
+        </TabItem>
+        <TabItem Header="Clients">
+            <Grid>
+                <Label Content="Client Info (area for squares=count of clients)" HorizontalAlignment="Left" Margin="33,26,0,0" VerticalAlignment="Top"/>
+                <Canvas Background="AliceBlue" HorizontalAlignment="Left" Height="133" Margin="33,63,0,0" VerticalAlignment="Top" Width="622"/>
+                <Label Content="Label" Name="Speed" HorizontalAlignment="Left" Margin="151,280,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.104,-0.754"/>
+                <Label Content="The best:" HorizontalAlignment="Left" Margin="33,220,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.476,3.86"/>
+                <Label Content="Label" Name="best" HorizontalAlignment="Left" Margin="151,220,0,0" VerticalAlignment="Top"/>
+                <Label Content="Speed:" HorizontalAlignment="Left" Margin="33,280,0,0" VerticalAlignment="Top"/>
+                <Label Content="Score:" HorizontalAlignment="Left" Margin="33,340,0,0" VerticalAlignment="Top"/>
+                <Label Content="Label" Name="score" HorizontalAlignment="Left" Margin="151,340,0,0" VerticalAlignment="Top"/>
+
+            </Grid>
+        </TabItem>
+        <TabItem Header="Test">
+            <Grid>
+                <TextBox HorizontalAlignment="Left" Height="53" Margin="143,52,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="383"/>
+                <TextBox HorizontalAlignment="Left" Height="62" Margin="143,276,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="383"/>
+                <Button Content="Badabum!" HorizontalAlignment="Left" Margin="143,122,0,0" VerticalAlignment="Top" Width="383" Height="93"/>
+                <Label Content="Enter your message:" HorizontalAlignment="Left" Margin="224,10,0,0" VerticalAlignment="Top"/>
+                <Label Content="Your decoded message:" HorizontalAlignment="Left" Margin="224,234,0,0" VerticalAlignment="Top"/>
+
+            </Grid>
+        </TabItem>
+    </TabControl>
 </Window>
