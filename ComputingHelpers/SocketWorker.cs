@@ -100,7 +100,7 @@ namespace ComputingHelpers
         /// Gets local ip address of the computer.
         /// </summary>
         /// <returns>Actually local ip adress.</returns>
-        public string getLocalIP()
+        public static string getLocalIP()
         {
             IPAddress[] addr = Dns.GetHostAddresses(Dns.GetHostName());
             if (addr.Length > 1)

@@ -9,15 +9,15 @@ using EnigmaCryptography;
 
 namespace BombeClient
 {
-    class ComputingExecutor
+    internal class ComputingExecutor : ComputingSide
     {
-        private MainWindow window;
-        private ClientSocketWorker worker;
-        private bool isConnected = false;
-        private Thread computingThread;
-        private string encryptedMessage;
+        protected new MainWindow window;
+        protected new ClientSocketWorker worker;
+        protected bool isConnected = false;
+        protected Thread computingThread;
+        protected string encryptedMessage;
 
-        public ComputingExecutor(MainWindow window)
+        public ComputingExecutor(MainWindow window) : base(window)
         {
             this.window = window;
             worker = new ClientSocketWorker(window);
@@ -44,12 +44,7 @@ namespace BombeClient
             }
         }
 
-        public string getLocalIP()
-        {
-            return worker.getLocalIP();
-        }
-
-        private void startComputing()
+        protected void startComputing()
         {
             while (isConnected)
             {
@@ -79,12 +74,12 @@ namespace BombeClient
             encryptedMessage = message;
         }
 
-        private string newCommand()
+        protected string newCommand()
         {
             return worker.receiveData();
         }
 
-        private void changeConnectionStatus()
+        protected void changeConnectionStatus()
         {
             window.Dispatcher.Invoke((Action)(() =>
             {
@@ -92,16 +87,7 @@ namespace BombeClient
             }));
         }
 
-        private string[] getCommand(string s)
-        {
-            if (s == null)
-            {
-                return new string[] { null };
-            }
-            return s.Split(':');
-        }
-
-        private void compute(string[] parameters)
+        protected void compute(string[] parameters)
         {
             int rotorsCount = int.Parse(parameters[1]);
             EnigmaBreaker breaker = new EnigmaBreaker(rotorsCount, rotorsCount - 1, 
@@ -117,7 +103,7 @@ namespace BombeClient
             //sendMessageToForm("Sended answer: " + parameters[2]);
         }
 
-        private byte[] getOffsets(int rotorsCount, string[] parameters)
+        protected byte[] getOffsets(int rotorsCount, string[] parameters)
         {
             byte[] array = new byte[rotorsCount];
             array.Initialize();
@@ -128,7 +114,7 @@ namespace BombeClient
             return array;
         }
 
-        private void sendMessageToForm(string s)
+        protected override void sendMessageToForm(string s)
         {
             window.Dispatcher.Invoke((Action)(() =>
             {

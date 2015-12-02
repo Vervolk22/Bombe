@@ -13,20 +13,20 @@ using EnigmaCryptography;
 
 namespace Bombe
 {
-    class ComputingScheduler
+    internal class ComputingScheduler : ComputingSide
     {
-        private MainWindow window;
-        private ServerSocketWorker worker;
-        PartsHandler partsHandler;
-        private bool isServerRunning = false;
-        private byte solutionStatus = 0;
+        protected new MainWindow window;
+        protected new ServerSocketWorker worker;
+        protected PartsHandler partsHandler;
+        protected bool isServerRunning = false;
+        protected byte solutionStatus = 0;
         protected string encryptedMessage = "VKRO HO HGH ITZEAA";
 
         private bool isDone;
         private byte[] statuses;
         private int lastChecked;
 
-        public ComputingScheduler(MainWindow window)
+        public ComputingScheduler(MainWindow window) : base(window)
         {
             this.window = window;
             worker = new ServerSocketWorker(window, this);
@@ -70,14 +70,14 @@ namespace Bombe
             }
         }
 
-        private void startNewSchedulingThread(Socket socket)
+        protected void startNewSchedulingThread(Socket socket)
         {
             Thread thread = new Thread(useSingleClient);
             thread.IsBackground = true;
             thread.Start(socket);
         }
 
-        private void useSingleClient(Object sock)
+        protected void useSingleClient(Object sock)
         {
             Socket socket = (Socket)sock;
             worker.sendData(socket, "setmessage:" + encryptedMessage);
@@ -109,13 +109,13 @@ namespace Bombe
             }
         }
 
-        private string getQueryString(byte index)
+        protected string getQueryString(byte index)
         {
             string s = "compute:5:" + index;
             return s;
         }
 
-        private int getUncheckedPart()
+        protected int getUncheckedPart()
         {
             lock(this) {
                 int index = lastChecked;
@@ -136,7 +136,7 @@ namespace Bombe
             }
         }
 
-        private void setPart(int index, byte value)
+        protected void setPart(int index, byte value)
         {
             lock (this)
             {
@@ -148,21 +148,7 @@ namespace Bombe
             }
         }
 
-        public string getLocalIP()
-        {
-            return worker.getLocalIP();
-        }
-
-        private string[] getCommand(string s)
-        {
-            if (s == null)
-            {
-                return new string[] { null };
-            }
-            return s.Split(':');
-        }
-
-        private void sendMessageToForm(string s)
+        protected override void sendMessageToForm(string s)
         {
             window.Dispatcher.Invoke((Action)(() =>
             {
