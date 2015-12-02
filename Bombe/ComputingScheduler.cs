@@ -17,6 +17,7 @@ namespace Bombe
     {
         private MainWindow window;
         private ServerSocketWorker worker;
+        PartsHandler partsHandler;
         private bool isServerRunning = false;
         private byte solutionStatus = 0;
         protected string encryptedMessage = "VKRO HO HGH ITZEAA";
@@ -29,6 +30,7 @@ namespace Bombe
         {
             this.window = window;
             worker = new ServerSocketWorker(window, this);
+            partsHandler = new PartsHandler(window, 13);
         }
 
         public void changeServerStatus()
@@ -50,6 +52,7 @@ namespace Bombe
             statuses.Initialize();
             isDone = false;
             lastChecked = 0;
+            partsHandler.setAll(26);
 
             foreach (Socket socket in worker.connectionsList.Keys)
             {
@@ -89,11 +92,13 @@ namespace Bombe
                 switch (array[0])
                 {
                     case "fail":
+                        partsHandler.set(index, 2);
                         statuses[index] = 2;
                         continue;
                     case "success":
                         solutionStatus = 2;
                         sendMessageToForm("Message decrypted! Message: " + array[1]);
+                        partsHandler.set(index, 3);
                         statuses[index] = 3;
                         isDone = true;
                         break;
@@ -123,6 +128,7 @@ namespace Bombe
                 }
                 else
                 {
+                    partsHandler.set(index, 1);
                     statuses[index] = 1;
                     lastChecked = index + 1;
                     return index;

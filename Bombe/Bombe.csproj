@@ -55,6 +55,7 @@
     </ApplicationDefinition>
     <Compile Include="Client.cs" />
     <Compile Include="ComputingScheduler.cs" />
+    <Compile Include="PartsHandler.cs" />
     <Compile Include="ServerSocketWorker.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

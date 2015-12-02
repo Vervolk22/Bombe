@@ -13,12 +13,14 @@ namespace Bombe
         private MainWindow window;
         private int count = 0;
         private int squaresPerRow = 0;
-        private SolidColorBrush lightGreenBrush = new SolidColorBrush(Colors.LightGreen);
+        private SolidColorBrush lightGrayBrush = new SolidColorBrush(Colors.LightGray);
         private SolidColorBrush lightBlueBrush = new SolidColorBrush(Colors.LightBlue);
         private SolidColorBrush lightRedBrush = new SolidColorBrush(Colors.PaleVioletRed);
-        private SolidColorBrush greenBrush = new SolidColorBrush(Colors.Green);
+        private SolidColorBrush lightGreenBrush = new SolidColorBrush(Colors.LightGreen);
+        private SolidColorBrush grayBrush = new SolidColorBrush(Colors.Gray);
         private SolidColorBrush blueBrush = new SolidColorBrush(Colors.Blue);
         private SolidColorBrush redBrush = new SolidColorBrush(Colors.Red);
+        private SolidColorBrush greenBrush = new SolidColorBrush(Colors.Green);
 
         internal PartsHandler(MainWindow window, int squaresPerRow)
         {
@@ -34,16 +36,24 @@ namespace Bombe
             }
         }
 
-        public void draw(int number, int type)
+        public void set(int number, int type)
         {
-            int row = number / squaresPerRow;
-            int pos = number % squaresPerRow;
-            int left = pos * (int)window.canvas.Width / (squaresPerRow);
-            int top = row * 15;
-            System.Windows.Shapes.Rectangle rect = getRect(type);
-            Canvas.SetLeft(rect, left);
-            Canvas.SetTop(rect, top);
-            window.canvas.Children.Add(rect);
+            draw(number, type);
+        }
+
+        protected void draw(int number, int type)
+        {
+            window.Dispatcher.Invoke((Action)(() =>
+            {
+                int row = number / squaresPerRow;
+                int pos = number % squaresPerRow;
+                int left = pos * (int)window.canvas.Width / (squaresPerRow);
+                int top = row * 15;
+                System.Windows.Shapes.Rectangle rect = getRect(type);
+                Canvas.SetLeft(rect, left);
+                Canvas.SetTop(rect, top);
+                window.canvas.Children.Add(rect);
+            }));
         }
 
         protected System.Windows.Shapes.Rectangle getRect(int type)
@@ -57,14 +67,18 @@ namespace Bombe
             switch (type)
             {
                 case 0:
+                    rect.Stroke = grayBrush;
+                    rect.Fill = lightGrayBrush;
+                    break;
+                case 1:
                     rect.Stroke = blueBrush;
                     rect.Fill = lightBlueBrush;
                     break;
-                case 1:
+                case 2:
                     rect.Stroke = redBrush;
                     rect.Fill = lightRedBrush;
                     break;
-                case 2:
+                case 3:
                     rect.Stroke = greenBrush;
                     rect.Fill = lightGreenBrush;
                     break;
