@@ -12,22 +12,34 @@ using ComputingHelpers;
 
 namespace Bombe
 {
+    /// <summary>
+    /// Receives multiple connections from clients and communicates
+    /// with them.
+    /// </summary>
     internal class ServerSocketWorker : SocketWorker
     {
-        private const int MAX_CONNECTIONS = 2; //TODO implement real max connections
+        protected const int MAX_CONNECTIONS = 2; //TODO implement real max connections
         protected new MainWindow window;
 
-        private ComputingScheduler scheduler;
-        private Socket sockListener;
-        private int clientsCounter = 0;
+        protected ComputingScheduler scheduler;
+        protected Socket sockListener;
+        protected int clientsCounter = 0;
         public Dictionary<Socket, int> connectionsList = new Dictionary<Socket, int>();
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="window">Main WPF window to interact wit.</param>
+        /// <param name="scheduler">ComputingScheduler of the server.</param>
         public ServerSocketWorker(MainWindow window, ComputingScheduler scheduler) : base(window)
         {
             this.window = window;
             this.scheduler = scheduler;
         }
 
+        /// <summary>
+        /// Starts the waiting of incoming clients connections.
+        /// </summary>
         public void waitForConnections()
         {
             try
@@ -55,6 +67,9 @@ namespace Bombe
             }
         }
 
+        /// <summary>
+        /// Closes all alive connections, and set making of new connections to off.
+        /// </summary>
         public void closeAllConnections()
         {
             sockListener.Close();
@@ -71,6 +86,10 @@ namespace Bombe
             window.cmdReceiveConnections.Content = "Start receive connections";
         }
 
+        /// <summary>
+        /// Makes connection with a new client.
+        /// </summary>
+        /// <param name="asyn">Asynchronous call result.</param>
         public void establishConnection(IAsyncResult asyn)
         {
             try
@@ -90,12 +109,21 @@ namespace Bombe
             }
         }
 
+        /// <summary>
+        /// Closes connection with a client.
+        /// </summary>
+        /// <param name="socket">Socket of alive connection.</param>
         public void closeConnection(Socket socket)
         {
             connectionsList.Remove(socket);
             socket.Close();
         }
 
+        /// <summary>
+        /// Checks all connections with clients, are they alive.
+        /// </summary>
+        /// <param name="source">Calling source (timer).</param>
+        /// <param name="e">ElapsedEventArgs of a timer.</param>
         protected override void checkAlive(object source, System.Timers.ElapsedEventArgs e)
         {
             int i = 0;
@@ -112,6 +140,10 @@ namespace Bombe
             }
         }
 
+        /// <summary>
+        /// Send message to main window, about changes at socket level.
+        /// </summary>
+        /// <param name="s">Message to send.</param>
         protected override void sendMessageToForm(string s)
         {
             try

@@ -12,17 +12,28 @@ using ComputingHelpers;
 
 namespace BombeClient
 {
+    /// <summary>
+    /// Connects to the server and communicates with it.
+    /// </summary>
     internal class ClientSocketWorker : SocketWorker
     {
         protected new MainWindow window;
         protected Socket socket;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="window">Main WPF window to interact with.</param>
         public ClientSocketWorker(MainWindow window)
             : base(window)
         {
             this.window = window;
         }
 
+        /// <summary>
+        /// Makes connection with a server.
+        /// </summary>
+        /// <returns>Result, if connection was set.</returns>
         public bool establishConnection()
         {
             try
@@ -67,6 +78,11 @@ namespace BombeClient
             }
         }
 
+        /// <summary>
+        /// Check is connection with the server alive. Will be called by a timer.
+        /// </summary>
+        /// <param name="source">Calling source (timer).</param>
+        /// <param name="e">ElapsedEventArgs of a timer.</param>
         protected override void checkAlive(object source, System.Timers.ElapsedEventArgs e)
         {
             if (socket != null && !isAlive(socket))
@@ -74,7 +90,10 @@ namespace BombeClient
                 closeConnection();
             }
         }
-
+        
+        /// <summary>
+        /// Closes connection with the server.
+        /// </summary>
         public void closeConnection()
         {
             try
@@ -93,6 +112,10 @@ namespace BombeClient
             }
         }
 
+        /// <summary>
+        /// Send message to main window, about changes at socket level.
+        /// </summary>
+        /// <param name="s">Message to send.</param>
         protected override void sendMessageToForm(string s)
         {
             try
@@ -111,11 +134,21 @@ namespace BombeClient
             }
         }
 
+        /// <summary>
+        /// Send data to the server. Possible, becauser client can handle
+        /// only one connection with a server.
+        /// </summary>
+        /// <param name="s">String to send.</param>
         public void sendData(string s)
         {
             sendData(socket, s);
         }
 
+        /// <summary>
+        /// Receive data from the server. Possible, becauser client can handle
+        /// only one connection with a server.
+        /// </summary>
+        /// <returns>Received data.</returns>
         public string receiveData()
         {
             return receiveData(socket);
