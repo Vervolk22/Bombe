@@ -80,7 +80,7 @@ namespace Bombe
         protected void useSingleClient(Object sock)
         {
             Socket socket = (Socket)sock;
-            worker.sendData(socket, "setmessage:" + encryptedMessage);
+            sendInitialMessages(socket);
             while (!isDone)
             {
                 byte index = (byte)getUncheckedPart();
@@ -107,6 +107,11 @@ namespace Bombe
                         return;
                 }
             }
+        }
+
+        protected void sendInitialMessages(Socket socket)
+        {
+            worker.sendData(socket, "setmessage:" + encryptedMessage);
         }
 
         protected string getQueryString(byte index)

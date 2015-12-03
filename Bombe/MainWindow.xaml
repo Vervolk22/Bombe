@@ -21,8 +21,35 @@
         </TabItem>
         <TabItem Header="Create a task">
             <Grid>
-                <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top">I think better to do create/save a task statement using Toolbar. I will try do it tomorrow. So, this tab is empty</TextBlock>
+                <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Amount of rotors:" VerticalAlignment="Top" Height="35"></TextBlock>
+                <TextBox HorizontalAlignment="Left" Height="35" Margin="194,10,0,0" TextWrapping="Wrap" Text="5" VerticalAlignment="Top" Width="69"/>
+                <ScrollViewer VerticalContentAlignment="Top" Margin="20,60,20,20" Width="530" HorizontalAlignment="Left">
+                    <WrapPanel>
+                        <Label Content="#" Margin="20,19,0,0" Height="35" Width="35"/>
+                        <Label Content="Rotor layout" Margin="20,19,0,0" Height="35" Width="329"/>
+                        <Label Content="Notch" Margin="20,19,0,0" Height="35" Width="70"/>
 
+                        <Label Content="1:" Margin="20,19,0,0" Height="35" Width="35"/>
+                        <TextBox HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="ABCDEFGHIJKLMNOPQRSTUVWXYZ" VerticalAlignment="Top" Width="350"/>
+                        <TextBox HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="B" VerticalAlignment="Top" Width="50"/>
+
+                        <Label Content="2:" Margin="20,19,0,0" Height="35" Width="35"/>
+                        <TextBox HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="ABCDEFGHIJKLMNOPQRSTUVWXYZ" VerticalAlignment="Top" Width="350"/>
+                        <TextBox HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="B" VerticalAlignment="Top" Width="50"/>
+
+                        <Label Content="3:" Margin="20,19,0,0" Height="35" Width="35"/>
+                        <TextBox HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="ABCDEFGHIJKLMNOPQRSTUVWXYZ" VerticalAlignment="Top" Width="350"/>
+                        <TextBox HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="B" VerticalAlignment="Top" Width="50"/>
+
+                        <Label Content="4:" Margin="20,19,0,0" Height="35" Width="35"/>
+                        <TextBox HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="ABCDEFGHIJKLMNOPQRSTUVWXYZ" VerticalAlignment="Top" Width="350"/>
+                        <TextBox HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="B" VerticalAlignment="Top" Width="50"/>
+
+                        <Label Content="5:" Margin="20,19,0,0" Height="35" Width="35"/>
+                        <TextBox HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="ABCDEFGHIJKLMNOPQRSTUVWXYZ" VerticalAlignment="Top" Width="350"/>
+                        <TextBox HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="B" VerticalAlignment="Top" Width="50"/>
+                    </WrapPanel>
+                </ScrollViewer>
             </Grid>
         </TabItem>
         <TabItem Header="Clients">
