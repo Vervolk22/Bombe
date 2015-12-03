@@ -14,9 +14,8 @@
                 <Label Content="Status:" FontSize="16" HorizontalAlignment="Left" Height="31" Margin="339,89,0,0" VerticalAlignment="Top" Width="69"/>
                 <Label Name="status" FontSize="16" Content="offline" HorizontalAlignment="Left" Height="52" Margin="484,89,0,0" VerticalAlignment="Top" Width="71" Foreground="Red" RenderTransformOrigin="0.532,1.618"/>
                 <Button Name="cmdReceiveConnections" FontSize="16" Click="cmdListen_Click" Content="Start receive connections" HorizontalAlignment="Left" Margin="413,117,0,0" VerticalAlignment="Top" Width="192" Height="35"/>
-
+                <Button Name="cmdCompute" Click="cmdCompute_Click" FontSize="16" Content="Compute" HorizontalAlignment="Left" Margin="432,166,0,0" VerticalAlignment="Top" Width="158" Height="32"/>
                 <Canvas Name="canvas" Background="AliceBlue" HorizontalAlignment="Left" Height="203" Margin="332,214,0,0" VerticalAlignment="Top" Width="337"/>
-                <Label Content="Where is the 'Compute' button???" FontSize="16" HorizontalAlignment="Left" Margin="381,178,0,0" VerticalAlignment="Top"/>
             </Grid>
         </TabItem>
         <TabItem Header="Create a task">
