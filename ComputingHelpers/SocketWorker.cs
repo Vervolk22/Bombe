@@ -19,7 +19,7 @@ namespace ComputingHelpers
         protected int CHECK_ALIVE_DELAY = 1000;
 
         protected Window window;
-        protected byte[] buffer = new byte[256];
+        protected byte[] buffer = new byte[1024];
         protected System.Timers.Timer aliveTimer;
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace ComputingHelpers
                 sendMessageToForm("Message sent: " + s + "\n");
                 byte[] byData = getBytes(s);
                 // First byte of every message is it's length.
-                socket.Send(getBytes((byte)byData.Length));
+                socket.Send(getBytes(byData.Length.ToString("000")));
                 socket.Send(byData);
             }
             catch (Exception se)
@@ -141,9 +141,10 @@ namespace ComputingHelpers
             {
                 sendMessageToForm("Message received:\n");
                 // First byte of every message is it's length.
-                int iRx = socket.Receive(buffer, 1, SocketFlags.None);
-                iRx = socket.Receive(buffer, buffer[0], SocketFlags.None);
+                int iRx = socket.Receive(buffer, 6, SocketFlags.None);
                 string str = getString(buffer, iRx);
+                iRx = socket.Receive(buffer, Int32.Parse(str), SocketFlags.None);
+                str = getString(buffer, iRx);
                 sendMessageToForm("---" + str + '\n');
                 return str;
             }

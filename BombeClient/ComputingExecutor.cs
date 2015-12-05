@@ -17,6 +17,10 @@ namespace BombeClient
         protected Thread computingThread;
         protected string encryptedMessage;
 
+        protected int rotorsCount;
+        protected string[] rotorsLayout;
+        protected char[] notchPositions;
+
         public ComputingExecutor(MainWindow window) : base(window)
         {
             this.window = window;
@@ -59,6 +63,9 @@ namespace BombeClient
                     case "setmessage":
                         setEncryptedMessage(parameters[1]);
                         break;
+                    case "setlayout":
+                        setLayout(parameters);
+                        break;
                     case "wait":
                         Thread.Sleep(10000);
                         continue;
@@ -67,6 +74,23 @@ namespace BombeClient
                         return;
                 }
             }
+        }
+
+        protected void setLayout(string[] parameters)
+        {
+            int rotors = Int32.Parse(parameters[1]);
+            string[] layout = new string[rotors + 1];
+            char[] notch = new char[rotors];
+            for (int i = 0; i < rotors; i++)
+            {
+                layout[i] = parameters[i + 2];
+                notch[i] = parameters[i + rotors + 2][0];
+            }
+            layout[rotors] = parameters[rotors + 2];
+
+            this.rotorsCount = rotors;
+            this.rotorsLayout = layout;
+            this.notchPositions = notch;
         }
 
         protected void setEncryptedMessage(string message)
@@ -89,9 +113,10 @@ namespace BombeClient
 
         protected void compute(string[] parameters)
         {
-            int rotorsCount = int.Parse(parameters[1]);
+            //EnigmaBreaker breaker = new EnigmaBreaker(rotorsCount, rotorsCount - 1, 
+            //        getOffsets(rotorsCount, parameters));
             EnigmaBreaker breaker = new EnigmaBreaker(rotorsCount, rotorsCount - 1, 
-                    getOffsets(rotorsCount, parameters));
+                    getOffsets(rotorsCount, parameters), rotorsLayout, notchPositions);
             if (breaker.tryBreak(encryptedMessage))
             {
                 worker.sendData("success:" + breaker.encrypt(encryptedMessage));
@@ -107,9 +132,9 @@ namespace BombeClient
         {
             byte[] array = new byte[rotorsCount];
             array.Initialize();
-            for (int i = rotorsCount - 1; i > (rotorsCount - 1 ) - (parameters.Length - 2); i--)
+            for (int i = rotorsCount - 1; i > (rotorsCount - 1 ) - (parameters.Length - 1); i--)
             {
-                array[i] = byte.Parse(parameters[2 + (rotorsCount - 1) - i]);
+                array[i] = byte.Parse(parameters[2 + (rotorsCount - 2) - i]);
             }
             return array;
         }

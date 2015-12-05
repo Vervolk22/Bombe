@@ -36,7 +36,7 @@ namespace Bombe
             }
         }
 
-        public void set(int number, int type)
+        public void set(byte[] indexes, int number, int type)
         {
             draw(number, type);
         }

@@ -8,15 +8,17 @@ namespace Bombe
 {
     public class Client
     {
-        public int id { get; private set; }
-        public int computed { get; private set; }
-        public string ip { get; private set; }
+        public int id { get; protected set; }
+        public int computed { get; protected set; }
+        public string ip { get; protected set; }
+        public DateTime connectionTime { get; protected set; }
 
-        public Client(int id, string ip)
+        public Client(int id, string ip, DateTime time)
         {
             this.id = id;
             this.computed = 0;
             this.ip = ip;
+            this.connectionTime = time;
         }
 
         public void increaseComputed()

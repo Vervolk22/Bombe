@@ -24,7 +24,7 @@ namespace Bombe
         protected ComputingScheduler scheduler;
         protected Socket sockListener;
         protected int clientsCounter = 0;
-        public Dictionary<Socket, int> connectionsList = new Dictionary<Socket, int>();
+        public Dictionary<Socket, Client> connectionsList = new Dictionary<Socket, Client>();
 
         /// <summary>
         /// Constructor.
@@ -95,7 +95,8 @@ namespace Bombe
             try
             {
                 Socket socket = sockListener.EndAccept(asyn);
-                connectionsList.Add(socket, ++clientsCounter);
+                Client client = new Client(++clientsCounter, socket.RemoteEndPoint.ToString(), DateTime.Now);
+                connectionsList.Add(socket, client);
                 sockListener.BeginAccept(new AsyncCallback(establishConnection), null);
                 sendMessageToForm(String.Format("Client {0} connected.\n", connectionsList.Count));
                 scheduler.newClient(socket);
