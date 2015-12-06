@@ -25,8 +25,9 @@ namespace Bombe
         protected bool isServerRunning = false;
         protected byte solutionStatus = 0;
 
-        protected byte rotorsAmout = 5;
-        protected string encryptedMessage = "VKRO HO HGH ITZEAA";
+        protected byte rotorsAmout = 6;
+        //protected string encryptedMessage = "VKRO HO HGH ITZEAA";
+        protected string encryptedMessage = "SZLD YQ WFF CFZNFC";
         protected string stopWord = "RATEUSTEN";
         protected string[] rotorsLayout = {
                                                    "BDFHJLCPRTXVZNYEIWGAKMUSQO",
@@ -176,7 +177,7 @@ namespace Bombe
             {
                 index = checkingGroups[i] + append;
                 append = index / ALPHABET_LENGTH;
-                str.Append(':' + (index % ALPHABET_LENGTH));
+                str.Append(":" + (index % ALPHABET_LENGTH));
             }
             return str.ToString();
         }

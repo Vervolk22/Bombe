@@ -115,8 +115,9 @@ namespace BombeClient
         {
             //EnigmaBreaker breaker = new EnigmaBreaker(rotorsCount, rotorsCount - 1, 
             //        getOffsets(rotorsCount, parameters));
-            EnigmaBreaker breaker = new EnigmaBreaker(rotorsCount, rotorsCount - 1, 
+            EnigmaBreaker breaker = new EnigmaBreaker(rotorsCount, rotorsCount - 2, 
                     getOffsets(rotorsCount, parameters), rotorsLayout, notchPositions);
+            breaker.initialize();
             if (breaker.tryBreak(encryptedMessage))
             {
                 worker.sendData("success:" + breaker.encrypt(encryptedMessage));
@@ -125,6 +126,8 @@ namespace BombeClient
             {
                 worker.sendData("fail");
             }
+            //Thread.Sleep(10);
+            //worker.sendData("fail");
             //sendMessageToForm("Sended answer: " + parameters[2]);
         }
 
