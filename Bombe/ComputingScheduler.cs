@@ -25,7 +25,7 @@ namespace Bombe
         protected bool isServerRunning = false;
         protected byte solutionStatus = 0;
 
-        protected byte rotorsAmout = 6;
+        protected byte rotorsAmount = 6;
         //protected string encryptedMessage = "VKRO HO HGH ITZEAA";
         protected string encryptedMessage = "SZLD YQ WFF CFZNFC";
         protected string stopWord = "RATEUSTEN";
@@ -46,14 +46,12 @@ namespace Bombe
         protected int lastChecked = 0;
         protected int index = 0;
         protected bool isDone;
-        //private byte[] statuses;
-        //private int lastChecked;
+        protected int partsDoneOnIteration = 0;
 
         public ComputingScheduler(MainWindow window) : base(window)
         {
             this.window = window;
             worker = new ServerSocketWorker(window, this);
-            partsHandler = new PartsHandler(window, 13);
         }
 
         public void changeServerStatus()
@@ -71,22 +69,45 @@ namespace Bombe
 
         public void startBreaking()
         {
+            if (rotorsAmount < 5)
+            {
+                Thread thread = new Thread(startEasyBreaking);
+                thread.IsBackground = true;
+                thread.Start();
+                return;
+            }
+            partsHandler = new PartsHandler(window, ALPHABET_LENGTH / 2, rotorsAmount - 4,
+                    ALPHABET_LENGTH, STATUSES_ARRAYS);
             statuses = new byte[STATUSES_ARRAYS][];
             for (int i = 0; i < STATUSES_ARRAYS; i++)
             {
                 statuses[i] = new byte[ALPHABET_LENGTH];
-                Array.Clear(statuses[i], 0, statuses[arrayActive].Length);
+                Array.Clear(statuses[i], 0, statuses[i].Length);
             }
             isDone = false;
             lastChecked = 0;
-            checkingGroups = new byte[rotorsAmout - 5];
-            partsHandler.setAll(ALPHABET_LENGTH);
+            checkingGroups = new byte[rotorsAmount - 5];
+            partsHandler.setAll(statuses, arrayActive);
 
             foreach (Socket socket in worker.connectionsList.Keys)
             {
                 solutionStatus = 1;
                 startNewSchedulingThread(socket);
-                //new Thread(useSingleClient).Start(socket);
+            }
+        }
+
+        protected void startEasyBreaking()
+        {
+            EnigmaBreaker breaker = new EnigmaBreaker(rotorsAmount, rotorsAmount,
+                    new byte[rotorsAmount], rotorsLayout, notchPositions);
+            breaker.initialize();
+            if (breaker.tryBreak(encryptedMessage))
+            {
+                sendMessageToForm("Easy success");
+            }
+            else
+            {
+                sendMessageToForm("Easy fail");
             }
         }
 
@@ -111,33 +132,38 @@ namespace Bombe
             sendInitialMessages(socket);
             while (!isDone)
             {
-                int index = getUncheckedPart();
-                worker.sendData(socket, getComputeCommand(index));
+                int num, arrayUsed;
+                lock (this)
+                {
+                    num = getUncheckedPart();
+                    arrayUsed = arrayActive;
+                }
+                worker.sendData(socket, getComputeCommand(num));
                 string result = worker.receiveData(socket);
                 string[] array = getCommand(result);
                 switch (array[0])
                 {
                     case "fail":
-                        changePartStatuses(index, 2);
+                        changePartStatuses(arrayUsed, num, 2);
                         continue;
                     case "success":
                         solutionStatus = 2;
                         sendMessageToForm("Message decrypted! Message: " + array[1]);
-                        changePartStatuses(index, 3);
+                        changePartStatuses(arrayUsed, num, 3);
                         isDone = true;
                         break;
                     default:
-                        changePartStatuses(index, 0);
+                        changePartStatuses(arrayUsed, num, 0);
                         return;
                 }
             }
         }
 
-        protected void changePartStatuses(int index, int status)
+        protected void changePartStatuses(int arrayUsed, int index, int status)
         {
-            partsHandler.set(checkingGroups, index, 2);
-            setPart(index, 2);
-            //statuses[indexes] = 2;
+            partsHandler.set(index % ALPHABET_LENGTH, 
+                    (index / ALPHABET_LENGTH) + arrayUsed - arrayActive, status);
+            setPart(arrayUsed, index, status);
         }
 
         protected void sendInitialMessages(Socket socket)
@@ -149,12 +175,12 @@ namespace Bombe
         protected void sendLayout(Socket socket)
         {
             StringBuilder str = new StringBuilder(512);
-            str.Append("setlayout:" + rotorsAmout);
-            for (int i = 0; i <= rotorsAmout; i++)
+            str.Append("setlayout:" + rotorsAmount);
+            for (int i = 0; i <= rotorsAmount; i++)
             {
                 str.Append(':' + rotorsLayout[i]);
             }
-            for (int i = 0; i < rotorsAmout; i++)
+            for (int i = 0; i < rotorsAmount; i++)
             {
                 str.Append(":" + notchPositions[i]);
             }
@@ -182,47 +208,20 @@ namespace Bombe
             return str.ToString();
         }
 
-        /*protected int getUncheckedPart()
-        {
-            lock(this) {
-                int index = lastChecked;
-                while (statuses[index] != 0 && index <= statuses.Length)
-                    index++;
-                if (index == statuses.Length)
-                {
-                    isDone = true;
-                    return -1;
-                }
-                else
-                {
-                    partsHandler.set(index, 1);
-                    statuses[index] = 1;
-                    lastChecked = index + 1;
-                    return index;
-                }
-            }
-        }*/
-
         protected int getUncheckedPart()
         {
             lock (this)
             {
-                if (lastChecked >= ALPHABET_LENGTH)
-                {
-                    Array.Clear(statuses[arrayActive], 0, statuses[arrayActive].Length);
-                    arrayActive = (arrayActive + 1) % STATUSES_ARRAYS;
-                    incrementLastChecked(0);
-                    lastChecked -= ALPHABET_LENGTH;
-                }
                 index = lastChecked;
                 while (statuses[(arrayActive + (index / ALPHABET_LENGTH)) % STATUSES_ARRAYS]
                         [index % ALPHABET_LENGTH] != 0)
                 {
                     index++;
                 }
-                partsHandler.set(checkingGroups, index, 1);
-                statuses[(arrayActive + (index / ALPHABET_LENGTH)) % STATUSES_ARRAYS]
-                        [index % ALPHABET_LENGTH] = 1;
+                partsHandler.set(index % ALPHABET_LENGTH, index / ALPHABET_LENGTH, 1);
+                setPart(arrayActive, index, 1);
+                //statuses[(arrayActive + (index / ALPHABET_LENGTH)) % STATUSES_ARRAYS]
+                //        [index % ALPHABET_LENGTH] = 1;
                 lastChecked = index + 1;
                 return index;
             }
@@ -249,16 +248,42 @@ namespace Bombe
             }
         }
 
-        protected void setPart(int index, byte value)
+        protected void setPart(int arrayUsed, int index, int value)
         {
             lock (this)
             {
-                statuses[(arrayActive + (index / ALPHABET_LENGTH)) % STATUSES_ARRAYS]
+                if (value > 1) increasePartsDoneOnIteration();
+                if (partsDoneOnIteration == 26)
+                {
+                    resetPartsDoneOnIteration();
+                    Array.Clear(statuses[arrayActive], 0, statuses[arrayActive].Length);
+                    arrayActive = (arrayActive + 1) % STATUSES_ARRAYS;
+                    incrementLastChecked(0);
+                    partsHandler.setAll(statuses, arrayActive);
+                    lastChecked -= ALPHABET_LENGTH;
+                }
+                statuses[(arrayUsed + (index / ALPHABET_LENGTH)) % STATUSES_ARRAYS]
                         [index % ALPHABET_LENGTH] = 1;
-                if (value == 0)
+                /*if (value == 0)
                 {
                     lastChecked = index;
-                }
+                }*/
+            }
+        }
+
+        protected void increasePartsDoneOnIteration()
+        {
+            lock (this)
+            {
+                partsDoneOnIteration++;
+            }
+        }
+
+        protected void resetPartsDoneOnIteration()
+        {
+            lock (this)
+            {
+                partsDoneOnIteration = 0;
             }
         }
 

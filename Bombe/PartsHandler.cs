@@ -10,50 +10,109 @@ namespace Bombe
 {
     class PartsHandler
     {
-        private MainWindow window;
-        private int count = 0;
-        private int squaresPerRow = 0;
-        private SolidColorBrush lightGrayBrush = new SolidColorBrush(Colors.LightGray);
-        private SolidColorBrush lightBlueBrush = new SolidColorBrush(Colors.LightBlue);
-        private SolidColorBrush lightRedBrush = new SolidColorBrush(Colors.PaleVioletRed);
-        private SolidColorBrush lightGreenBrush = new SolidColorBrush(Colors.LightGreen);
-        private SolidColorBrush grayBrush = new SolidColorBrush(Colors.Gray);
-        private SolidColorBrush blueBrush = new SolidColorBrush(Colors.Blue);
-        private SolidColorBrush redBrush = new SolidColorBrush(Colors.Red);
-        private SolidColorBrush greenBrush = new SolidColorBrush(Colors.Green);
+        protected MainWindow window;
+        protected int squaresPerRow;
+        protected int groupsCount;
+        protected int alphabetLength;
+        protected int groupsToShow;
+        protected int canvasWidth;
+        protected SolidColorBrush lightGrayBrush = new SolidColorBrush(Colors.LightGray);
+        protected SolidColorBrush lightBlueBrush = new SolidColorBrush(Colors.LightBlue);
+        protected SolidColorBrush lightRedBrush = new SolidColorBrush(Colors.PaleVioletRed);
+        protected SolidColorBrush lightGreenBrush = new SolidColorBrush(Colors.LightGreen);
+        protected SolidColorBrush grayBrush = new SolidColorBrush(Colors.Gray);
+        protected SolidColorBrush blueBrush = new SolidColorBrush(Colors.Blue);
+        protected SolidColorBrush redBrush = new SolidColorBrush(Colors.Red);
+        protected SolidColorBrush greenBrush = new SolidColorBrush(Colors.Green);
 
-        internal PartsHandler(MainWindow window, int squaresPerRow)
+        internal PartsHandler(MainWindow window, int squaresPerRow, int groupsExp,
+                int alphabetLength, int groupsToShow)
         {
             this.window = window;
             this.squaresPerRow = squaresPerRow;
+            this.alphabetLength = alphabetLength;
+            this.groupsCount = getGroupsCount(groupsExp, alphabetLength);
+            this.groupsToShow = groupsToShow;
+
+            window.Dispatcher.Invoke((Action)(() =>
+            {
+                canvasWidth = (int)window.canvas.Width;
+            }));
         }
 
-        public void setAll(int count)
+        public void setAll(byte[][] array, int startArray)
         {
-            for (int i = 0; i < count; i++)
+            clearSpace();
+            for (int i = 0; i < groupsToShow; i++)
             {
-                draw(i, 0);
+                drawLine(i, array[(i + startArray) % groupsToShow]);
             }
         }
 
-        public void set(byte[] indexes, int number, int type)
+        protected void drawLine(int lineNumber, byte[] array)
         {
-            draw(number, type);
+            for (int i = 0; i < alphabetLength; i++)
+            {
+                draw(i, array[i], getTopOffset(lineNumber));
+            }
         }
 
-        protected void draw(int number, int type)
+        public void set(int number, int groupNumber, int type)
         {
-            window.Dispatcher.Invoke((Action)(() =>
+            draw(number, type, getTopOffset(groupNumber));
+        }
+
+        protected void draw(int number, int type, int topOffset)
+        {
+
+            int row = number / squaresPerRow;
+            int pos = number % squaresPerRow;
+            int left = pos * canvasWidth / (squaresPerRow);
+            int top = row * 15 + topOffset;
+            try
             {
-                int row = number / squaresPerRow;
-                int pos = number % squaresPerRow;
-                int left = pos * (int)window.canvas.Width / (squaresPerRow);
-                int top = row * 15;
-                System.Windows.Shapes.Rectangle rect = getRect(type);
-                Canvas.SetLeft(rect, left);
-                Canvas.SetTop(rect, top);
-                window.canvas.Children.Add(rect);
-            }));
+                window.Dispatcher.Invoke((Action)(() =>
+                {
+                    System.Windows.Shapes.Rectangle rect = getRect(type);
+                    Canvas.SetLeft(rect, left);
+                    Canvas.SetTop(rect, top);
+                    window.canvas.Children.Add(rect);
+                }));
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
+        protected void clearSpace()
+        {
+            try
+            {
+                window.Dispatcher.Invoke((Action)(() =>
+                {
+                    window.canvas.Children.Clear();
+                }));
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
+        protected int getTopOffset(int number)
+        {
+            return 45 * number;
+        }
+
+        protected int getGroupsCount(int groupExp, int countInGroup)
+        {
+            int result = 1;
+            for (int i = 0; i < groupExp; i++)
+            {
+                result *= countInGroup;
+            }
+            return result;
         }
 
         protected System.Windows.Shapes.Rectangle getRect(int type)

@@ -113,22 +113,17 @@ namespace BombeClient
 
         protected void compute(string[] parameters)
         {
-            //EnigmaBreaker breaker = new EnigmaBreaker(rotorsCount, rotorsCount - 1, 
-            //        getOffsets(rotorsCount, parameters));
             EnigmaBreaker breaker = new EnigmaBreaker(rotorsCount, rotorsCount - 2, 
                     getOffsets(rotorsCount, parameters), rotorsLayout, notchPositions);
             breaker.initialize();
-            /*if (breaker.tryBreak(encryptedMessage))
+            if (breaker.tryBreak(encryptedMessage))
             {
                 worker.sendData("success:" + breaker.encrypt(encryptedMessage));
             }
             else
             {
                 worker.sendData("fail");
-            }*/
-            Thread.Sleep(10);
-            worker.sendData("fail");
-            //sendMessageToForm("Sended answer: " + parameters[2]);
+            }
         }
 
         protected byte[] getOffsets(int rotorsCount, string[] parameters)
