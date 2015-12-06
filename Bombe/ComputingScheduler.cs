@@ -25,7 +25,7 @@ namespace Bombe
         protected bool isServerRunning = false;
         protected byte solutionStatus = 0;
 
-        protected byte rotorsAmount = 6;
+        protected byte rotorsAmount = 7;
         //protected string encryptedMessage = "VKRO HO HGH ITZEAA";
         protected string encryptedMessage = "SZLD YQ WFF CFZNFC";
         protected string stopWord = "RATEUSTEN";
@@ -36,9 +36,10 @@ namespace Bombe
                                                    "NQDJXVLSPHUFACKOIYRWZMEBGT",
                                                    "CKPESOHXVUMJRFYALGQBTIDZWN",
                                                    "PGUYIOTMBXKFAHVRLZDNSWECJQ",
-                                                   "YRUHQSLDPXNGOKMIEBFZCWVJAT"
+                                                   "YRUHQSLDPXNGOKMIEBFZCWVJAT",
+                                                   "PEQJMVFTYRHLDCSIWNAUZGOXBK"
                                                };
-        protected char[] notchPositions = { 'V', 'E', 'Q', 'D', 'W', 'O' };
+        protected char[] notchPositions = { 'V', 'E', 'Q', 'D', 'W', 'O', 'A' };
 
         protected int arrayActive = 0;
         protected byte[][] statuses;
@@ -87,7 +88,7 @@ namespace Bombe
             isDone = false;
             lastChecked = 0;
             checkingGroups = new byte[rotorsAmount - 5];
-            partsHandler.setAll(statuses, arrayActive);
+            partsHandler.setAll(statuses, checkingGroups, arrayActive);
 
             foreach (Socket socket in worker.connectionsList.Keys)
             {
@@ -199,7 +200,7 @@ namespace Bombe
             str.Append("compute");
             int append = index / ALPHABET_LENGTH;
             str.Append(":" + (index % ALPHABET_LENGTH));
-            for (int i = checkingGroups.Length - 1; i >= 0; i--)
+            for (int i = 0; i < checkingGroups.Length; i++)
             {
                 index = checkingGroups[i] + append;
                 append = index / ALPHABET_LENGTH;
@@ -259,7 +260,7 @@ namespace Bombe
                     Array.Clear(statuses[arrayActive], 0, statuses[arrayActive].Length);
                     arrayActive = (arrayActive + 1) % STATUSES_ARRAYS;
                     incrementLastChecked(0);
-                    partsHandler.setAll(statuses, arrayActive);
+                    partsHandler.setAll(statuses, checkingGroups, arrayActive);
                     lastChecked -= ALPHABET_LENGTH;
                 }
                 statuses[(arrayUsed + (index / ALPHABET_LENGTH)) % STATUSES_ARRAYS]

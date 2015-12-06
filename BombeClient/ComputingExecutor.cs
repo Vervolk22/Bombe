@@ -113,7 +113,7 @@ namespace BombeClient
 
         protected void compute(string[] parameters)
         {
-            EnigmaBreaker breaker = new EnigmaBreaker(rotorsCount, rotorsCount - 2, 
+            EnigmaBreaker breaker = new EnigmaBreaker(rotorsCount, 4, 
                     getOffsets(rotorsCount, parameters), rotorsLayout, notchPositions);
             breaker.initialize();
             if (breaker.tryBreak(encryptedMessage))

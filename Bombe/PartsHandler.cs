@@ -24,6 +24,7 @@ namespace Bombe
         protected SolidColorBrush blueBrush = new SolidColorBrush(Colors.Blue);
         protected SolidColorBrush redBrush = new SolidColorBrush(Colors.Red);
         protected SolidColorBrush greenBrush = new SolidColorBrush(Colors.Green);
+        protected SolidColorBrush blackBrush = new SolidColorBrush(Colors.Black);
 
         internal PartsHandler(MainWindow window, int squaresPerRow, int groupsExp,
                 int alphabetLength, int groupsToShow)
@@ -40,31 +41,32 @@ namespace Bombe
             }));
         }
 
-        public void setAll(byte[][] array, int startArray)
+        public void setAll(byte[][] array, byte[] groups, int startArray)
         {
             clearSpace();
             for (int i = 0; i < groupsToShow; i++)
             {
-                drawLine(i, array[(i + startArray) % groupsToShow]);
+                drawLine(i, array[(i + startArray) % groupsToShow], groups);
             }
         }
 
-        protected void drawLine(int lineNumber, byte[] array)
+        protected void drawLine(int lineNumber, byte[] array, byte[] groups)
         {
+            int topOffset = getTopOffset(lineNumber);
+            drawText(lineNumber, groups, topOffset - 17);
             for (int i = 0; i < alphabetLength; i++)
             {
-                draw(i, array[i], getTopOffset(lineNumber));
+                drawSquare(i, array[i], topOffset);
             }
         }
 
         public void set(int number, int groupNumber, int type)
         {
-            draw(number, type, getTopOffset(groupNumber));
+            drawSquare(number, type, getTopOffset(groupNumber));
         }
 
-        protected void draw(int number, int type, int topOffset)
+        protected void drawSquare(int number, int type, int topOffset)
         {
-
             int row = number / squaresPerRow;
             int pos = number % squaresPerRow;
             int left = pos * canvasWidth / (squaresPerRow);
@@ -77,6 +79,24 @@ namespace Bombe
                     Canvas.SetLeft(rect, left);
                     Canvas.SetTop(rect, top);
                     window.canvas.Children.Add(rect);
+                }));
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
+        protected void drawText(int number, byte[] values, int topOffset)
+        {
+            try
+            {
+                window.Dispatcher.Invoke((Action)(() =>
+                {
+                    TextBlock textBlock = getGroupsTextBlock(values, number);
+                    Canvas.SetLeft(textBlock, 20);
+                    Canvas.SetTop(textBlock, topOffset);
+                    window.canvas.Children.Add(textBlock);
                 }));
             }
             catch (Exception e)
@@ -102,7 +122,7 @@ namespace Bombe
 
         protected int getTopOffset(int number)
         {
-            return 45 * number;
+            return 45 * number + 20;
         }
 
         protected int getGroupsCount(int groupExp, int countInGroup)
@@ -143,6 +163,38 @@ namespace Bombe
                     break;
             }
             return rect;
+        }
+
+        protected TextBlock getGroupsTextBlock(byte[] values, int num)
+        {
+            StringBuilder str = new StringBuilder(64);
+            byte[] array = new byte[values.Length];
+            for (int i = 0; i < values.Length; i++)
+            {
+                array[i] = values[i];
+            }
+            incrementLastChecked(array, 0, (byte)num);
+            str.Append("X:");
+            for (int i = 0; i < values.Length - 1; i++)
+            {
+                str.Append(array[i] + ":");
+            }
+            str.Append(array[values.Length - 1].ToString());
+            TextBlock textBlock = new TextBlock();
+            string st = str.ToString();
+            textBlock.Text = str.ToString();
+            textBlock.Foreground = blackBrush;
+            return textBlock;
+        }
+
+        protected void incrementLastChecked(byte[] array, int position, byte num)
+        {
+            array[position] += num;
+            if (array[position] == alphabetLength)
+            {
+                array[position] = (byte)(array[position] % alphabetLength);
+                incrementLastChecked(array, position + 1, num);
+            }
         }
     }
 }
