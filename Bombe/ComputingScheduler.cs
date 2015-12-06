@@ -75,7 +75,7 @@ namespace Bombe
             for (int i = 0; i < STATUSES_ARRAYS; i++)
             {
                 statuses[i] = new byte[ALPHABET_LENGTH];
-                statuses[i].Initialize();
+                Array.Clear(statuses[i], 0, statuses[arrayActive].Length);
             }
             isDone = false;
             lastChecked = 0;
@@ -209,7 +209,7 @@ namespace Bombe
             {
                 if (lastChecked >= ALPHABET_LENGTH)
                 {
-                    statuses[arrayActive].Initialize();
+                    Array.Clear(statuses[arrayActive], 0, statuses[arrayActive].Length);
                     arrayActive = (arrayActive + 1) % STATUSES_ARRAYS;
                     incrementLastChecked(0);
                     lastChecked -= ALPHABET_LENGTH;
