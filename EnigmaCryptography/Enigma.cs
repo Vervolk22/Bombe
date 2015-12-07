@@ -21,6 +21,8 @@ namespace EnigmaCryptography
                                                    "YRUHQSLDPXNGOKMIEBFZCWVJAT"
                                                };
         protected char[] NOTCH_POSITIONS = { 'V', 'E', 'Q', 'D', 'W', 'O' };
+        protected int rotorsCount;
+        protected byte[] offsets;
 
         protected Rotor[] rotors;
         protected Rotor reflector, first;
@@ -32,9 +34,15 @@ namespace EnigmaCryptography
         /// <param name="offsets">Initial offsets of rotors before first use.</param>
         public Enigma(int rotorsCount, byte[] offsets)
         {
+            this.rotorsCount = rotorsCount;
+            this.offsets = offsets;
+        }
+
+        public void initialize()
+        {
             rotors = new Rotor[rotorsCount];
-            createRotors(rotorsCount, offsets);
-            bindRotors(rotorsCount);
+            createRotors();
+            bindRotors();
             first = rotors[0];
         }
 
@@ -53,9 +61,7 @@ namespace EnigmaCryptography
         /// <summary>
         /// Creates a specified amount of rotors with specified initial offsets.
         /// </summary>
-        /// <param name="rotorsCount">Amount of rotors in machine.</param>
-        /// <param name="offsets">Array with initial rotor's offsets.</param>
-        protected void createRotors(int rotorsCount, byte[] offsets)
+        protected void createRotors()
         {
             for (int i = 0; i < rotorsCount; i++)
             {
@@ -68,8 +74,7 @@ namespace EnigmaCryptography
         /// <summary>
         /// Binds each rotor with the next and previous ones.
         /// </summary>
-        /// <param name="rotorsCount">Amount of rotors in machine.</param>
-        protected void bindRotors(int rotorsCount)
+        protected void bindRotors()
         {
             for (int i = 0; i < rotorsCount; i++)
             {

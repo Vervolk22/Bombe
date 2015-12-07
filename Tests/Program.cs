@@ -26,9 +26,23 @@ namespace Tests
 
             //EnigmaBreaker breaker = new EnigmaBreaker(3, new byte[3] { 6, 1, 23 });
             //EnigmaBreaker breaker = new EnigmaBreaker(5, new byte[5] { 6, 2, 22, 14, 21 });
-            EnigmaBreaker breaker = new EnigmaBreaker(5, new byte[5] { 0, 0, 0, 0, 20 });
+            //EnigmaBreaker breaker = new EnigmaBreaker(5, new byte[5] { 0, 0, 0, 0, 20 });
             //breaker.tryBreak("NXIO ET KXP NTXMKQ");
-            breaker.tryBreak("VKRO HO HGH ITZEAA");
+
+            
+            // After adding multi-rotors support
+            //Enigma enigma = new Enigma(6, new byte[6] { 6, 2, 22, 14, 1, 5 });
+            EnigmaBreaker enigma = new EnigmaBreaker(6, 4, new byte[6] { 6, 2, 22, 14, 1, 5 });
+            enigma.initialize();
+            Console.WriteLine(enigma.encrypt("RATE US TEN PLEASE"));
+            //Console.WriteLine(enigma.encrypt("SZLD YQ WFF CFZNFC"));
+
+
+
+
+
+
+            //breaker.tryBreak("VKRO HO HGH ITZEAA");
             //Console.WriteLine(breaker.encrypt("KCXH TV EAW EKBVGN"));
 
 

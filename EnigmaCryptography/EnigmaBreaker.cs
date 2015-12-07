@@ -28,6 +28,15 @@ namespace EnigmaCryptography
             iterationsCount = pow(26, rotorsToCompute);
         }
 
+        public EnigmaBreaker(int rotorsCount, int rotorsToCompute, byte[] offsets,
+                string[] rotorsLayout, char[] notchPositions)
+                : base(rotorsCount, offsets)
+        {
+            iterationsCount = pow(26, rotorsToCompute);
+            this.ROTORS_LAYOUT = rotorsLayout;
+            this.NOTCH_POSITIONS = notchPositions;
+        }
+
         /// <summary>
         /// Change stop_word of original message.
         /// </summary>
