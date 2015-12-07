@@ -37,9 +37,12 @@ namespace Bombe
                                                    "CKPESOHXVUMJRFYALGQBTIDZWN",
                                                    "PGUYIOTMBXKFAHVRLZDNSWECJQ",
                                                    "YRUHQSLDPXNGOKMIEBFZCWVJAT",
+                                                   "TBKOZSREHXUCPNWFLGDVQIJAYM",
+                                                   "VWFGYDTNQUEHRMZXOBSAVLJPKI",
+                                                   "RKSLQNWCGDTHYAOEUMFZBVPXIJ",
                                                    "PEQJMVFTYRHLDCSIWNAUZGOXBK"
                                                };
-        protected char[] notchPositions = { 'V', 'E', 'Q', 'D', 'W', 'O', 'A' };
+        protected char[] notchPositions = { 'V', 'E', 'Q', 'D', 'W', 'O', 'A', 'U', 'L', 'N' };
 
         protected int arrayActive = 0;
         protected byte[][] statuses;
