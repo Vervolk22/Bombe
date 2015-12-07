@@ -256,7 +256,7 @@ namespace Bombe
             lock (this)
             {
                 if (value > 1 && index < ALPHABET_LENGTH) increasePartsDoneOnIteration();
-                if (partsDoneOnIteration == ALPHABET_LENGTH)
+                if (partsDoneOnIteration == ALPHABET_LENGTH && !isDone)
                 {
                     Array.Clear(statuses[arrayActive], 0, statuses[arrayActive].Length);
                     arrayActive = (arrayActive + 1) % STATUSES_ARRAYS;

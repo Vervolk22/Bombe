@@ -44,12 +44,28 @@ namespace Bombe
 
         public void setAll(byte[][] array, byte[] groups, int startArray)
         {
+            if (completedCount == groupsCount)
+            {
+                return;
+            }
+            if (groupsCount == 1)
+            {
+                basicIndication(array, groups, startArray);
+                return;
+            }
             clearSpace();
             completedCount++;
             for (int i = 0; i < groupsToShow; i++)
             {
                 drawLine(i, array[(i + startArray) % groupsToShow], groups);
             }
+        }
+
+        protected void basicIndication(byte[][] array, byte[] groups, int startArray)
+        {
+            clearSpace();
+            completedCount++;
+            drawLine(0, array[0], groups);
         }
 
         protected void drawLine(int lineNumber, byte[] array, byte[] groups)
@@ -64,12 +80,14 @@ namespace Bombe
 
         public void set(int number, int groupNumber, int type)
         {
-            drawSquare(number, type, getTopOffset(groupNumber % groupsToShow));
+            if (completedCount + groupNumber <= groupsCount)
+                drawSquare(number, type, getTopOffset(groupNumber % groupsToShow));
         }
 
         protected void drawSquare(int number, int type, int topOffset)
         {
             int row = number / squaresPerRow;
+            if (completedCount + row > groupsCount + 1) return;
             int pos = number % squaresPerRow;
             int left = pos * canvasWidth / (squaresPerRow);
             int top = row * 15 + topOffset;
@@ -169,6 +187,10 @@ namespace Bombe
 
         protected TextBlock getGroupsTextBlock(byte[] values, int num)
         {
+            if (values.Length == 0)
+            {
+                return getBasicGroupsTextBlock();
+            }
             StringBuilder str = new StringBuilder(64);
             byte[] array = new byte[values.Length];
             for (int i = 0; i < values.Length; i++)
@@ -185,6 +207,20 @@ namespace Bombe
             str.Append(array[values.Length - 1].ToString());
             str.Append("   " + (completedCount + num) + "/" + groupsCount + "   (" + 
                     (int)((completedCount + num) * 100 / groupsCount) + "%)");
+            TextBlock textBlock = new TextBlock();
+            string st = str.ToString();
+            textBlock.Text = str.ToString();
+            textBlock.Foreground = blackBrush;
+            return textBlock;
+        }
+
+        protected TextBlock getBasicGroupsTextBlock()
+        {
+            StringBuilder str = new StringBuilder(64);
+
+            str.Append("X");
+            str.Append("   " + (completedCount) + "/" + groupsCount + "   (" +
+                    (int)((completedCount) * 100 / groupsCount) + "%)");
             TextBlock textBlock = new TextBlock();
             string st = str.ToString();
             textBlock.Text = str.ToString();
