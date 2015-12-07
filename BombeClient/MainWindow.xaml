@@ -14,7 +14,7 @@
         <Label Content="Status:" HorizontalAlignment="Left" Height="25" Margin="341,205,0,0" VerticalAlignment="Top" Width="49"/>
         <Label x:Name="status" Content="not connected" HorizontalAlignment="Left" Height="24" Margin="464,205,0,0" VerticalAlignment="Top" Width="96" Foreground="Red"/>
         <Button x:Name="cmdReceiveConnections" Click="cmdListen_Click" Content="Connect" HorizontalAlignment="Left" Margin="341,268,0,0" VerticalAlignment="Top" Width="202" Height="40"/>
-        <TextBox x:Name="iplabel" HorizontalAlignment="Left" Height="25" Margin="470,80,0,0" TextWrapping="Wrap" Text="192.168.1.3" VerticalAlignment="Top" Width="73"/>
+        <TextBox x:Name="iplabel" HorizontalAlignment="Left" Height="25" Margin="470,80,0,0" TextWrapping="Wrap" Text="localhost" VerticalAlignment="Top" Width="73"/>
 
     </Grid>
 </Window>

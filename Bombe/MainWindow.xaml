@@ -22,7 +22,7 @@
         <TabItem Header="Create a task">
             <Grid>
                 <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Amount of rotors:" VerticalAlignment="Top" Height="35"></TextBlock>
-                <TextBox HorizontalAlignment="Left" Height="35" Margin="194,10,0,0" TextWrapping="Wrap" Text="5" VerticalAlignment="Top" Width="69"/>
+                <TextBox Name="rotorsamount" HorizontalAlignment="Left" Height="35" Margin="194,10,0,0" TextWrapping="Wrap" Text="5" VerticalAlignment="Top" Width="69"/>
                 <ScrollViewer VerticalContentAlignment="Top" Margin="20,60,20,20" Width="530" HorizontalAlignment="Left">
                     <WrapPanel>
                         <Label Content="#" Margin="20,19,0,0" Height="35" Width="35"/>

@@ -44,7 +44,16 @@ namespace BombeClient
                 String szPort = window.port.Text;
                 int alPort = System.Convert.ToInt16(szPort, 10);
 
-                System.Net.IPAddress remoteIPAddress = System.Net.IPAddress.Parse(szIPSelected);
+                System.Net.IPAddress remoteIPAddress;
+                if (szIPSelected == "localhost")
+                {
+                    remoteIPAddress = System.Net.IPAddress.Loopback;
+                }
+                else
+                {
+                    remoteIPAddress = System.Net.IPAddress.Parse(szIPSelected);
+                }
+                
                 //System.Net.IPAddress remoteIPAddress = System.Net.IPAddress.Loopback;
                 System.Net.IPEndPoint remoteEndPoint = new System.Net.IPEndPoint(remoteIPAddress, alPort);
                 

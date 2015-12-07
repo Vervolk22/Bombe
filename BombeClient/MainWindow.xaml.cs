@@ -31,7 +31,7 @@ namespace BombeClient
 
         private void makePreparations()
         {
-            iplabel.Text = executor.getLocalIP();
+            //iplabel.Text = executor.getLocalIP();
 
             bindHandlers();
         }
