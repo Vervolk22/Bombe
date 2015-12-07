@@ -22,7 +22,6 @@
         <TabItem Header="Create a task">
             <Grid>
                 <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Amount of rotors:" VerticalAlignment="Top" Height="35"></TextBlock>
-                <TextBox Name="rotorsamount" HorizontalAlignment="Left" Height="35" Margin="194,10,0,0" TextWrapping="Wrap" Text="5" VerticalAlignment="Top" Width="69"/>
                 <ScrollViewer VerticalContentAlignment="Top" Margin="20,60,20,20" Width="530" HorizontalAlignment="Left">
                     <WrapPanel>
                         <Label Content="#" Margin="20,19,0,0" Height="35" Width="35"/>
@@ -69,10 +68,20 @@
                         <TextBox Name="layout10" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="RKSLQNWCGDTHYAOEUMFZBVPXIJ" VerticalAlignment="Top" Width="350" Visibility="Collapsed"/>
                         <TextBox Name="notch10" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="N" VerticalAlignment="Top" Width="50" Visibility="Collapsed"/>
 
-                        <Label Content="Reflector:" Margin="20,19,0,0" Height="35" Width="104"/>
-                        <TextBox HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="PEQJMVFTYRHLDCSIWNAUZGOXBK" VerticalAlignment="Top" Width="350"/>
+                        <Label Name="pos11" Content="Reflector:" Margin="20,19,0,0" Height="35" Width="104"/>
+                        <TextBox Name="layout11" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="PEQJMVFTYRHLDCSIWNAUZGOXBK" VerticalAlignment="Top" Width="350"/>
                     </WrapPanel>
                 </ScrollViewer>
+                <ComboBox Name="rotorsamount" SelectionChanged="rotorsAmountChanged" HorizontalAlignment="Left" Margin="128,10,0,0" VerticalAlignment="Top" Width="120">
+                    <ComboBoxItem IsSelected="False">3</ComboBoxItem>
+                    <ComboBoxItem IsSelected="False">4</ComboBoxItem>
+                    <ComboBoxItem>5</ComboBoxItem>
+                    <ComboBoxItem IsSelected="False">6</ComboBoxItem>
+                    <ComboBoxItem IsSelected="False">7</ComboBoxItem>
+                    <ComboBoxItem IsSelected="False">8</ComboBoxItem>
+                    <ComboBoxItem IsSelected="False">9</ComboBoxItem>
+                    <ComboBoxItem IsSelected="False">10</ComboBoxItem>
+                </ComboBox>
             </Grid>
         </TabItem>
         <TabItem Header="Clients">

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ComputingHelpers;
 
 namespace Bombe
 {
@@ -21,6 +22,7 @@ namespace Bombe
     public partial class MainWindow : Window
     {
         private ComputingScheduler scheduler;
+        private GUIRotorPresentation[] rotorPresentations;
 
         public MainWindow()
         {
@@ -30,28 +32,76 @@ namespace Bombe
             //scheduler.run();
         }
 
-        private void makePreparations()
+        protected void makePreparations()
         {
             iplabel.Content = scheduler.getLocalIP();
-
+            setRotorPresentations();
+            setRotorContent();
             bindHandlers();
         }
 
-        private void bindHandlers()
+        protected void bindHandlers()
         {
             //this.cmdReceiveConnections.MouseUp += new RoutedEventHandler(this.cmdListen_Click);
             //this.cmdReceiveConnections.MouseUp += new MouseButtonEventHandler(this.cmdListen_Click);
             //this.cmdCompute.MouseUp += new
         }
 
-        private void cmdListen_Click(object sender, System.EventArgs e)
+        protected void cmdListen_Click(object sender, System.EventArgs e)
         {
             scheduler.changeServerStatus();
         }
 
-        private void cmdCompute_Click(object sender, System.EventArgs e)
+        protected void cmdCompute_Click(object sender, System.EventArgs e)
         {
             scheduler.startBreaking();
+        }
+
+        protected void rotorsAmountChanged(object sender, System.EventArgs e)
+        {
+            int rotorsAmount = Int32.Parse((string)((ComboBoxItem)rotorsamount.SelectedValue).Content);
+            for (int i = 0; i < rotorsAmount; i++)
+            {
+                rotorPresentations[i].pos.Visibility = System.Windows.Visibility.Visible;
+                rotorPresentations[i].layout.Visibility = System.Windows.Visibility.Visible;
+                rotorPresentations[i].notch.Visibility = System.Windows.Visibility.Visible;
+            }
+            for (int i = rotorsAmount; i < 10; i++)
+            {
+                rotorPresentations[i].pos.Visibility = System.Windows.Visibility.Collapsed;
+                rotorPresentations[i].layout.Visibility = System.Windows.Visibility.Collapsed;
+                //rotorPresentations[i].layout.
+                rotorPresentations[i].notch.Visibility = System.Windows.Visibility.Collapsed;
+            }
+        }
+
+        protected void setRotorPresentations()
+        {
+            rotorPresentations = new GUIRotorPresentation[11];
+            rotorPresentations[0] = new GUIRotorPresentation(pos1, layout1, notch1);
+            rotorPresentations[1] = new GUIRotorPresentation(pos2, layout2, notch2);
+            rotorPresentations[2] = new GUIRotorPresentation(pos3, layout3, notch3);
+            rotorPresentations[3] = new GUIRotorPresentation(pos4, layout4, notch4);
+            rotorPresentations[4] = new GUIRotorPresentation(pos5, layout5, notch5);
+            rotorPresentations[5] = new GUIRotorPresentation(pos6, layout6, notch6);
+            rotorPresentations[6] = new GUIRotorPresentation(pos7, layout7, notch7);
+            rotorPresentations[7] = new GUIRotorPresentation(pos8, layout8, notch8);
+            rotorPresentations[8] = new GUIRotorPresentation(pos9, layout9, notch9);
+            rotorPresentations[9] = new GUIRotorPresentation(pos10, layout10, notch10);
+            rotorPresentations[10] = new GUIRotorPresentation(pos11, layout11, null);
+            rotorsamount.SelectedItem = rotorsamount.Items[2];
+        }
+
+        protected void setRotorContent()
+        {
+            FileWorker fworker = new FileWorker();
+            string[] settings = fworker.getEnigmaSettings();
+            for (int i = 0; i < 10; i++)
+            {
+                rotorPresentations[i].layout.Text = settings[i * 2];
+                rotorPresentations[i].notch.Text = settings[i * 2 + 1];
+            }
+            rotorPresentations[10].layout.Text = settings[20];
         }
 
         public void mainListAppendText(string s)
