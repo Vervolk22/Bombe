@@ -16,6 +16,7 @@ namespace Bombe
         protected int alphabetLength;
         protected int groupsToShow;
         protected int canvasWidth;
+        protected int completedCount = 0;
         protected SolidColorBrush lightGrayBrush = new SolidColorBrush(Colors.LightGray);
         protected SolidColorBrush lightBlueBrush = new SolidColorBrush(Colors.LightBlue);
         protected SolidColorBrush lightRedBrush = new SolidColorBrush(Colors.PaleVioletRed);
@@ -44,6 +45,7 @@ namespace Bombe
         public void setAll(byte[][] array, byte[] groups, int startArray)
         {
             clearSpace();
+            completedCount++;
             for (int i = 0; i < groupsToShow; i++)
             {
                 drawLine(i, array[(i + startArray) % groupsToShow], groups);
@@ -62,7 +64,7 @@ namespace Bombe
 
         public void set(int number, int groupNumber, int type)
         {
-            drawSquare(number, type, getTopOffset(groupNumber));
+            drawSquare(number, type, getTopOffset(groupNumber % groupsToShow));
         }
 
         protected void drawSquare(int number, int type, int topOffset)
@@ -174,12 +176,15 @@ namespace Bombe
                 array[i] = values[i];
             }
             incrementLastChecked(array, 0, (byte)num);
+            
             str.Append("X:");
             for (int i = 0; i < values.Length - 1; i++)
             {
                 str.Append(array[i] + ":");
             }
             str.Append(array[values.Length - 1].ToString());
+            str.Append("   " + (completedCount + num) + "/" + groupsCount + "   (" + 
+                    (int)((completedCount + num) * 100 / groupsCount) + "%)");
             TextBlock textBlock = new TextBlock();
             string st = str.ToString();
             textBlock.Text = str.ToString();

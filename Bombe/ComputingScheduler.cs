@@ -25,7 +25,7 @@ namespace Bombe
         protected bool isServerRunning = false;
         protected byte solutionStatus = 0;
 
-        protected byte rotorsAmount = 7;
+        protected byte rotorsAmount = 6;
         //protected string encryptedMessage = "VKRO HO HGH ITZEAA";
         protected string encryptedMessage = "SZLD YQ WFF CFZNFC";
         protected string stopWord = "RATEUSTEN";
@@ -77,7 +77,7 @@ namespace Bombe
                 thread.Start();
                 return;
             }
-            partsHandler = new PartsHandler(window, ALPHABET_LENGTH / 2, rotorsAmount - 4,
+            partsHandler = new PartsHandler(window, ALPHABET_LENGTH / 2, rotorsAmount - 5,
                     ALPHABET_LENGTH, STATUSES_ARRAYS);
             statuses = new byte[STATUSES_ARRAYS][];
             for (int i = 0; i < STATUSES_ARRAYS; i++)
@@ -162,9 +162,11 @@ namespace Bombe
 
         protected void changePartStatuses(int arrayUsed, int index, int status)
         {
+            //if (arrayActive != arrayUsed) return;
             partsHandler.set(index % ALPHABET_LENGTH, 
                     (index / ALPHABET_LENGTH) + arrayUsed - arrayActive, status);
             setPart(arrayUsed, index, status);
+            if (status == 0 && index < lastChecked) lastChecked = index;
         }
 
         protected void sendInitialMessages(Socket socket)
@@ -253,18 +255,19 @@ namespace Bombe
         {
             lock (this)
             {
-                if (value > 1) increasePartsDoneOnIteration();
-                if (partsDoneOnIteration == 26)
+                if (value > 1 && index < ALPHABET_LENGTH) increasePartsDoneOnIteration();
+                if (partsDoneOnIteration == ALPHABET_LENGTH)
                 {
-                    resetPartsDoneOnIteration();
                     Array.Clear(statuses[arrayActive], 0, statuses[arrayActive].Length);
                     arrayActive = (arrayActive + 1) % STATUSES_ARRAYS;
                     incrementLastChecked(0);
                     partsHandler.setAll(statuses, checkingGroups, arrayActive);
                     lastChecked -= ALPHABET_LENGTH;
+                    resetPartsDoneOnIteration();
+                    return;
                 }
                 statuses[(arrayUsed + (index / ALPHABET_LENGTH)) % STATUSES_ARRAYS]
-                        [index % ALPHABET_LENGTH] = 1;
+                        [index % ALPHABET_LENGTH] = (byte)value;
                 /*if (value == 0)
                 {
                     lastChecked = index;
@@ -285,6 +288,10 @@ namespace Bombe
             lock (this)
             {
                 partsDoneOnIteration = 0;
+                for (int i = 0; i < ALPHABET_LENGTH; i++)
+                {
+                    if (statuses[arrayActive][i] != 0) partsDoneOnIteration++;
+                }
             }
         }
 
