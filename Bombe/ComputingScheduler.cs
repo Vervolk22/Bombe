@@ -15,9 +15,9 @@ namespace Bombe
 {
     internal class ComputingScheduler : ComputingSide
     {
-        protected int ALPHABET_LENGTH = 26;
-        protected int MAX_CLIENTS = 104;
-        protected int STATUSES_ARRAYS = 4; // MAX_CLIENTS / ALPHABET_LENGTH;
+        public readonly int ALPHABET_LENGTH = Settings.ALPHABET_LENGTH;
+        public readonly int MAX_CLIENTS = 104;
+        public readonly int STATUSES_ARRAYS = 4; // MAX_CLIENTS / ALPHABET_LENGTH;
 
         protected new MainWindow window;
         protected new ServerSocketWorker worker;
@@ -29,20 +29,8 @@ namespace Bombe
         //protected string encryptedMessage = "VKRO HO HGH ITZEAA";
         protected string encryptedMessage = "SZLD YQ WFF CFZNFC";
         protected string stopWord = "RATEUSTEN";
-        protected string[] rotorsLayout = {
-                                                   "BDFHJLCPRTXVZNYEIWGAKMUSQO",
-                                                   "AJDKSIRUXBLHWTMCQGZNPYFVOE",
-                                                   "EKMFLGDQVZNTOWYHXUSPAIBRCJ",
-                                                   "NQDJXVLSPHUFACKOIYRWZMEBGT",
-                                                   "CKPESOHXVUMJRFYALGQBTIDZWN",
-                                                   "PGUYIOTMBXKFAHVRLZDNSWECJQ",
-                                                   "YRUHQSLDPXNGOKMIEBFZCWVJAT",
-                                                   "TBKOZSREHXUCPNWFLGDVQIJAYM",
-                                                   "VWFGYDTNQUEHRMZXOBSAVLJPKI",
-                                                   "RKSLQNWCGDTHYAOEUMFZBVPXIJ",
-                                                   "PEQJMVFTYRHLDCSIWNAUZGOXBK"
-                                               };
-        protected char[] notchPositions = { 'V', 'E', 'Q', 'D', 'W', 'O', 'A', 'U', 'L', 'N' };
+        protected string[] rotorsLayout;
+        protected char[] notchPositions;
 
         protected int arrayActive = 0;
         protected byte[][] statuses;
@@ -73,6 +61,7 @@ namespace Bombe
 
         public void startBreaking()
         {
+            getEnigmaConfiguration();
             if (rotorsAmount < 5)
             {
                 Thread thread = new Thread(startEasyBreaking);
@@ -98,6 +87,13 @@ namespace Bombe
                 solutionStatus = 1;
                 startNewSchedulingThread(socket);
             }
+        }
+
+        protected void getEnigmaConfiguration()
+        {
+            rotorsAmount = Byte.Parse(window.rotorsamount.Text);
+            rotorsLayout = window.getRotorsLayout();
+            notchPositions = window.getNotchPositions();
         }
 
         protected void startEasyBreaking()
