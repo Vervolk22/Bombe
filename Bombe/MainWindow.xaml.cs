@@ -117,12 +117,10 @@ namespace Bombe
             TextBox tb = (TextBox)sender;
             if (!FileWorker.checkLayout(tb.Text))
             {
-                //tb.Background = redBrush;
                 tb.BorderBrush = redBrush;
             }
             else
             {
-                //tb.Background = greenBrush;
                 tb.BorderBrush = greenBrush;
             }
         }
@@ -132,14 +130,35 @@ namespace Bombe
             TextBox tb = (TextBox)sender;
             if (!FileWorker.checkNotch(tb.Text))
             {
-                //tb.Background = redBrush;
                 tb.BorderBrush = redBrush;
             }
             else
             {
-                //tb.Background = greenBrush;
                 tb.BorderBrush = greenBrush;
             }
-        }        
+        }
+
+        public string[] getRotorsLayout()
+        {
+            int rotorsAmount = Byte.Parse(rotorsamount.Text);
+            string[] layouts = new string[rotorsAmount + 1];
+            for (int i = 0; i < rotorsAmount; i++)
+            {
+                layouts[i] = rotorPresentations[i].layout.Text;
+            }
+            layouts[rotorsAmount] = rotorPresentations[10].layout.Text;
+            return layouts;
+        }
+
+        public char[] getNotchPositions()
+        {
+            int rotorsAmount = Byte.Parse(rotorsamount.Text);
+            char[] notch = new char[rotorsAmount];
+            for (int i = 0; i < rotorsAmount; i++)
+            {
+                notch[i] = rotorPresentations[i].notch.Text[0];
+            }
+            return notch;
+        }
     }
 }
