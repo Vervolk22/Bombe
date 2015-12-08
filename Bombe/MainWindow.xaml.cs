@@ -23,6 +23,10 @@ namespace Bombe
     {
         private ComputingScheduler scheduler;
         private GUIRotorPresentation[] rotorPresentations;
+        private string[] enigmaSettings;
+
+        protected SolidColorBrush redBrush = new SolidColorBrush(Colors.Red);
+        protected SolidColorBrush greenBrush = new SolidColorBrush(Colors.Green);
 
         public MainWindow()
         {
@@ -70,7 +74,6 @@ namespace Bombe
             {
                 rotorPresentations[i].pos.Visibility = System.Windows.Visibility.Collapsed;
                 rotorPresentations[i].layout.Visibility = System.Windows.Visibility.Collapsed;
-                //rotorPresentations[i].layout.
                 rotorPresentations[i].notch.Visibility = System.Windows.Visibility.Collapsed;
             }
         }
@@ -95,18 +98,48 @@ namespace Bombe
         protected void setRotorContent()
         {
             FileWorker fworker = new FileWorker();
-            string[] settings = fworker.getEnigmaSettings();
+            enigmaSettings = fworker.getEnigmaSettings();
             for (int i = 0; i < 10; i++)
             {
-                rotorPresentations[i].layout.Text = settings[i * 2];
-                rotorPresentations[i].notch.Text = settings[i * 2 + 1];
+                rotorPresentations[i].layout.Text = enigmaSettings[i * 2];
+                rotorPresentations[i].notch.Text = enigmaSettings[i * 2 + 1];
             }
-            rotorPresentations[10].layout.Text = settings[20];
+            rotorPresentations[10].layout.Text = enigmaSettings[20];
         }
 
         public void mainListAppendText(string s)
         {
             mainlist.AppendText(s);
         }
+
+        protected void validateLayout(object sender, System.EventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+            if (!FileWorker.checkLayout(tb.Text))
+            {
+                //tb.Background = redBrush;
+                tb.BorderBrush = redBrush;
+            }
+            else
+            {
+                //tb.Background = greenBrush;
+                tb.BorderBrush = greenBrush;
+            }
+        }
+
+        protected void validateNotch(object sender, System.EventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+            if (!FileWorker.checkNotch(tb.Text))
+            {
+                //tb.Background = redBrush;
+                tb.BorderBrush = redBrush;
+            }
+            else
+            {
+                //tb.Background = greenBrush;
+                tb.BorderBrush = greenBrush;
+            }
+        }        
     }
 }

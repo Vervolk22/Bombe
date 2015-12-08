@@ -29,47 +29,47 @@
                         <Label Content="Notch" Margin="20,19,0,0" Height="35" Width="70"/>
 
                         <Label Name="pos1" Content="1:" Margin="20,19,0,0" Height="35" Width="35"/>
-                        <TextBox Name="layout1" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="BDFHJLCPRTXVZNYEIWGAKMUSQO" VerticalAlignment="Top" Width="350"/>
-                        <TextBox Name="notch1" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="V" VerticalAlignment="Top" Width="50"/>
+                        <TextBox Name="layout1" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="BDFHJLCPRTXVZNYEIWGAKMUSQO" VerticalAlignment="Top" Width="350" TextChanged="validateLayout" BorderThickness="1"/>
+                        <TextBox Name="notch1" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="V" VerticalAlignment="Top" Width="50" TextChanged="validateNotch" BorderThickness="1"/>
 
                         <Label Name="pos2" Content="2:" Margin="20,19,0,0" Height="35" Width="35"/>
-                        <TextBox Name="layout2" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="AJDKSIRUXBLHWTMCQGZNPYFVOE" VerticalAlignment="Top" Width="350"/>
-                        <TextBox Name="notch2" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="E" VerticalAlignment="Top" Width="50"/>
+                        <TextBox Name="layout2" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="AJDKSIRUXBLHWTMCQGZNPYFVOE" VerticalAlignment="Top" Width="350" TextChanged="validateLayout" BorderThickness="2"/>
+                        <TextBox Name="notch2" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="E" VerticalAlignment="Top" Width="50" TextChanged="validateNotch" BorderThickness="2"/>
 
                         <Label Name="pos3" Content="3:" Margin="20,19,0,0" Height="35" Width="35"/>
-                        <TextBox Name="layout3" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="EKMFLGDQVZNTOWYHXUSPAIBRCJ" VerticalAlignment="Top" Width="350"/>
-                        <TextBox Name="notch3" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="Q" VerticalAlignment="Top" Width="50"/>
+                        <TextBox Name="layout3" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="EKMFLGDQVZNTOWYHXUSPAIBRCJ" VerticalAlignment="Top" Width="350" TextChanged="validateLayout" BorderThickness="1"/>
+                        <TextBox Name="notch3" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="Q" VerticalAlignment="Top" Width="50" TextChanged="validateNotch" BorderThickness="1"/>
 
                         <Label Name="pos4" Content="4:" Margin="20,19,0,0" Height="35" Width="35"/>
-                        <TextBox Name="layout4" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="NQDJXVLSPHUFACKOIYRWZMEBGT" VerticalAlignment="Top" Width="350"/>
-                        <TextBox Name="notch4" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="D" VerticalAlignment="Top" Width="50"/>
+                        <TextBox Name="layout4" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="NQDJXVLSPHUFACKOIYRWZMEBGT" VerticalAlignment="Top" Width="350" TextChanged="validateLayout" BorderThickness="1"/>
+                        <TextBox Name="notch4" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="D" VerticalAlignment="Top" Width="50" TextChanged="validateNotch" BorderThickness="1"/>
 
                         <Label Name="pos5" Content="5:" Margin="20,19,0,0" Height="35" Width="35"/>
-                        <TextBox Name="layout5" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="CKPESOHXVUMJRFYALGQBTIDZWN" VerticalAlignment="Top" Width="350"/>
-                        <TextBox Name="notch5" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="W" VerticalAlignment="Top" Width="50"/>
+                        <TextBox Name="layout5" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="CKPESOHXVUMJRFYALGQBTIDZWN" VerticalAlignment="Top" Width="350" TextChanged="validateLayout" BorderThickness="1"/>
+                        <TextBox Name="notch5" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="W" VerticalAlignment="Top" Width="50" TextChanged="validateNotch" BorderThickness="1"/>
 
                         <Label Name="pos6" Content="6:" Margin="20,19,0,0" Height="35" Width="35" Visibility="Collapsed"/>
-                        <TextBox Name="layout6" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="PGUYIOTMBXKFAHVRLZDNSWECJQ" VerticalAlignment="Top" Width="350" Visibility="Collapsed"/>
-                        <TextBox Name="notch6" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="O" VerticalAlignment="Top" Width="50" Visibility="Collapsed"/>
+                        <TextBox Name="layout6" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="PGUYIOTMBXKFAHVRLZDNSWECJQ" VerticalAlignment="Top" Width="350" Visibility="Collapsed" TextChanged="validateLayout" BorderThickness="1"/>
+                        <TextBox Name="notch6" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="O" VerticalAlignment="Top" Width="50" Visibility="Collapsed" TextChanged="validateNotch" BorderThickness="1"/>
 
                         <Label Name="pos7" Content="7:" Margin="20,19,0,0" Height="35" Width="35" Visibility="Collapsed"/>
-                        <TextBox Name="layout7" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="YRUHQSLDPXNGOKMIEBFZCWVJAT" VerticalAlignment="Top" Width="350" Visibility="Collapsed"/>
-                        <TextBox Name="notch7" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="A" VerticalAlignment="Top" Width="50" Visibility="Collapsed"/>
+                        <TextBox Name="layout7" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="YRUHQSLDPXNGOKMIEBFZCWVJAT" VerticalAlignment="Top" Width="350" Visibility="Collapsed" TextChanged="validateLayout" BorderThickness="1"/>
+                        <TextBox Name="notch7" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="A" VerticalAlignment="Top" Width="50" Visibility="Collapsed" TextChanged="validateNotch" BorderThickness="1"/>
 
                         <Label Name="pos8" Content="8:" Margin="20,19,0,0" Height="35" Width="35" Visibility="Collapsed"/>
-                        <TextBox Name="layout8" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="TBKOZSREHXUCPNWFLGDVQIJAYM" VerticalAlignment="Top" Width="350" Visibility="Collapsed"/>
-                        <TextBox Name="notch8" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="U" VerticalAlignment="Top" Width="50" Visibility="Collapsed"/>
+                        <TextBox Name="layout8" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="TBKOZSREHXUCPNWFLGDVQIJAYM" VerticalAlignment="Top" Width="350" Visibility="Collapsed" TextChanged="validateLayout" BorderThickness="1"/>
+                        <TextBox Name="notch8" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="U" VerticalAlignment="Top" Width="50" Visibility="Collapsed" TextChanged="validateNotch" BorderThickness="1"/>
 
                         <Label Name="pos9" Content="9:" Margin="20,19,0,0" Height="35" Width="35" Visibility="Collapsed"/>
-                        <TextBox Name="layout9" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="VWFGYDTNQUEHRMZXOBSAVLJPKI" VerticalAlignment="Top" Width="350" Visibility="Collapsed"/>
-                        <TextBox Name="notch9" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="L" VerticalAlignment="Top" Width="50" Visibility="Collapsed"/>
+                        <TextBox Name="layout9" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="DINWSZACHRMVKQETYBOFUJXPGL" VerticalAlignment="Top" Width="350" Visibility="Collapsed" TextChanged="validateLayout" BorderThickness="1"/>
+                        <TextBox Name="notch9" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="L" VerticalAlignment="Top" Width="50" Visibility="Collapsed" TextChanged="validateNotch" BorderThickness="1"/>
 
                         <Label Name="pos10" Content="10:" Margin="20,19,0,0" Height="35" Width="35" Visibility="Collapsed"/>
-                        <TextBox Name="layout10" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="RKSLQNWCGDTHYAOEUMFZBVPXIJ" VerticalAlignment="Top" Width="350" Visibility="Collapsed"/>
-                        <TextBox Name="notch10" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="N" VerticalAlignment="Top" Width="50" Visibility="Collapsed"/>
+                        <TextBox Name="layout10" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="RKSLQNWCGDTHYAOEUMFZBVPXIJ" VerticalAlignment="Top" Width="350" Visibility="Collapsed" TextChanged="validateLayout" BorderThickness="1"/>
+                        <TextBox Name="notch10" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="N" VerticalAlignment="Top" Width="50" Visibility="Collapsed" TextChanged="validateNotch" BorderThickness="1"/>
 
                         <Label Name="pos11" Content="Reflector:" Margin="20,19,0,0" Height="35" Width="104"/>
-                        <TextBox Name="layout11" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="PEQJMVFTYRHLDCSIWNAUZGOXBK" VerticalAlignment="Top" Width="350"/>
+                        <TextBox Name="layout11" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="PEQJMVFTYRHLDCSIWNAUZGOXBK" VerticalAlignment="Top" Width="350" TextChanged="validateLayout" BorderThickness="1"/>
                     </WrapPanel>
                 </ScrollViewer>
                 <ComboBox Name="rotorsamount" SelectionChanged="rotorsAmountChanged" HorizontalAlignment="Left" Margin="128,10,0,0" VerticalAlignment="Top" Width="120">
