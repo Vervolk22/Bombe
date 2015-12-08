@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ComputingHelpers
 {
-    internal static class LibrarySettings
+    public static class Settings
     {
         internal static string[] rotorsLayout = {
                                                    "BDFHJLCPRTXVZNYEIWGAKMUSQO",
@@ -17,10 +17,11 @@ namespace ComputingHelpers
                                                    "PGUYIOTMBXKFAHVRLZDNSWECJQ",
                                                    "YRUHQSLDPXNGOKMIEBFZCWVJAT",
                                                    "TBKOZSREHXUCPNWFLGDVQIJAYM",
-                                                   "VWFGYDTNQUEHRMZXOBSAVLJPKI",
+                                                   "DINWSZACHRMVKQETYBOFUJXPGL",
                                                    "RKSLQNWCGDTHYAOEUMFZBVPXIJ",
                                                    "PEQJMVFTYRHLDCSIWNAUZGOXBK"
                                                };
         internal static char[] notchPositions = { 'V', 'E', 'Q', 'D', 'W', 'O', 'A', 'U', 'L', 'N' };
+        public static readonly int ALPHABET_LENGTH = 26;
     }
 }
