@@ -89,7 +89,7 @@ namespace Bombe
             }
         }
 
-        protected void getEnigmaConfiguration()
+        public void getEnigmaConfiguration()
         {
             rotorsAmount = Byte.Parse(window.rotorsamount.Text);
             rotorsLayout = window.getRotorsLayout();

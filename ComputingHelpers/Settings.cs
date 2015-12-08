@@ -8,7 +8,7 @@ namespace ComputingHelpers
 {
     public static class Settings
     {
-        internal static string[] rotorsLayout = {
+        public static string[] rotorsLayout = {
                                                    "BDFHJLCPRTXVZNYEIWGAKMUSQO",
                                                    "AJDKSIRUXBLHWTMCQGZNPYFVOE",
                                                    "EKMFLGDQVZNTOWYHXUSPAIBRCJ",
@@ -21,7 +21,7 @@ namespace ComputingHelpers
                                                    "RKSLQNWCGDTHYAOEUMFZBVPXIJ",
                                                    "PEQJMVFTYRHLDCSIWNAUZGOXBK"
                                                };
-        internal static char[] notchPositions = { 'V', 'E', 'Q', 'D', 'W', 'O', 'A', 'U', 'L', 'N' };
+        public static char[] notchPositions = { 'V', 'E', 'Q', 'D', 'W', 'O', 'A', 'U', 'L', 'N' };
         public static readonly int ALPHABET_LENGTH = 26;
     }
 }

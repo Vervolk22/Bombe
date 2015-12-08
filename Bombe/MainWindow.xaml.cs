@@ -56,6 +56,39 @@ namespace Bombe
             scheduler.changeServerStatus();
         }
 
+        protected void tabSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (tab1.IsSelected)
+            {
+                int rotorsAmount = Int32.Parse((string)((ComboBoxItem)rotorsamount.SelectedValue).Content);
+                for (int i = 0; i < rotorsAmount; i++)
+                {
+                    if (!FileWorker.checkLayout(rotorPresentations[i].layout.Text) ||
+                        !FileWorker.checkNotch(rotorPresentations[i].notch.Text))
+                    {
+                        cmdCompute.IsEnabled = false;
+                        return;
+                    }
+                }
+                if (!FileWorker.checkLayout(rotorPresentations[10].layout.Text))
+                {
+                    cmdCompute.IsEnabled = false;
+                    return;
+                }
+
+                for (int i = rotorsAmount; i < 10; i++)
+                {
+                    if (!FileWorker.checkLayout(rotorPresentations[i].layout.Text))
+                        rotorPresentations[i].layout.Text = Settings.rotorsLayout[i];
+                    if (!FileWorker.checkNotch(rotorPresentations[i].notch.Text))
+                        rotorPresentations[i].notch.Text = Settings.notchPositions[i].ToString();
+                }
+                cmdCompute.IsEnabled = true;
+                scheduler.getEnigmaConfiguration();
+                FileWorker.writeSettingsFile(rotorsAmount, rotorPresentations);
+            }
+        }
+
         protected void cmdCompute_Click(object sender, System.EventArgs e)
         {
             scheduler.startBreaking();
@@ -99,12 +132,13 @@ namespace Bombe
         {
             FileWorker fworker = new FileWorker();
             enigmaSettings = fworker.getEnigmaSettings();
+            rotorsamount.Text = enigmaSettings[0];
             for (int i = 0; i < 10; i++)
             {
-                rotorPresentations[i].layout.Text = enigmaSettings[i * 2];
-                rotorPresentations[i].notch.Text = enigmaSettings[i * 2 + 1];
+                rotorPresentations[i].layout.Text = enigmaSettings[i * 2 + 1];
+                rotorPresentations[i].notch.Text = enigmaSettings[i * 2 + 2];
             }
-            rotorPresentations[10].layout.Text = enigmaSettings[20];
+            rotorPresentations[10].layout.Text = enigmaSettings[21];
         }
 
         public void mainListAppendText(string s)
