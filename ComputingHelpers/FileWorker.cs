@@ -29,8 +29,8 @@ namespace ComputingHelpers
             try
             {
                 StreamReader reader = new StreamReader("EnigmaSettings.txt");
-                string[] settings = new string[24];
-                for (int i = 0; i < 24; i++)
+                string[] settings = new string[34];
+                for (int i = 0; i < 34; i++)
                 {
                     settings[i] = reader.ReadLine();
                 }
@@ -45,11 +45,12 @@ namespace ComputingHelpers
                     return writeDefaultSettingsFile();
                 for (int i = 0; i < 10; i++)
                 {
-                    if (!checkLayout(settings[i * 2 + 1]) || !checkNotch(settings[i * 2 + 2]))
+                    if (!checkLayout(settings[i * 3 + 1]) || !checkNotch(settings[i * 3 + 2]) ||
+                        !checkOffset(settings[i * 3 + 3]))
                         return writeDefaultSettingsFile();
                 }
-                if (!checkLayout(settings[21]) || !checkStopWord(settings[22]) ||
-                        !checkMessage(settings[23]))
+                if (!checkLayout(settings[31]) || !checkStopWord(settings[32]) ||
+                        !checkMessage(settings[33]))
                     return writeDefaultSettingsFile();
                 return settings;
             }
@@ -68,6 +69,7 @@ namespace ComputingHelpers
             {
                 writer.WriteLine(presentations[i].layout.Text);
                 writer.WriteLine(presentations[i].notch.Text);
+                writer.WriteLine(presentations[i].offset.Text);
             }
             writer.WriteLine(presentations[10].layout.Text);
             writer.WriteLine(stopWord);
@@ -79,22 +81,24 @@ namespace ComputingHelpers
         protected string[] writeDefaultSettingsFile()
         {
             StreamWriter writer = new StreamWriter("EnigmaSettings.txt");
-            string[] settings = new string[24];
+            string[] settings = new string[34];
             settings[0] = "5";
             writer.WriteLine(settings[0]);
             for (int i = 0; i < 10; i++)
             {
-                settings[i * 2 + 1] = Settings.rotorsLayout[i];
-                settings[i * 2 + 2] = Settings.notchPositions[i].ToString();
-                writer.WriteLine(settings[i * 2 + 1]);
-                writer.WriteLine(settings[i * 2 + 2]);
+                settings[i * 3 + 1] = Settings.rotorsLayout[i];
+                settings[i * 3 + 2] = Settings.notchPositions[i].ToString();
+                settings[i * 3 + 3] = "0";
+                writer.WriteLine(settings[i * 3 + 1]);
+                writer.WriteLine(settings[i * 3 + 2]);
+                writer.WriteLine(settings[i * 3 + 3]);
             }
-            settings[21] = Settings.rotorsLayout[10];
-            writer.WriteLine(settings[21]);
-            settings[22] = Settings.stopWord;
-            writer.WriteLine(settings[22]);
-            settings[23] = Settings.message;
-            writer.WriteLine(settings[23]);
+            settings[31] = Settings.rotorsLayout[10];
+            writer.WriteLine(settings[31]);
+            settings[32] = Settings.stopWord;
+            writer.WriteLine(settings[32]);
+            settings[33] = Settings.message;
+            writer.WriteLine(settings[33]);
             writer.Flush();
             writer.Close();
             return settings;
@@ -171,6 +175,26 @@ namespace ComputingHelpers
                 }
             }
             return true;
+        }
+
+        public static bool checkOffset(string s)
+        {
+            byte offset;
+            if (Byte.TryParse(s, out offset))
+            {
+                if (offset < 0 || offset > Settings.ALPHABET_LENGTH - 1)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
