@@ -199,6 +199,19 @@ namespace Bombe
             }
         }
 
+        protected void validateReflector(object sender, System.EventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+            if (!FileWorker.checkReflector(tb.Text))
+            {
+                tb.BorderBrush = redBrush;
+            }
+            else
+            {
+                tb.BorderBrush = greenBrush;
+            }
+        }
+
         protected void validateNotch(object sender, System.EventArgs e)
         {
             TextBox tb = (TextBox)sender;

@@ -19,7 +19,7 @@ namespace ComputingHelpers
                                                    "TBKOZSREHXUCPNWFLGDVQIJAYM",
                                                    "DINWSZACHRMVKQETYBOFUJXPGL",
                                                    "RKSLQNWCGDTHYAOEUMFZBVPXIJ",
-                                                   "PEQJMVFTYRHLDCSIWNAUZGOXBK"
+                                                   "YRUHQSLDPXNGOKMIEBFZCWVJAT"
                                                };
         public static readonly char[] notchPositions = { 'V', 'E', 'Q', 'D', 'W', 'O', 'A', 'U', 'L', 'N' };
         public const string stopWord = "RATE US TEN";

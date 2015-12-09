@@ -136,7 +136,20 @@ namespace ComputingHelpers
             {
                 return false;
             }
+        }
 
+        public static bool checkReflector(string s)
+        {
+            if (!checkLayout(s))
+                return false;
+
+            for (int i = 0; i < Settings.ALPHABET_LENGTH; i++)
+            {
+                if (('A' + i) != s[s[i] - 'A'])
+                    return false;
+            }
+
+            return true;
         }
 
         public static bool checkNotch(string s)

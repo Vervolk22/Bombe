@@ -69,7 +69,7 @@
                         <TextBox Name="notch10" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="N" VerticalAlignment="Top" Width="50" Visibility="Collapsed" TextChanged="validateNotch" BorderThickness="1"/>
 
                         <Label Name="pos11" Content="Reflector:" Margin="20,19,0,0" Height="35" Width="104"/>
-                        <TextBox Name="layout11" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="PEQJMVFTYRHLDCSIWNAUZGOXBK" VerticalAlignment="Top" Width="350" TextChanged="validateLayout" BorderThickness="1"/>
+                        <TextBox Name="layout11" HorizontalAlignment="Left" Margin="20,19,0,0" Height="35" TextWrapping="Wrap" Text="YRUHQSLDPXNGOKMIEBFZCWVJAT" VerticalAlignment="Top" Width="350" TextChanged="validateReflector" BorderThickness="1"/>
                     </WrapPanel>
                 </ScrollViewer>
                 <ComboBox Name="rotorsamount" SelectionChanged="rotorsAmountChanged" HorizontalAlignment="Left" Margin="128,10,0,0" VerticalAlignment="Top" Width="120">
