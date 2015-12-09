@@ -70,7 +70,8 @@ namespace Bombe
                         return;
                     }
                 }
-                if (!FileWorker.checkLayout(rotorPresentations[10].layout.Text))
+                if (!FileWorker.checkLayout(rotorPresentations[10].layout.Text) || 
+                    !FileWorker.checkStopWord(stopword.Text) || !FileWorker.checkMessage(message.Text))
                 {
                     cmdCompute.IsEnabled = false;
                     return;
@@ -85,7 +86,8 @@ namespace Bombe
                 }
                 cmdCompute.IsEnabled = true;
                 scheduler.getEnigmaConfiguration();
-                FileWorker.writeSettingsFile(rotorsAmount, rotorPresentations);
+                FileWorker.writeSettingsFile(rotorsAmount, rotorPresentations, 
+                        stopword.Text, message.Text);
             }
         }
 
@@ -139,6 +141,8 @@ namespace Bombe
                 rotorPresentations[i].notch.Text = enigmaSettings[i * 2 + 2];
             }
             rotorPresentations[10].layout.Text = enigmaSettings[21];
+            stopword.Text = enigmaSettings[22];
+            message.Text = enigmaSettings[23];
         }
 
         public void mainListAppendText(string s)
@@ -172,6 +176,32 @@ namespace Bombe
             }
         }
 
+        protected void validateStopWord(object sender, System.EventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+            if (!FileWorker.checkStopWord(tb.Text))
+            {
+                tb.BorderBrush = redBrush;
+            }
+            else
+            {
+                tb.BorderBrush = greenBrush;
+            }
+        }
+
+        protected void validateMessage(object sender, System.EventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+            if (!FileWorker.checkMessage(tb.Text))
+            {
+                tb.BorderBrush = redBrush;
+            }
+            else
+            {
+                tb.BorderBrush = greenBrush;
+            }
+        }
+
         public string[] getRotorsLayout()
         {
             int rotorsAmount = Byte.Parse(rotorsamount.Text);
@@ -193,6 +223,16 @@ namespace Bombe
                 notch[i] = rotorPresentations[i].notch.Text[0];
             }
             return notch;
+        }
+
+        public string getStopWord()
+        {
+            return stopword.Text;
+        }
+
+        public string getMessage()
+        {
+            return message.Text;
         }
     }
 }
