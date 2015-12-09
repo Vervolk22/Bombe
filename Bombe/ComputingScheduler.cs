@@ -27,8 +27,8 @@ namespace Bombe
 
         protected byte rotorsAmount = 6;
         //protected string encryptedMessage = "VKRO HO HGH ITZEAA";
-        protected string encryptedMessage = "SZLD YQ WFF CFZNFC";
-        protected string stopWord = "RATEUSTEN";
+        protected string encryptedMessage;
+        protected string stopWord;
         protected string[] rotorsLayout;
         protected char[] notchPositions;
 
@@ -94,6 +94,8 @@ namespace Bombe
             rotorsAmount = Byte.Parse(window.rotorsamount.Text);
             rotorsLayout = window.getRotorsLayout();
             notchPositions = window.getNotchPositions();
+            stopWord = window.getStopWord();
+            encryptedMessage = window.getMessage();
         }
 
         protected void startEasyBreaking()
