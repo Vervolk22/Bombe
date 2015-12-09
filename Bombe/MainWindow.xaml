@@ -103,9 +103,9 @@
         </TabItem>
         <TabItem Header="Test" Name="tab4">
             <Grid>
-                <TextBox HorizontalAlignment="Left" Height="53" Margin="143,52,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="383"/>
-                <TextBox HorizontalAlignment="Left" Height="62" Margin="143,276,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="383"/>
-                <Button Content="Badabum!" HorizontalAlignment="Left" Margin="143,122,0,0" VerticalAlignment="Top" Width="383" Height="93"/>
+                <TextBox Name="encryptinput" HorizontalAlignment="Left" Height="53" Margin="143,52,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="383"/>
+                <TextBox Name="encryptoutput" HorizontalAlignment="Left" Height="62" Margin="143,276,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="383"/>
+                <Button Name="cmdecrypt" Content="Badabum!" Click="cmdEncrypt_Click" HorizontalAlignment="Left" Margin="143,122,0,0" VerticalAlignment="Top" Width="383" Height="93"/>
                 <Label Content="Enter your message:" HorizontalAlignment="Left" Margin="224,10,0,0" VerticalAlignment="Top"/>
                 <Label Content="Your decoded message:" HorizontalAlignment="Left" Margin="224,234,0,0" VerticalAlignment="Top"/>
                 <WrapPanel Margin="20,60,530,87" HorizontalAlignment="Left">
@@ -113,34 +113,34 @@
                     <Label Content="Rotor offset" Margin="10,19,0,0" Height="25"/>
 
                     <Label Name="rot1" Content="1:" Margin="10,0,0,0" Height="25" Width="20"/>
-                    <TextBox Name="offset1" HorizontalAlignment="Left" Margin="20,0,20,0" Height="25" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="50" TextChanged="validateLayout" BorderThickness="1"/>
+                    <TextBox Name="offset1" HorizontalAlignment="Left" Margin="20,0,20,0" Height="25" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="50" TextChanged="validateOffset" BorderThickness="1"/>
 
                     <Label Name="rot2" Content="2:" Margin="10,0,0,0" Height="25" Width="20"/>
-                    <TextBox Name="offset2" HorizontalAlignment="Left" Margin="20,0,20,0" Height="25" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="50" TextChanged="validateLayout" BorderThickness="2"/>
+                    <TextBox Name="offset2" HorizontalAlignment="Left" Margin="20,0,20,0" Height="25" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="50" TextChanged="validateOffset" BorderThickness="2"/>
 
                     <Label Name="rot3" Content="3:" Margin="10,0,0,0" Height="25" Width="20"/>
-                    <TextBox Name="offset3" HorizontalAlignment="Left" Margin="20,0,20,0" Height="25" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="50" TextChanged="validateLayout" BorderThickness="1"/>
+                    <TextBox Name="offset3" HorizontalAlignment="Left" Margin="20,0,20,0" Height="25" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="50" TextChanged="validateOffset" BorderThickness="1"/>
 
                     <Label Name="rot4" Content="4:" Margin="10,0,0,0" Height="25" Width="20"/>
-                    <TextBox Name="offset4" HorizontalAlignment="Left" Margin="20,0,20,0" Height="25" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="50" TextChanged="validateLayout" BorderThickness="1"/>
+                    <TextBox Name="offset4" HorizontalAlignment="Left" Margin="20,0,20,0" Height="25" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="50" TextChanged="validateOffset" BorderThickness="1"/>
 
                     <Label Name="rot5" Content="5:" Margin="10,0,0,0" Height="25" Width="20"/>
-                    <TextBox Name="offset5" HorizontalAlignment="Left" Margin="20,0,20,0" Height="25" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="50" TextChanged="validateLayout" BorderThickness="1"/>
+                    <TextBox Name="offset5" HorizontalAlignment="Left" Margin="20,0,20,0" Height="25" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="50" TextChanged="validateOffset" BorderThickness="1"/>
 
                     <Label Name="rot6" Content="6:" Margin="10,0,0,0" Height="25" Width="20" Visibility="Collapsed"/>
-                    <TextBox Name="offset6" HorizontalAlignment="Left" Margin="20,0,20,0" Height="25" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="50" Visibility="Collapsed" TextChanged="validateLayout" BorderThickness="1"/>
+                    <TextBox Name="offset6" HorizontalAlignment="Left" Margin="20,0,20,0" Height="25" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="50" Visibility="Collapsed" TextChanged="validateOffset" BorderThickness="1"/>
 
                     <Label Name="rot7" Content="7:" Margin="10,0,0,0" Height="25" Width="20" Visibility="Collapsed"/>
-                    <TextBox Name="offset7" HorizontalAlignment="Left" Margin="20,0,20,0" Height="25" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="50" Visibility="Collapsed" TextChanged="validateLayout" BorderThickness="1"/>
+                    <TextBox Name="offset7" HorizontalAlignment="Left" Margin="20,0,20,0" Height="25" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="50" Visibility="Collapsed" TextChanged="validateOffset" BorderThickness="1"/>
 
                     <Label Name="rot8" Content="8:" Margin="10,0,0,0" Height="25" Width="20" Visibility="Collapsed"/>
-                    <TextBox Name="offset8" HorizontalAlignment="Left" Margin="20,0,20,0" Height="25" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="50" Visibility="Collapsed" TextChanged="validateLayout" BorderThickness="1"/>
+                    <TextBox Name="offset8" HorizontalAlignment="Left" Margin="20,0,20,0" Height="25" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="50" Visibility="Collapsed" TextChanged="validateOffset" BorderThickness="1"/>
 
                     <Label Name="rot9" Content="9:" Margin="10,0,0,0" Height="25" Width="20" Visibility="Collapsed"/>
-                    <TextBox Name="offset9" HorizontalAlignment="Left" Margin="20,0,20,0" Height="25" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="50" Visibility="Collapsed" TextChanged="validateLayout" BorderThickness="1"/>
+                    <TextBox Name="offset9" HorizontalAlignment="Left" Margin="20,0,20,0" Height="25" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="50" Visibility="Collapsed" TextChanged="validateOffset" BorderThickness="1"/>
 
                     <Label Name="rot10" Content="10:" Margin="10,0,0,0" Height="25" Width="20" Visibility="Collapsed"/>
-                    <TextBox Name="offset10" HorizontalAlignment="Left" Margin="20,0,20,0" Height="25" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="50" Visibility="Collapsed" TextChanged="validateLayout" BorderThickness="1"/>
+                    <TextBox Name="offset10" HorizontalAlignment="Left" Margin="20,0,20,0" Height="25" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="50" Visibility="Collapsed" TextChanged="validateOffset" BorderThickness="1"/>
                 </WrapPanel>
             </Grid>
         </TabItem>
