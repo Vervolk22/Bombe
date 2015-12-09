@@ -11,16 +11,8 @@ namespace EnigmaCryptography
     /// </summary>
     public class Enigma
     {
-        protected string[] ROTORS_LAYOUT = {
-                                                   "BDFHJLCPRTXVZNYEIWGAKMUSQO",
-                                                   "AJDKSIRUXBLHWTMCQGZNPYFVOE",
-                                                   "EKMFLGDQVZNTOWYHXUSPAIBRCJ",
-                                                   "NQDJXVLSPHUFACKOIYRWZMEBGT",
-                                                   "CKPESOHXVUMJRFYALGQBTIDZWN",
-                                                   "PGUYIOTMBXKFAHVRLZDNSWECJQ",
-                                                   "YRUHQSLDPXNGOKMIEBFZCWVJAT"
-                                               };
-        protected char[] NOTCH_POSITIONS = { 'V', 'E', 'Q', 'D', 'W', 'O' };
+        protected string[] ROTORS_LAYOUT;
+        protected char[] NOTCH_POSITIONS;
         protected int rotorsCount;
         protected byte[] offsets;
 
