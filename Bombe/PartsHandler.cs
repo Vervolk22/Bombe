@@ -199,12 +199,12 @@ namespace Bombe
             }
             incrementLastChecked(array, 0, (byte)num);
 
-            str.Append("... :");
-            for (int i = values.Length - 1; i >= 0; i--)
-            {
-                str.Append(array[i] + ":");
-            }
             str.Append("X");
+            for (int i = 0; i < values.Length; i++)
+            {
+                str.Append(":" + array[i]);
+            }
+            str.Append(": ...");
 
             str.Append("   " + (completedCount + num) + "/" + groupsCount + "   (" +
                     (int)((completedCount + num) * 100 / groupsCount) + "%)");
