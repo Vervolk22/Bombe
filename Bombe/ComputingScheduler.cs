@@ -24,6 +24,7 @@ namespace Bombe
         protected PartsHandler partsHandler;
         protected bool isServerRunning = false;
         protected byte solutionStatus = 0;
+        protected byte solutionAttemptCounter = 0;
 
         protected byte rotorsAmount = 6;
         //protected string encryptedMessage = "VKRO HO HGH ITZEAA";
@@ -77,16 +78,23 @@ namespace Bombe
                 statuses[i] = new byte[ALPHABET_LENGTH];
                 Array.Clear(statuses[i], 0, statuses[i].Length);
             }
+            arrayActive = 0;
             isDone = false;
             lastChecked = 0;
+            index = 0;
+            partsDoneOnIteration = 0;
             checkingGroups = new byte[rotorsAmount - 5];
             partsHandler.setAll(statuses, checkingGroups, arrayActive);
+            solutionAttemptCounter++;
 
-            foreach (Socket socket in worker.connectionsList.Keys)
+            if (solutionStatus == 0)
             {
-                solutionStatus = 1;
-                startNewSchedulingThread(socket);
+                foreach (Socket socket in worker.connectionsList.Keys)
+                {
+                    startNewSchedulingThread(socket);
+                }
             }
+            solutionStatus = 1;
         }
 
         public void getEnigmaConfiguration()
@@ -130,6 +138,7 @@ namespace Bombe
 
         protected void useSingleClient(Object sock)
         {
+            int solutionAttemptCounterLocal = solutionAttemptCounter;
             Socket socket = (Socket)sock;
             sendInitialMessages(socket);
             while (!isDone)
@@ -142,6 +151,11 @@ namespace Bombe
                 }
                 worker.sendData(socket, getComputeCommand(num));
                 string result = worker.receiveData(socket);
+                if (solutionAttemptCounterLocal != solutionAttemptCounter)
+                {
+                    solutionAttemptCounterLocal = solutionAttemptCounter;
+                    continue;
+                }
                 string[] array = getCommand(result);
                 switch (array[0])
                 {
