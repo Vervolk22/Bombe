@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace ComputingHelpers
 {
+    /// <summary>
+    /// Contains default Enigma settings.
+    /// </summary>
     public static class Settings
     {
         public static readonly string[] rotorsLayout = {

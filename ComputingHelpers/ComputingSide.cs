@@ -7,19 +7,25 @@ using System.Windows;
 
 namespace ComputingHelpers
 {
+    /// <summary>
+    /// Contains common methods for Computing scheduler and executor.
+    /// </summary>
     public abstract class ComputingSide
     {
-        public ComputingSide(/*WindowLogicBridge bridge*/)
-        {
-            //this.bridge = bridge;
-            //this.bridge.setComputingSide(this);
-        }
-
+        /// <summary>
+        /// Get local ip addres from SocketWorker.
+        /// </summary>
+        /// <returns>String - local ip address.</returns>
         public string getLocalIP()
         {
             return SocketWorker.getLocalIP();
         }
 
+        /// <summary>
+        /// Split received command into parts, using predefined delimiter.
+        /// </summary>
+        /// <param name="s">Received string.</param>
+        /// <returns>Resulting delimeted commands.</returns>
         protected string[] getCommand(string s)
         {
             if (s == null)
