@@ -104,7 +104,7 @@ namespace Bombe
             solutionAttemptCounter++;
 
             // Start new thread for each connected client.
-            if (solutionStatus == 0)
+            if (solutionStatus != 1)
             {
                 foreach (Socket socket in Bridge.socketWorker.connectionsList.Keys)
                 {
