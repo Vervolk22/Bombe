@@ -113,6 +113,7 @@ namespace Bombe
                 enigma.changeEnigmaStructure(getRotorsLayout(), getNotchPositions());
                 enigma.initialize();
                 encryptoutput.Text = enigma.encrypt(encryptinput.Text);
+                message.Text = encryptoutput.Text;
             }
         }
 

@@ -82,8 +82,8 @@
                     <ComboBoxItem IsSelected="False">9</ComboBoxItem>
                     <ComboBoxItem IsSelected="False">10</ComboBoxItem>
                 </ComboBox>
-                <Label Name="stopwordlabel" Content="Enter stop word" Margin="46,356,536,56" Width="100" RenderTransformOrigin="0.81,0.5"/>
-                <Label Name="messagelabel" Content="Enter encrypted message" Margin="281,356,254,56" RenderTransformOrigin="0.81,0.5"/>
+                <Label Name="stopwordlabel" Content="Enter stop word" Margin="46,356,536,56" Width="100" Height="35"/>
+                <Label Name="messagelabel" Content="Enter encrypted message" Margin="281,356,254,56" Width="150" Height="35"/>
                 <TextBox Name="stopword" HorizontalAlignment="Left" Margin="31,387,0,0" Height="21" TextWrapping="Wrap" Text="RATE US TEN" VerticalAlignment="Top" Width="138" TextChanged="validateStopWord" BorderThickness="1"/>
                 <TextBox Name="message" HorizontalAlignment="Left" Margin="188,387,0,0" Height="35" TextWrapping="Wrap" Text="SZLD YQ WFF CFZNFC" VerticalAlignment="Top" Width="362" TextChanged="validateMessage" BorderThickness="1"/>
             </Grid>
@@ -103,8 +103,8 @@
         </TabItem>
         <TabItem Header="Test" Name="tab4">
             <Grid>
-                <TextBox Name="encryptinput" HorizontalAlignment="Left" Height="53" Margin="143,52,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="383"/>
-                <TextBox Name="encryptoutput" HorizontalAlignment="Left" Height="62" Margin="143,276,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="383"/>
+                <TextBox Name="encryptinput" HorizontalAlignment="Left" Height="53" Margin="143,52,0,0" TextWrapping="Wrap" Text="RATE US TEN PLEASE" VerticalAlignment="Top" Width="383"/>
+                <TextBox Name="encryptoutput" HorizontalAlignment="Left" Height="62" Margin="143,276,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="383"/>
                 <Button Name="cmdecrypt" Content="Badabum!" Click="cmdEncrypt_Click" HorizontalAlignment="Left" Margin="143,122,0,0" VerticalAlignment="Top" Width="383" Height="93"/>
                 <Label Content="Enter your message:" HorizontalAlignment="Left" Margin="224,10,0,0" VerticalAlignment="Top"/>
                 <Label Content="Your decoded message:" HorizontalAlignment="Left" Margin="224,234,0,0" VerticalAlignment="Top"/>

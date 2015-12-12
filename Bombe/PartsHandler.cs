@@ -198,14 +198,15 @@ namespace Bombe
                 array[i] = values[i];
             }
             incrementLastChecked(array, 0, (byte)num);
-            
-            str.Append("X:");
-            for (int i = 0; i < values.Length - 1; i++)
+
+            str.Append("... :");
+            for (int i = values.Length - 1; i >= 0; i--)
             {
                 str.Append(array[i] + ":");
             }
-            str.Append(array[values.Length - 1].ToString());
-            str.Append("   " + (completedCount + num) + "/" + groupsCount + "   (" + 
+            str.Append("X");
+
+            str.Append("   " + (completedCount + num) + "/" + groupsCount + "   (" +
                     (int)((completedCount + num) * 100 / groupsCount) + "%)");
             TextBlock textBlock = new TextBlock();
             string st = str.ToString();
