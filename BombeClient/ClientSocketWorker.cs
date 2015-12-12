@@ -52,30 +52,12 @@ namespace BombeClient
                 {
                     remoteIPAddress = System.Net.IPAddress.Parse(szIPSelected);
                 }
-                
-                //System.Net.IPAddress remoteIPAddress = System.Net.IPAddress.Loopback;
                 System.Net.IPEndPoint remoteEndPoint = new System.Net.IPEndPoint(remoteIPAddress, alPort);
                 
                 socket.Connect(remoteEndPoint);
-                /*IAsyncResult result = socket.BeginConnect(remoteEndPoint, null, null);
-
-                bool success = result.AsyncWaitHandle.WaitOne(2000, true);
-
-                if (!success)
-                {
-                    // NOTE, MUST CLOSE THE SOCKET
-
-                    socket.Close();
-                    throw new ApplicationException("Failed to connect server.");
-                }*/
                 Bridge.sendInfoMessageToForm(String.Format("Connected to {0}.\n", remoteEndPoint));
                 Bridge.changeConnectionStatus(true);
-                //String szData = "Hello There";
-                //byte[] byData = System.Text.Encoding.ASCII.GetBytes(szData);
-                //socket.Send(byData);
-                //new Thread(() => sendData(socket, "Hello There")).Start();
                 return true;
-                //sendData(socket, "Hello There");
             }
             catch (Exception e)
             {
@@ -104,7 +86,6 @@ namespace BombeClient
         {
             try
             {
-                //socket.Close();
                 socket.Disconnect(false);
                 Bridge.sendInfoMessageToForm("Connection closed.\n");
                 socket = null;

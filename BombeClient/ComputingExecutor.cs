@@ -9,6 +9,10 @@ using EnigmaCryptography;
 
 namespace BombeClient
 {
+    /// <summary>
+    /// Receives parts of all breaking schedule from the server 
+    /// and tries to break message with received part.
+    /// </summary>
     internal class ComputingExecutor : ComputingSide
     {
         protected bool isConnected = false;
@@ -19,6 +23,9 @@ namespace BombeClient
         protected string[] rotorsLayout;
         protected char[] notchPositions;
 
+        /// <summary>
+        /// Counstructor.
+        /// </summary>
         public ComputingExecutor()
             : base()
         {
@@ -26,6 +33,9 @@ namespace BombeClient
             new ClientSocketWorker();
         }
 
+        /// <summary>
+        /// Changes the client status, connected/disconnected from the server.
+        /// </summary>
         public void changeClientStatus()
         {
             if (isConnected)
@@ -47,6 +57,9 @@ namespace BombeClient
             }
         }
 
+        /// <summary>
+        /// Start receiving messages from the server and process them.
+        /// </summary>
         protected void startComputing()
         {
             while (isConnected)
@@ -75,6 +88,10 @@ namespace BombeClient
             }
         }
 
+        /// <summary>
+        /// Set layout of Enigma machine, that wi trying to break.
+        /// </summary>
+        /// <param name="parameters">Enigma settings.</param>
         protected void setLayout(string[] parameters)
         {
             int rotors = Int32.Parse(parameters[1]);
@@ -92,16 +109,27 @@ namespace BombeClient
             this.notchPositions = notch;
         }
 
+        /// <summary>
+        /// Set encrypted message, that we are trying to break.
+        /// </summary>
+        /// <param name="message">Encrypted message.</param>
         protected void setEncryptedMessage(string message)
         {
             encryptedMessage = message;
         }
 
+        /// <summary>
+        /// Start waiting for new command from the server.
+        /// </summary>
+        /// <returns>Received command.</returns>
         protected string newCommand()
         {
             return Bridge.socketWorker.receiveData();
         }
 
+        /// <summary>
+        /// Change client status to connected/disconnected.
+        /// </summary>
         protected void changeConnectionStatus()
         {
             Bridge.window.Dispatcher.Invoke((Action)(() =>
@@ -110,6 +138,10 @@ namespace BombeClient
             }));
         }
 
+        /// <summary>
+        /// A single try to break message, accordingly to received command.
+        /// </summary>
+        /// <param name="parameters">Received command.</param>
         protected void compute(string[] parameters)
         {
             EnigmaBreaker breaker = new EnigmaBreaker(rotorsCount, 4, 
@@ -125,6 +157,12 @@ namespace BombeClient
             }
         }
 
+        /// <summary>
+        /// Get offsets of rotors from the received command.
+        /// </summary>
+        /// <param name="rotorsCount">Amount of rotors.</param>
+        /// <param name="parameters">Received parameters from the server.</param>
+        /// <returns>Offsets of all rotors.</returns>
         protected byte[] getOffsets(int rotorsCount, string[] parameters)
         {
             byte[] array = new byte[rotorsCount];

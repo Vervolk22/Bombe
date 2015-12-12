@@ -32,14 +32,11 @@ namespace BombeClient
 
         private void makePreparations()
         {
-            //iplabel.Text = executor.getLocalIP();
-
             bindHandlers();
         }
 
         private void bindHandlers()
         {
-            //this.cmdReceiveConnections.MouseUp += new RoutedEventHandler(this.cmdListen_Click);
             this.cmdReceiveConnections.MouseUp += new MouseButtonEventHandler(this.cmdListen_Click);
         }
 
