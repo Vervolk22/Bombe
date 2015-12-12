@@ -11,8 +11,6 @@ namespace BombeClient
 {
     internal class ComputingExecutor : ComputingSide
     {
-        protected new MainWindow window;
-        protected new ClientSocketWorker worker;
         protected bool isConnected = false;
         protected Thread computingThread;
         protected string encryptedMessage;
@@ -21,23 +19,24 @@ namespace BombeClient
         protected string[] rotorsLayout;
         protected char[] notchPositions;
 
-        public ComputingExecutor(MainWindow window) : base(window)
+        public ComputingExecutor()
+            : base()
         {
-            this.window = window;
-            worker = new ClientSocketWorker(window);
+            Bridge.setComputingSide(this);
+            new ClientSocketWorker();
         }
 
         public void changeClientStatus()
         {
             if (isConnected)
             {
-                worker.closeConnection();
+                Bridge.socketWorker.closeConnection();
                 computingThread.Abort();
                 isConnected = false;
             }
             else
             {
-                if (!worker.establishConnection())
+                if (!Bridge.socketWorker.establishConnection())
                 {
                     return;
                 }
@@ -100,12 +99,12 @@ namespace BombeClient
 
         protected string newCommand()
         {
-            return worker.receiveData();
+            return Bridge.socketWorker.receiveData();
         }
 
         protected void changeConnectionStatus()
         {
-            window.Dispatcher.Invoke((Action)(() =>
+            Bridge.window.Dispatcher.Invoke((Action)(() =>
             {
                 changeClientStatus();
             }));
@@ -118,11 +117,11 @@ namespace BombeClient
             breaker.initialize();
             if (breaker.tryBreak(encryptedMessage))
             {
-                worker.sendData("success:" + breaker.encrypt(encryptedMessage));
+                Bridge.socketWorker.sendData("success:" + breaker.encrypt(encryptedMessage));
             }
             else
             {
-                worker.sendData("fail");
+                Bridge.socketWorker.sendData("fail");
             }
         }
 
@@ -135,17 +134,6 @@ namespace BombeClient
                 array[i] = byte.Parse(parameters[2 + (rotorsCount - 2) - i]);
             }
             return array;
-        }
-
-        protected override void sendMessageToForm(string s)
-        {
-            window.Dispatcher.Invoke((Action)(() =>
-            {
-                window.mainlist.AppendText(s);
-                window.mainlist.Focus();
-                window.mainlist.CaretIndex = window.mainlist.Text.Length;
-                window.mainlist.ScrollToEnd();
-            }));
         }
     }
 }

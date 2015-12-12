@@ -57,6 +57,7 @@
     <Compile Include="ComputingScheduler.cs" />
     <Compile Include="PartsHandler.cs" />
     <Compile Include="ServerSocketWorker.cs" />
+    <Compile Include="Bridge.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

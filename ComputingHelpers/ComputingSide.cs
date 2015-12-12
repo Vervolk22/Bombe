@@ -9,14 +9,10 @@ namespace ComputingHelpers
 {
     public abstract class ComputingSide
     {
-        protected Window window;
-        protected SocketWorker worker;
-
-        protected abstract void sendMessageToForm(string s);
-
-        public ComputingSide(Window window)
+        public ComputingSide(/*WindowLogicBridge bridge*/)
         {
-            this.window = window;
+            //this.bridge = bridge;
+            //this.bridge.setComputingSide(this);
         }
 
         public string getLocalIP()

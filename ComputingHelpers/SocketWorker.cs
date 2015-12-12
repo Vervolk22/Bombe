@@ -18,16 +18,9 @@ namespace ComputingHelpers
     {
         protected int CHECK_ALIVE_DELAY = 1000;
 
-        protected Window window;
         protected byte[] buffer = new byte[1024];
         protected System.Timers.Timer aliveTimer;
 
-        /// <summary>
-        /// Send message to main window, about changes at socket level.
-        /// Needs to be overriden.
-        /// </summary>
-        /// <param name="s">Message to send.</param>
-        protected abstract void sendMessageToForm(string s);
         /// <summary>
         /// Check alive connection/connections. Will be called by a timer.
         /// Needs to be overriden.
@@ -40,9 +33,8 @@ namespace ComputingHelpers
         /// Constructor.
         /// </summary>
         /// <param name="window">Main window of the application.</param>
-        public SocketWorker(Window window)
+        public SocketWorker()
         {
-            this.window = window;
             aliveTimer = new System.Timers.Timer(CHECK_ALIVE_DELAY);
             aliveTimer.Elapsed += new System.Timers.ElapsedEventHandler(checkAlive);
             aliveTimer.Enabled = true;
@@ -118,7 +110,7 @@ namespace ComputingHelpers
         {
             try
             {
-                sendMessageToForm("Message sent: " + s + "\n");
+                sendInfoMessageToForm("Message sent: " + s + "\n");
                 byte[] byData = getBytes(s);
                 // First byte of every message is it's length.
                 socket.Send(getBytes(byData.Length.ToString("000")));
@@ -126,7 +118,7 @@ namespace ComputingHelpers
             }
             catch (Exception se)
             {
-                sendMessageToForm(se.Message);
+                sendInfoMessageToForm(se.Message);
             }
         }
 
@@ -139,20 +131,26 @@ namespace ComputingHelpers
         {
             try
             {
-                sendMessageToForm("Message received:\n");
+                sendInfoMessageToForm("Message received:\n");
                 // First byte of every message is it's length.
                 int iRx = socket.Receive(buffer, 6, SocketFlags.None);
                 string str = getString(buffer, iRx);
                 iRx = socket.Receive(buffer, Int32.Parse(str), SocketFlags.None);
                 str = getString(buffer, iRx);
-                sendMessageToForm("---" + str + '\n');
+                sendInfoMessageToForm("---" + str + '\n');
                 return str;
             }
             catch (Exception se)
             {
-                sendMessageToForm(se.Message);
+                sendInfoMessageToForm(se.Message);
                 return null;
             }
         }
+
+        /// <summary>
+        /// Send message to main window, about changes at socket level.
+        /// </summary>
+        /// <param name="s">Message to send.</param>
+        public abstract void sendInfoMessageToForm(string s);
     }
 }

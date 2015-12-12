@@ -19,8 +19,6 @@ namespace Bombe
         public readonly int MAX_CLIENTS = 104;
         public readonly int STATUSES_ARRAYS = 4; // MAX_CLIENTS / ALPHABET_LENGTH;
 
-        protected new MainWindow window;
-        protected new ServerSocketWorker worker;
         protected PartsHandler partsHandler;
         protected bool isServerRunning = false;
         protected byte solutionStatus = 0;
@@ -41,21 +39,24 @@ namespace Bombe
         protected bool isDone;
         protected int partsDoneOnIteration = 0;
 
-        public ComputingScheduler(MainWindow window) : base(window)
+        public ComputingScheduler() : base()
         {
-            this.window = window;
-            worker = new ServerSocketWorker(window, this);
+            Bridge.setComputingSide(this);
+            //this.Bridge = (ServerWindowLogicBridge)base.Bridge;
+            //this.Bridge.setComputingSide(base.Bridge.computingSide);
+            
+            new ServerSocketWorker();
         }
 
         public void changeServerStatus()
         {
             if (isServerRunning)
             {
-                worker.closeAllConnections();
+                Bridge.socketWorker.closeAllConnections();
             }
             else
             {
-                worker.waitForConnections();
+                Bridge.socketWorker.waitForConnections();
             }
             isServerRunning = !isServerRunning;
         }
@@ -70,7 +71,7 @@ namespace Bombe
                 thread.Start();
                 return;
             }
-            partsHandler = new PartsHandler(window, ALPHABET_LENGTH / 2, rotorsAmount - 5,
+            partsHandler = new PartsHandler(Bridge.window, ALPHABET_LENGTH / 2, rotorsAmount - 5,
                     ALPHABET_LENGTH, STATUSES_ARRAYS);
             statuses = new byte[STATUSES_ARRAYS][];
             for (int i = 0; i < STATUSES_ARRAYS; i++)
@@ -89,7 +90,7 @@ namespace Bombe
 
             if (solutionStatus == 0)
             {
-                foreach (Socket socket in worker.connectionsList.Keys)
+                foreach (Socket socket in Bridge.socketWorker.connectionsList.Keys)
                 {
                     startNewSchedulingThread(socket);
                 }
@@ -99,11 +100,11 @@ namespace Bombe
 
         public void getEnigmaConfiguration()
         {
-            rotorsAmount = Byte.Parse(window.rotorsamount.Text);
-            rotorsLayout = window.getRotorsLayout();
-            notchPositions = window.getNotchPositions();
-            stopWord = window.getStopWord();
-            encryptedMessage = window.getMessage();
+            rotorsAmount = Byte.Parse(Bridge.window.rotorsamount.Text);
+            rotorsLayout = Bridge.window.getRotorsLayout();
+            notchPositions = Bridge.window.getNotchPositions();
+            stopWord = Bridge.window.getStopWord();
+            encryptedMessage = Bridge.window.getMessage();
         }
 
         protected void startEasyBreaking()
@@ -113,11 +114,11 @@ namespace Bombe
             breaker.initialize();
             if (breaker.tryBreak(encryptedMessage))
             {
-                sendMessageToForm("Easy success");
+                Bridge.sendInfoMessageToForm("Easy success");
             }
             else
             {
-                sendMessageToForm("Easy fail");
+                Bridge.sendInfoMessageToForm("Easy fail");
             }
         }
 
@@ -149,8 +150,8 @@ namespace Bombe
                     num = getUncheckedPart();
                     arrayUsed = arrayActive;
                 }
-                worker.sendData(socket, getComputeCommand(num));
-                string result = worker.receiveData(socket);
+                Bridge.socketWorker.sendData(socket, getComputeCommand(num));
+                string result = Bridge.socketWorker.receiveData(socket);
                 if (solutionAttemptCounterLocal != solutionAttemptCounter)
                 {
                     solutionAttemptCounterLocal = solutionAttemptCounter;
@@ -164,7 +165,7 @@ namespace Bombe
                         continue;
                     case "success":
                         solutionStatus = 2;
-                        sendMessageToForm("Message decrypted! Message: " + array[1]);
+                        Bridge.sendInfoMessageToForm("Message decrypted! Message: " + array[1]);
                         changePartStatuses(arrayUsed, num, 3);
                         isDone = true;
                         break;
@@ -202,12 +203,12 @@ namespace Bombe
             {
                 str.Append(":" + notchPositions[i]);
             }
-            worker.sendData(socket, str.ToString());
+            Bridge.socketWorker.sendData(socket, str.ToString());
         }
 
         protected void sendMessage(Socket socket)
         {
-            worker.sendData(socket, "setmessage:" + encryptedMessage + ':' +
+            Bridge.socketWorker.sendData(socket, "setmessage:" + encryptedMessage + ':' +
                 stopWord);
         }
 
@@ -308,17 +309,6 @@ namespace Bombe
                     if (statuses[arrayActive][i] != 0) partsDoneOnIteration++;
                 }
             }
-        }
-
-        protected override void sendMessageToForm(string s)
-        {
-            window.Dispatcher.Invoke((Action)(() =>
-            {
-                window.mainlist.AppendText(s);
-                window.mainlist.Focus();
-                window.mainlist.CaretIndex = window.mainlist.Text.Length;
-                window.mainlist.ScrollToEnd();
-            }));
         }
     }
 }

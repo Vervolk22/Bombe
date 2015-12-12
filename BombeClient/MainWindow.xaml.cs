@@ -25,7 +25,8 @@ namespace BombeClient
         public MainWindow()
         {
             InitializeComponent();
-            executor = new ComputingExecutor(this);
+            Bridge.setWindow(this);
+            executor = new ComputingExecutor();
             makePreparations();
         }
 

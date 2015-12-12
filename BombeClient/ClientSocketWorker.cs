@@ -17,17 +17,16 @@ namespace BombeClient
     /// </summary>
     internal class ClientSocketWorker : SocketWorker
     {
-        protected new MainWindow window;
         protected Socket socket;
 
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="window">Main WPF window to interact with.</param>
-        public ClientSocketWorker(MainWindow window)
-            : base(window)
+        public ClientSocketWorker()
+            : base()
         {
-            this.window = window;
+            Bridge.setSocketWorker(this);
         }
 
         /// <summary>
@@ -40,8 +39,8 @@ namespace BombeClient
             {
                 //create a new client socket ...
                 socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                String szIPSelected = window.iplabel.Text;
-                String szPort = window.port.Text;
+                String szIPSelected = Bridge.getIpText();
+                String szPort = Bridge.getPortText();
                 int alPort = System.Convert.ToInt16(szPort, 10);
 
                 System.Net.IPAddress remoteIPAddress;
@@ -69,10 +68,8 @@ namespace BombeClient
                     socket.Close();
                     throw new ApplicationException("Failed to connect server.");
                 }*/
-                sendMessageToForm(String.Format("Connected to {0}.\n", remoteEndPoint));
-                window.status.Content = "connected";
-                window.status.Foreground = System.Windows.Media.Brushes.Green;
-                window.cmdReceiveConnections.Content = "Disconnect";
+                Bridge.sendInfoMessageToForm(String.Format("Connected to {0}.\n", remoteEndPoint));
+                Bridge.changeConnectionStatus(true);
                 //String szData = "Hello There";
                 //byte[] byData = System.Text.Encoding.ASCII.GetBytes(szData);
                 //socket.Send(byData);
@@ -82,7 +79,7 @@ namespace BombeClient
             }
             catch (Exception e)
             {
-                sendMessageToForm(e.Message);
+                Bridge.sendInfoMessageToForm(e.Message);
                 return false;
             }
         }
@@ -109,15 +106,13 @@ namespace BombeClient
             {
                 //socket.Close();
                 socket.Disconnect(false);
-                sendMessageToForm("Connection closed.\n");
+                Bridge.sendInfoMessageToForm("Connection closed.\n");
                 socket = null;
-                window.status.Content = "not connected";
-                window.status.Foreground = System.Windows.Media.Brushes.Red;
-                window.cmdReceiveConnections.Content = "Connect";
+                Bridge.changeConnectionStatus(false);
             }
             catch (Exception e)
             {
-                sendMessageToForm(e.Message);
+                Bridge.sendInfoMessageToForm(e.Message);
             }
         }
 
@@ -125,16 +120,16 @@ namespace BombeClient
         /// Send message to main window, about changes at socket level.
         /// </summary>
         /// <param name="s">Message to send.</param>
-        protected override void sendMessageToForm(string s)
+        public override void sendInfoMessageToForm(string s)
         {
             try
             {
-                window.Dispatcher.Invoke((Action)(() =>
+                Bridge.window.Dispatcher.Invoke((Action)(() =>
                 {
-                    window.mainlist.AppendText(s);
-                    window.mainlist.Focus();
-                    window.mainlist.CaretIndex = window.mainlist.Text.Length;
-                    window.mainlist.ScrollToEnd();
+                    Bridge.window.mainlist.AppendText(s);
+                    Bridge.window.mainlist.Focus();
+                    Bridge.window.mainlist.CaretIndex = Bridge.window.mainlist.Text.Length;
+                    Bridge.window.mainlist.ScrollToEnd();
                 }));
             }
             catch (Exception e)

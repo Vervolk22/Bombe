@@ -64,6 +64,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="ClientSocketWorker.cs" />
+    <Compile Include="Bridge.cs" />
     <Compile Include="ComputingExecutor.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

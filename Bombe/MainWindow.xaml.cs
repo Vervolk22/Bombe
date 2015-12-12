@@ -21,7 +21,6 @@ namespace Bombe
     /// </summary>
     public partial class MainWindow : Window
     {
-        private ComputingScheduler scheduler;
         private GUIRotorPresentation[] rotorPresentations;
         private string[] enigmaSettings;
 
@@ -31,14 +30,15 @@ namespace Bombe
         public MainWindow()
         {
             InitializeComponent();
-            scheduler = new ComputingScheduler(this);
+            Bridge.setWindow(this);
+            new ComputingScheduler();
             makePreparations();
             //scheduler.run();
         }
 
         protected void makePreparations()
         {
-            iplabel.Content = scheduler.getLocalIP();
+            iplabel.Content = Bridge.computingSide.getLocalIP();
             setRotorPresentations();
             setRotorContent();
             bindHandlers();
@@ -53,7 +53,7 @@ namespace Bombe
 
         protected void cmdListen_Click(object sender, System.EventArgs e)
         {
-            scheduler.changeServerStatus();
+            Bridge.computingSide.changeServerStatus();
         }
 
         protected void tabSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -88,7 +88,7 @@ namespace Bombe
                         rotorPresentations[i].offset.Text = "0";
                 }
                 cmdCompute.IsEnabled = true;
-                scheduler.getEnigmaConfiguration();
+                Bridge.computingSide.getEnigmaConfiguration();
                 FileWorker.writeSettingsFile(rotorsAmount, rotorPresentations, 
                         stopword.Text, message.Text);
             }
@@ -96,7 +96,7 @@ namespace Bombe
 
         protected void cmdCompute_Click(object sender, System.EventArgs e)
         {
-            scheduler.startBreaking();
+            Bridge.computingSide.startBreaking();
         }
 
         protected void cmdEncrypt_Click(object sender, System.EventArgs e)

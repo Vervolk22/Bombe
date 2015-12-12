@@ -19,9 +19,7 @@ namespace Bombe
     internal class ServerSocketWorker : SocketWorker
     {
         protected const int MAX_CONNECTIONS = 2; //TODO implement real max connections
-        protected new MainWindow window;
 
-        protected ComputingScheduler scheduler;
         protected Socket sockListener;
         protected int clientsCounter = 0;
         public Dictionary<Socket, Client> connectionsList = new Dictionary<Socket, Client>();
@@ -31,10 +29,9 @@ namespace Bombe
         /// </summary>
         /// <param name="window">Main WPF window to interact wit.</param>
         /// <param name="scheduler">ComputingScheduler of the server.</param>
-        public ServerSocketWorker(MainWindow window, ComputingScheduler scheduler) : base(window)
+        public ServerSocketWorker() : base()
         {
-            this.window = window;
-            this.scheduler = scheduler;
+            Bridge.setSocketWorker(this);
         }
 
         /// <summary>
@@ -46,7 +43,7 @@ namespace Bombe
             {
                 //create the listening socket...
                 sockListener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                String szPort = window.port.Text;
+                String szPort = Bridge.getPortText();
                 int alPort = System.Convert.ToInt16(szPort, 10);
                 IPEndPoint ipLocal = new IPEndPoint(IPAddress.Any, alPort);
                 //bind to local IP Address...
@@ -55,15 +52,33 @@ namespace Bombe
                 sockListener.Listen(MAX_CONNECTIONS);
                 // create the call back for any client connections...
                 sockListener.BeginAccept(new AsyncCallback(establishConnection), null);
-                window.status.Content = "online";
-                window.status.Foreground = System.Windows.Media.Brushes.Green;
-                window.cmdReceiveConnections.Content = "Close all connections";
-                //cmdListen.Enabled = false;
-
+                Bridge.changeConnectionStatus(true);
             }
             catch (SocketException se)
             {
-                sendMessageToForm(se.Message);
+                Bridge.sendInfoMessageToForm(se.Message);
+            }
+        }
+
+        /// <summary>
+        /// Send message to main window, about changes at socket level.
+        /// </summary>
+        /// <param name="s">Message to send.</param>
+        public override void sendInfoMessageToForm(string s)
+        {
+            try
+            {
+                Bridge.window.Dispatcher.Invoke((Action)(() =>
+                {
+                    Bridge.window.mainlist.AppendText(s);
+                    Bridge.window.mainlist.Focus();
+                    Bridge.window.mainlist.CaretIndex = Bridge.window.mainlist.Text.Length;
+                    Bridge.window.mainlist.ScrollToEnd();
+                }));
+            }
+            catch (Exception e)
+            {
+
             }
         }
 
@@ -78,12 +93,10 @@ namespace Bombe
                 if (isAlive(sock))
                     sock.Close();
             }
-            sendMessageToForm(String.Format("Closed {0} connections.\n", connectionsList.Count));
+            Bridge.sendInfoMessageToForm(String.Format("Closed {0} connections.\n", connectionsList.Count));
             connectionsList.Clear();
 
-            window.status.Content = "offline";
-            window.status.Foreground = System.Windows.Media.Brushes.Red;
-            window.cmdReceiveConnections.Content = "Start receive connections";
+            Bridge.changeConnectionStatus(false);
         }
 
         /// <summary>
@@ -98,15 +111,15 @@ namespace Bombe
                 Client client = new Client(++clientsCounter, socket.RemoteEndPoint.ToString(), DateTime.Now);
                 connectionsList.Add(socket, client);
                 sockListener.BeginAccept(new AsyncCallback(establishConnection), null);
-                sendMessageToForm(String.Format("Client {0} connected.\n", connectionsList.Count));
-                scheduler.newClient(socket);
+                Bridge.sendInfoMessageToForm(String.Format("Client {0} connected.\n", connectionsList.Count));
+                Bridge.newClientConnected(socket);
                 //sendData(connectionsList.Keys.ElementAt(connectionsList.Count - 1), "Hello new client!");
                 //receiveData(connectionsList.Keys.ElementAt(connectionsList.Count - 1));
             }
             catch (Exception e)
             {
                 if (sockListener.Connected == true)
-                    sendMessageToForm(e.Message);
+                    Bridge.sendInfoMessageToForm(e.Message);
             }
         }
 
@@ -130,36 +143,14 @@ namespace Bombe
             int i = 0;
             while (i < connectionsList.Count)
             {
-                //sendMessageToForm(connectionsList.Keys.ElementAt(i).Connected.ToString() + '\n');
+                //Bridge.sendInfoMessageToForm(connectionsList.Keys.ElementAt(i).Connected.ToString() + '\n');
                 if (!isAlive(connectionsList.Keys.ElementAt(i)))
                 {
-                    sendMessageToForm(String.Format("Client {0} disconnected.\n", connectionsList.Values.ElementAt(i)));
+                    Bridge.sendInfoMessageToForm(String.Format("Client {0} disconnected.\n", connectionsList.Values.ElementAt(i)));
                     closeConnection(connectionsList.Keys.ElementAt(i));
                     continue;
                 }
                 i++;
-            }
-        }
-
-        /// <summary>
-        /// Send message to main window, about changes at socket level.
-        /// </summary>
-        /// <param name="s">Message to send.</param>
-        protected override void sendMessageToForm(string s)
-        {
-            try
-            {
-                window.Dispatcher.Invoke((Action)(() =>
-                {
-                    window.mainlist.AppendText(s);
-                    window.mainlist.Focus();
-                    window.mainlist.CaretIndex = window.mainlist.Text.Length;
-                    window.mainlist.ScrollToEnd();
-                }));
-            }
-            catch (Exception e)
-            {
-
             }
         }
     }
