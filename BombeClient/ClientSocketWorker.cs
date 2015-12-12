@@ -112,7 +112,7 @@ namespace BombeClient
             }
             catch (Exception e)
             {
-                Bridge.sendInfoMessageToForm(e.Message);
+
             }
         }
 

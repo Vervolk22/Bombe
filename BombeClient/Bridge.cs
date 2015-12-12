@@ -10,9 +10,9 @@ namespace BombeClient
 {
     internal static class Bridge
     {
-        public static new ComputingExecutor computingSide { get; private set; }
-        public static new ClientSocketWorker socketWorker { get; private set; }
-        public static new MainWindow window { get; private set; }
+        public static ComputingExecutor computingSide { get; private set; }
+        public static ClientSocketWorker socketWorker { get; private set; }
+        public static MainWindow window { get; private set; }
 
         public static string getPortText()
         {
@@ -26,18 +26,21 @@ namespace BombeClient
 
         internal static void changeConnectionStatus(bool isOnline)
         {
-            if (isOnline)
-            {
-                window.status.Content = "connected";
-                window.status.Foreground = System.Windows.Media.Brushes.Green;
-                window.cmdReceiveConnections.Content = "Disconnect";
-            }
-            else
-            {
-                window.status.Content = "not connected";
-                window.status.Foreground = System.Windows.Media.Brushes.Red;
-                window.cmdReceiveConnections.Content = "Connect";
-            }
+            window.Dispatcher.Invoke((Action)(() =>
+                {
+                    if (isOnline)
+                    {
+                        window.status.Content = "connected";
+                        window.status.Foreground = System.Windows.Media.Brushes.Green;
+                        window.cmdReceiveConnections.Content = "Disconnect";
+                    }
+                    else
+                    {
+                        window.status.Content = "not connected";
+                        window.status.Foreground = System.Windows.Media.Brushes.Red;
+                        window.cmdReceiveConnections.Content = "Connect";
+                    }
+                }));
         }
 
         /// <summary>

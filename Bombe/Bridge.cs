@@ -11,9 +11,9 @@ namespace Bombe
 {
     internal static class Bridge
     {
-        public static new ComputingScheduler computingSide { get; private set; }
-        public static new ServerSocketWorker socketWorker { get; private set; }
-        public static new MainWindow window { get; private set; }
+        public static ComputingScheduler computingSide { get; private set; }
+        public static ServerSocketWorker socketWorker { get; private set; }
+        public static MainWindow window { get; private set; }
 
         public static string getPortText()
         {
@@ -22,18 +22,21 @@ namespace Bombe
 
         public static void changeConnectionStatus(bool isOnline)
         {
-            if (isOnline)
-            {
-                window.status.Content = "online";
-                window.status.Foreground = System.Windows.Media.Brushes.Green;
-                window.cmdReceiveConnections.Content = "Close all connections";
-            }
-            else
-            {
-                window.status.Content = "offline";
-                window.status.Foreground = System.Windows.Media.Brushes.Red;
-                window.cmdReceiveConnections.Content = "Start receive connections";
-            }
+            window.Dispatcher.Invoke((Action)(() =>
+                {
+                    if (isOnline)
+                    {
+                        window.status.Content = "online";
+                        window.status.Foreground = System.Windows.Media.Brushes.Green;
+                        window.cmdReceiveConnections.Content = "Close all connections";
+                    }
+                    else
+                    {
+                        window.status.Content = "offline";
+                        window.status.Foreground = System.Windows.Media.Brushes.Red;
+                        window.cmdReceiveConnections.Content = "Start receive connections";
+                    }
+                }));
         }
 
         /// <summary>
