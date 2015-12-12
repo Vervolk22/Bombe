@@ -84,7 +84,7 @@ namespace BombeClient
             for (int i = 0; i < rotors; i++)
             {
                 layout[i] = parameters[i + 2];
-                notch[i] = parameters[i + rotors + 2][0];
+                notch[i] = parameters[i + rotors + 3][0];
             }
             layout[rotors] = parameters[rotors + 2];
 
