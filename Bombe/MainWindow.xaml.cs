@@ -27,6 +27,9 @@ namespace Bombe
         protected SolidColorBrush redBrush = new SolidColorBrush(Colors.Red);
         protected SolidColorBrush greenBrush = new SolidColorBrush(Colors.Green);
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
@@ -36,30 +39,37 @@ namespace Bombe
             //scheduler.run();
         }
 
+        /// <summary>
+        /// Some preparations, before scheduler starts.
+        /// </summary>
         protected void makePreparations()
         {
             iplabel.Content = Bridge.computingSide.getLocalIP();
             setRotorPresentations();
             setRotorContent();
-            bindHandlers();
         }
 
-        protected void bindHandlers()
-        {
-            //this.cmdReceiveConnections.MouseUp += new RoutedEventHandler(this.cmdListen_Click);
-            //this.cmdReceiveConnections.MouseUp += new MouseButtonEventHandler(this.cmdListen_Click);
-            //this.cmdCompute.MouseUp += new
-        }
-
+        /// <summary>
+        /// Handler, to start/stop receive connections button.
+        /// </summary>
+        /// <param name="sender">Button control object.</param>
+        /// <param name="e">EventArgs object of event.</param>
         protected void cmdListen_Click(object sender, System.EventArgs e)
         {
             Bridge.computingSide.changeServerStatus();
         }
 
+        /// <summary>
+        /// If breaking or test tabs are chosen, check current Enigma
+        /// configuration.
+        /// </summary>
+        /// <param name="sender">Button control object.</param>
+        /// <param name="e">EventArgs object of event.</param>
         protected void tabSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (tab1.IsSelected || tab4.IsSelected)
             {
+                // Check rotors layout.
                 int rotorsAmount = Int32.Parse((string)((ComboBoxItem)rotorsamount.SelectedValue).Content);
                 for (int i = 0; i < rotorsAmount; i++)
                 {
@@ -71,6 +81,7 @@ namespace Bombe
                         return;
                     }
                 }
+                // Check reflector's layout, stop word and encrypted message.
                 if (!FileWorker.checkLayout(rotorPresentations[10].layout.Text) || 
                     !FileWorker.checkStopWord(stopword.Text) || !FileWorker.checkMessage(message.Text))
                 {
@@ -78,6 +89,7 @@ namespace Bombe
                     return;
                 }
 
+                // If some unused rotors are incorrect, set them to default state.
                 for (int i = rotorsAmount; i < 10; i++)
                 {
                     if (!FileWorker.checkLayout(rotorPresentations[i].layout.Text))
@@ -94,11 +106,21 @@ namespace Bombe
             }
         }
 
+        /// <summary>
+        /// Handler, to start breaking process.
+        /// </summary>
+        /// <param name="sender">Button control object.</param>
+        /// <param name="e">EventArgs object of event.</param>
         protected void cmdCompute_Click(object sender, System.EventArgs e)
         {
             Bridge.computingSide.startBreaking();
         }
 
+        /// <summary>
+        /// Handler, to encrypte/decrypt message with current Enigma configuration.
+        /// </summary>
+        /// <param name="sender">Button control object.</param>
+        /// <param name="e">EventArgs object of event.</param>
         protected void cmdEncrypt_Click(object sender, System.EventArgs e)
         {
             if (!checkInputMessage(encryptinput.Text))
@@ -117,6 +139,10 @@ namespace Bombe
             }
         }
 
+        /// <summary>
+        /// Get rotors offsets from TextBoxes.
+        /// </summary>
+        /// <returns>Byte array with rotor offsets.</returns>
         protected byte[] getRotorOffsets()
         {
             int rotorsAmount = Byte.Parse(rotorsamount.Text);
@@ -128,6 +154,12 @@ namespace Bombe
             return array;
         }
 
+        /// <summary>
+        /// Handler, to change amount of showing rotors, accordingly to 
+        /// ComboBox chosen value.
+        /// </summary>
+        /// <param name="sender">Button control object.</param>
+        /// <param name="e">EventArgs object of event.</param>
         protected void rotorsAmountChanged(object sender, System.EventArgs e)
         {
             int rotorsAmount = Int32.Parse((string)((ComboBoxItem)rotorsamount.SelectedValue).Content);
@@ -149,6 +181,9 @@ namespace Bombe
             }
         }
 
+        /// <summary>
+        /// Set the array of GUIRotorPresentations.
+        /// </summary>
         protected void setRotorPresentations()
         {
             rotorPresentations = new GUIRotorPresentation[11];
@@ -166,6 +201,10 @@ namespace Bombe
             rotorsamount.SelectedItem = rotorsamount.Items[2];
         }
 
+        /// <summary>
+        /// Set content of rotor's textboxes with Enigma settings from 
+        /// FileWorker class.
+        /// </summary>
         protected void setRotorContent()
         {
             FileWorker fworker = new FileWorker();
@@ -182,11 +221,20 @@ namespace Bombe
             message.Text = enigmaSettings[33];
         }
 
+        /// <summary>
+        /// Append some text to mainlist.
+        /// </summary>
+        /// <param name="s">String to append.</param>
         public void mainListAppendText(string s)
         {
             mainlist.AppendText(s);
         }
 
+        /// <summary>
+        /// Handler, to validate the rotor's layout.
+        /// </summary>
+        /// <param name="sender">Button control object.</param>
+        /// <param name="e">EventArgs object of event.</param>
         protected void validateLayout(object sender, System.EventArgs e)
         {
             TextBox tb = (TextBox)sender;
@@ -200,6 +248,11 @@ namespace Bombe
             }
         }
 
+        /// <summary>
+        /// Handler, to validate the reflector's layout.
+        /// </summary>
+        /// <param name="sender">Button control object.</param>
+        /// <param name="e">EventArgs object of event.</param>
         protected void validateReflector(object sender, System.EventArgs e)
         {
             TextBox tb = (TextBox)sender;
@@ -213,6 +266,11 @@ namespace Bombe
             }
         }
 
+        /// <summary>
+        /// Handler, to validate notch position.
+        /// </summary>
+        /// <param name="sender">Button control object.</param>
+        /// <param name="e">EventArgs object of event.</param>
         protected void validateNotch(object sender, System.EventArgs e)
         {
             TextBox tb = (TextBox)sender;
@@ -226,6 +284,11 @@ namespace Bombe
             }
         }
 
+        /// <summary>
+        /// Handler, to validate the stop word.
+        /// </summary>
+        /// <param name="sender">Button control object.</param>
+        /// <param name="e">EventArgs object of event.</param>
         protected void validateStopWord(object sender, System.EventArgs e)
         {
             TextBox tb = (TextBox)sender;
@@ -239,6 +302,11 @@ namespace Bombe
             }
         }
 
+        /// <summary>
+        /// Handler, to validate encrypted message.
+        /// </summary>
+        /// <param name="sender">Button control object.</param>
+        /// <param name="e">EventArgs object of event.</param>
         protected void validateMessage(object sender, System.EventArgs e)
         {
             TextBox tb = (TextBox)sender;
@@ -252,6 +320,11 @@ namespace Bombe
             }
         }
 
+        /// <summary>
+        /// Handler, to validate the rotor's offset.
+        /// </summary>
+        /// <param name="sender">Button control object.</param>
+        /// <param name="e">EventArgs object of event.</param>
         protected void validateOffset(object sender, System.EventArgs e)
         {
             TextBox tb = (TextBox)sender;
@@ -265,6 +338,12 @@ namespace Bombe
             }
         }
 
+        /// <summary>
+        /// Check the encrypted message. It allows only lowercase and uppercase
+        /// english letters.
+        /// </summary>
+        /// <param name="s">Encrypted message.</param>
+        /// <returns>Result ofcheck.</returns>
         protected bool checkInputMessage(string s)
         {
             foreach (char ch in s)
@@ -277,6 +356,10 @@ namespace Bombe
             return true;
         }
 
+        /// <summary>
+        /// Get string array of rotors layouts.
+        /// </summary>
+        /// <returns>Array of rotors layouts.</returns>
         public string[] getRotorsLayout()
         {
             int rotorsAmount = Byte.Parse(rotorsamount.Text);
@@ -289,6 +372,10 @@ namespace Bombe
             return layouts;
         }
 
+        /// <summary>
+        /// Get notch positions of rotos.
+        /// </summary>
+        /// <returns>Array of notch positions.</returns>
         public char[] getNotchPositions()
         {
             int rotorsAmount = Byte.Parse(rotorsamount.Text);
@@ -300,11 +387,19 @@ namespace Bombe
             return notch;
         }
 
+        /// <summary>
+        /// Get stop word from the MainWindow.
+        /// </summary>
+        /// <returns></returns>
         public string getStopWord()
         {
             return stopword.Text;
         }
 
+        /// <summary>
+        /// Get the encrypted message.
+        /// </summary>
+        /// <returns></returns>
         public string getMessage()
         {
             return message.Text;

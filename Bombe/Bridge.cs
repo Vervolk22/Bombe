@@ -9,17 +9,29 @@ using ComputingHelpers;
 
 namespace Bombe
 {
+    /// <summary>
+    /// Pattern, to bind togetger MainWindow, ComputingExecutor and 
+    /// ClientSocketWorker.
+    /// </summary>
     internal static class Bridge
     {
         public static ComputingScheduler computingSide { get; private set; }
         public static ServerSocketWorker socketWorker { get; private set; }
         public static MainWindow window { get; private set; }
 
+        /// <summary>
+        /// Get port from MainWindow and return it as string.
+        /// </summary>
+        /// <returns>Port from MainWindow.</returns>
         public static string getPortText()
         {
             return window.port.Text;
         }
 
+        /// <summary>
+        /// Change current state of program.
+        /// </summary>
+        /// <param name="isOnline">Should program be in online status.</param>
         public static void changeConnectionStatus(bool isOnline)
         {
             window.Dispatcher.Invoke((Action)(() =>
@@ -61,21 +73,38 @@ namespace Bombe
             }
         }
 
+        /// <summary>
+        /// Transfer newClientConnected event from ServerSocketWorker to
+        /// ComputingScheduler.
+        /// </summary>
+        /// <param name="socket"></param>
         internal static void newClientConnected(Socket socket)
         {
             computingSide.newClient(socket);
         }
 
+        /// <summary>
+        /// Set window of current project.
+        /// </summary>
+        /// <param name="windowIn">MainWindow to set.</param>
         public static void setWindow(MainWindow windowIn)
         {
             window = windowIn;
         }
 
+        /// <summary>
+        /// Set ComputingSide of current project.
+        /// </summary>
+        /// <param name="side">Computing side to set.</param>
         public static void setComputingSide(ComputingScheduler side)
         {
             computingSide = side;
         }
 
+        /// <summary>
+        /// Set SocketWorker of current project.
+        /// </summary>
+        /// <param name="worker">SocketWorker to set.</param>
         public static void setSocketWorker(ServerSocketWorker worker)
         {
             socketWorker = worker;

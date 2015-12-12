@@ -8,6 +8,11 @@ using System.Windows.Controls;
 
 namespace Bombe
 {
+    /// <summary>
+    /// Class to handle breaking process indicating at MainWindow with the
+    /// squares. Gray - part doesn't checked yet, Blue - checking now,
+    /// Red - Solution at that part was not found, Green - solution was found.
+    /// </summary>
     class PartsHandler
     {
         protected MainWindow window;
@@ -27,6 +32,16 @@ namespace Bombe
         protected SolidColorBrush greenBrush = new SolidColorBrush(Colors.Green);
         protected SolidColorBrush blackBrush = new SolidColorBrush(Colors.Black);
 
+        /// <summary>
+        /// COnstructor.
+        /// </summary>
+        /// <param name="window">Main window to paint where.</param>
+        /// <param name="squaresPerRow">How many squares to paint per row.</param>
+        /// <param name="groupsExp">Index, that shows how many parts in the all task
+        /// will be.</param>
+        /// <param name="alphabetLength">Length of alphabet in the task.</param>
+        /// <param name="groupsToShow">How many parts of task to show at a
+        /// single time.</param>
         internal PartsHandler(MainWindow window, int squaresPerRow, int groupsExp,
                 int alphabetLength, int groupsToShow)
         {
@@ -42,6 +57,13 @@ namespace Bombe
             }));
         }
 
+        /// <summary>
+        /// Set all squares to given statuses.
+        /// </summary>
+        /// <param name="array">Array with statuses of parts.</param>
+        /// <param name="groups">CheckingGroups array.</param>
+        /// <param name="startArray">Index that shows, which array of statuses
+        /// array is at the first position.</param>
         public void setAll(byte[][] array, byte[] groups, int startArray)
         {
             if (completedCount == groupsCount)
@@ -61,6 +83,13 @@ namespace Bombe
             }
         }
 
+        /// <summary>
+        /// Indication, when amount of parts of a task is small.
+        /// </summary>
+        /// <param name="array">Array with statuses of parts.</param>
+        /// <param name="groups">CheckingGroups array.</param>
+        /// <param name="startArray">Index that shows, which array of statuses
+        /// array is at the first position.</param>
         protected void basicIndication(byte[][] array, byte[] groups, int startArray)
         {
             clearSpace();
@@ -68,6 +97,12 @@ namespace Bombe
             drawLine(0, array[0], groups);
         }
 
+        /// <summary>
+        /// Draw a single line of squares.
+        /// </summary>
+        /// <param name="lineNumber">Line number to draw.</param>
+        /// <param name="array">Array with part's statuses.</param>
+        /// <param name="groups">CheckingGroups array.</param>
         protected void drawLine(int lineNumber, byte[] array, byte[] groups)
         {
             int topOffset = getTopOffset(lineNumber);
@@ -78,12 +113,24 @@ namespace Bombe
             }
         }
 
+        /// <summary>
+        /// Set a single square.
+        /// </summary>
+        /// <param name="number">Position of square in a group.</param>
+        /// <param name="groupNumber">Number of a group.</param>
+        /// <param name="type">Type of square to set.</param>
         public void set(int number, int groupNumber, int type)
         {
             if (completedCount + groupNumber <= groupsCount)
                 drawSquare(number, type, getTopOffset(groupNumber % groupsToShow));
         }
 
+        /// <summary>
+        /// Draw a single square.
+        /// </summary>
+        /// <param name="number">Position of square in a group.</param>
+        /// <param name="type">Type of square to set.</param>
+        /// <param name="topOffset">Offset from the top of canvas.</param>
         protected void drawSquare(int number, int type, int topOffset)
         {
             int row = number / squaresPerRow;
@@ -107,6 +154,12 @@ namespace Bombe
             }
         }
 
+        /// <summary>
+        /// Draw text for the group.
+        /// </summary>
+        /// <param name="number">Number of group in the canvas.</param>
+        /// <param name="values">CheckingGroups array.</param>
+        /// <param name="topOffset">Offset from the top of canvas.</param>
         protected void drawText(int number, byte[] values, int topOffset)
         {
             try
@@ -125,6 +178,9 @@ namespace Bombe
             }
         }
 
+        /// <summary>
+        /// Clear the canvas.
+        /// </summary>
         protected void clearSpace()
         {
             try
@@ -140,11 +196,23 @@ namespace Bombe
             }
         }
 
+        /// <summary>
+        /// Get offset from the top of canvas.
+        /// </summary>
+        /// <param name="number">Number of checkingGroup in the canvas.</param>
+        /// <returns>Offset from the top of canvas.</returns>
         protected int getTopOffset(int number)
         {
             return 45 * number + 20;
         }
 
+        /// <summary>
+        /// Get total amount of checking groups in the task.
+        /// </summary>
+        /// <param name="groupsExp">Index, that shows how many parts in the all task
+        /// will be.</param>
+        /// <param name="countInGroup">How many parts are in a single group.</param>
+        /// <returns>Total amount of checking groups.</returns>
         protected int getGroupsCount(int groupExp, int countInGroup)
         {
             int result = 1;
@@ -155,6 +223,11 @@ namespace Bombe
             return result;
         }
 
+        /// <summary>
+        /// Get rectangle to draw.
+        /// </summary>
+        /// <param name="type">Type of the rectangle to draw.</param>
+        /// <returns>Rectangle to draw.</returns>
         protected System.Windows.Shapes.Rectangle getRect(int type)
         {
             System.Windows.Shapes.Rectangle rect;
@@ -185,6 +258,12 @@ namespace Bombe
             return rect;
         }
 
+        /// <summary>
+        /// Get TextBlock to draw.
+        /// </summary>
+        /// <param name="values">CheckingGroups array of the task.</param>
+        /// <param name="num">Number of currect GroupsTextBlock to draw.</param>
+        /// <returns>TextBlock to draw.</returns>
         protected TextBlock getGroupsTextBlock(byte[] values, int num)
         {
             if (values.Length == 0)
@@ -215,6 +294,10 @@ namespace Bombe
             return textBlock;
         }
 
+        /// <summary>
+        /// Get TextBlock to draw, when number of checkingGroups is small.
+        /// </summary>
+        /// <returns>TextBlock to draw.</returns>
         protected TextBlock getBasicGroupsTextBlock()
         {
             StringBuilder str = new StringBuilder(64);
@@ -229,6 +312,14 @@ namespace Bombe
             return textBlock;
         }
 
+        /// <summary>
+        /// Increment temporary array with checkingGroups, to find
+        /// next TextBlock to draw.
+        /// </summary>
+        /// <param name="array">CheckingGroups array.</param>
+        /// <param name="position">Position to add value.</param>
+        /// <param name="num">Value to add (offset of next group
+        /// from current).</param>
         protected void incrementLastChecked(byte[] array, int position, byte num)
         {
             array[position] += num;

@@ -13,6 +13,10 @@ using EnigmaCryptography;
 
 namespace Bombe
 {
+    /// <summary>
+    /// Splits the task into pieces and distributes it between all
+    /// the connected clients.
+    /// </summary>
     internal class ComputingScheduler : ComputingSide
     {
         public readonly int ALPHABET_LENGTH = Settings.ALPHABET_LENGTH;
@@ -39,6 +43,9 @@ namespace Bombe
         protected bool isDone;
         protected int partsDoneOnIteration = 0;
 
+        /// <summary>
+        /// COnstructor.
+        /// </summary>
         public ComputingScheduler() : base()
         {
             Bridge.setComputingSide(this);
@@ -48,6 +55,10 @@ namespace Bombe
             new ServerSocketWorker();
         }
 
+        /// <summary>
+        /// Chenge the server status, between receive connections/close all
+        /// connections.
+        /// </summary>
         public void changeServerStatus()
         {
             if (isServerRunning)
@@ -61,8 +72,12 @@ namespace Bombe
             isServerRunning = !isServerRunning;
         }
 
+        /// <summary>
+        /// Start breaking process of task.
+        /// </summary>
         public void startBreaking()
         {
+            // If task is too easy to distribute it.
             getEnigmaConfiguration();
             if (rotorsAmount < 5)
             {
@@ -88,6 +103,7 @@ namespace Bombe
             partsHandler.setAll(statuses, checkingGroups, arrayActive);
             solutionAttemptCounter++;
 
+            // Start new thread for each connected client.
             if (solutionStatus == 0)
             {
                 foreach (Socket socket in Bridge.socketWorker.connectionsList.Keys)
@@ -98,6 +114,9 @@ namespace Bombe
             solutionStatus = 1;
         }
 
+        /// <summary>
+        /// Get enigma configuration from the MainWindow.
+        /// </summary>
         public void getEnigmaConfiguration()
         {
             rotorsAmount = Byte.Parse(Bridge.window.rotorsamount.Text);
@@ -107,6 +126,9 @@ namespace Bombe
             encryptedMessage = Bridge.window.getMessage();
         }
 
+        /// <summary>
+        /// Break task, if it too easy (rotorsAmount is less that 5).
+        /// </summary>
         protected void startEasyBreaking()
         {
             EnigmaBreaker breaker = new EnigmaBreaker(rotorsAmount, rotorsAmount,
@@ -122,6 +144,11 @@ namespace Bombe
             }
         }
 
+        /// <summary>
+        /// Handler to receive new connection, and add new client to the
+        /// breaking process.
+        /// </summary>
+        /// <param name="socket">Socket, assigned to the new client.</param>
         public void newClient(Socket socket)
         {
             if (solutionStatus == 1)
@@ -130,6 +157,10 @@ namespace Bombe
             }
         }
 
+        /// <summary>
+        /// Starts new thread to handle clients.
+        /// </summary>
+        /// <param name="socket">Socket, assigned to the client.</param>
         protected void startNewSchedulingThread(Socket socket)
         {
             Thread thread = new Thread(useSingleClient);
@@ -137,6 +168,10 @@ namespace Bombe
             thread.Start(socket);
         }
 
+        /// <summary>
+        /// Handler, to handle a single client and to communicate with him.
+        /// </summary>
+        /// <param name="sock">Socket, assigned with the client.</param>
         protected void useSingleClient(Object sock)
         {
             int solutionAttemptCounterLocal = solutionAttemptCounter;
@@ -145,11 +180,13 @@ namespace Bombe
             while (!isDone)
             {
                 int num, arrayUsed;
+                // Get next unprocessed part.
                 lock (this)
                 {
                     num = getUncheckedPart();
                     arrayUsed = arrayActive;
                 }
+                // Send task and wait for result.
                 Bridge.socketWorker.sendData(socket, getComputeCommand(num));
                 string result = Bridge.socketWorker.receiveData(socket);
                 if (solutionAttemptCounterLocal != solutionAttemptCounter)
@@ -157,6 +194,7 @@ namespace Bombe
                     solutionAttemptCounterLocal = solutionAttemptCounter;
                     continue;
                 }
+                // Process the result.
                 string[] array = getCommand(result);
                 switch (array[0])
                 {
@@ -176,21 +214,35 @@ namespace Bombe
             }
         }
 
+        /// <summary>
+        /// Change a part's of task status.
+        /// </summary>
+        /// <param name="arrayUsed">Array used with particular part.</param>
+        /// <param name="index">Index of part.</param>
+        /// <param name="status">Status to set.</param>
         protected void changePartStatuses(int arrayUsed, int index, int status)
         {
-            //if (arrayActive != arrayUsed) return;
             partsHandler.set(index % ALPHABET_LENGTH, 
                     (index / ALPHABET_LENGTH) + arrayUsed - arrayActive, status);
             setPart(arrayUsed, index, status);
             if (status == 0 && index < lastChecked) lastChecked = index;
         }
 
+        /// <summary>
+        /// Send messages to client with the commin information, 
+        /// about the task.
+        /// </summary>
+        /// <param name="socket">Socket, assigned with client.</param>
         protected void sendInitialMessages(Socket socket)
         {
             sendMessage(socket);
             sendLayout(socket);
         }
 
+        /// <summary>
+        /// Send the layout of Enigma machine to a client.
+        /// </summary>
+        /// <param name="socket">Socket, assigned with client.</param>
         protected void sendLayout(Socket socket)
         {
             StringBuilder str = new StringBuilder(512);
@@ -206,12 +258,21 @@ namespace Bombe
             Bridge.socketWorker.sendData(socket, str.ToString());
         }
 
+        /// <summary>
+        /// Send the encrypted message and stop word to a client.
+        /// </summary>
+        /// <param name="socket">Socket, assigned with client.</param>
         protected void sendMessage(Socket socket)
         {
             Bridge.socketWorker.sendData(socket, "setmessage:" + encryptedMessage + ':' +
                 stopWord);
         }
 
+        /// <summary>
+        /// Generates the string with next command to a client.
+        /// </summary>
+        /// <param name="index">Index of part to use.</param>
+        /// <returns>String with command.</returns>
         protected string getComputeCommand(int index)
         {
             StringBuilder str = new StringBuilder(64);
@@ -227,6 +288,10 @@ namespace Bombe
             return str.ToString();
         }
 
+        /// <summary>
+        /// Synchronized method by the ComputingScheduler object, to get next unchecked part.
+        /// </summary>
+        /// <returns>Index of chosen unchecked part.</returns>
         protected int getUncheckedPart()
         {
             lock (this)
@@ -239,18 +304,25 @@ namespace Bombe
                 }
                 partsHandler.set(index % ALPHABET_LENGTH, index / ALPHABET_LENGTH, 1);
                 setPart(arrayActive, index, 1);
-                //statuses[(arrayActive + (index / ALPHABET_LENGTH)) % STATUSES_ARRAYS]
-                //        [index % ALPHABET_LENGTH] = 1;
                 lastChecked = index + 1;
                 return index;
             }
         }
 
+        /// <summary>
+        /// Check, if checkGroup entirely checked.
+        /// </summary>
+        /// <param name="array">CheckGroup array to check.</param>
+        /// <returns>CHeck result.</returns>
         protected bool checkForOnes(byte[] array)
         {
             return array.All(b => b != 0);
         }
 
+        /// <summary>
+        /// Increment checking groups counters.
+        /// </summary>
+        /// <param name="position">Posigion to increment.</param>
         protected void incrementLastChecked(int position)
         {
             if (position >= checkingGroups.Length)
@@ -267,6 +339,13 @@ namespace Bombe
             }
         }
 
+        /// <summary>
+        /// Synchronized method by the ComputingScheduler object, 
+        /// to change a part's status.
+        /// </summary>
+        /// <param name="arrayUsed">Index of array, used as basis to part.</param>
+        /// <param name="index">Index of part.</param>
+        /// <param name="value">New status of part.</param>
         protected void setPart(int arrayUsed, int index, int value)
         {
             lock (this)
@@ -284,13 +363,12 @@ namespace Bombe
                 }
                 statuses[(arrayUsed + (index / ALPHABET_LENGTH)) % STATUSES_ARRAYS]
                         [index % ALPHABET_LENGTH] = (byte)value;
-                /*if (value == 0)
-                {
-                    lastChecked = index;
-                }*/
             }
         }
 
+        /// <summary>
+        /// Increase counter of parts, done on current iteration.
+        /// </summary>
         protected void increasePartsDoneOnIteration()
         {
             lock (this)
@@ -299,6 +377,9 @@ namespace Bombe
             }
         }
 
+        /// <summary>
+        /// Reset counter of parts, done on current iteration.
+        /// </summary>
         protected void resetPartsDoneOnIteration()
         {
             lock (this)

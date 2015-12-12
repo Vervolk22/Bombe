@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Bombe
 {
+    /// <summary>
+    /// Represents a single client.
+    /// </summary>
     public class Client
     {
         public int id { get; protected set; }
