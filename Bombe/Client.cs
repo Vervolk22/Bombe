@@ -15,18 +15,27 @@ namespace Bombe
         public int computed { get; protected set; }
         public string ip { get; protected set; }
         public DateTime connectionTime { get; protected set; }
+        public int totalCores { get; protected set; }
+        public int connectedCores { get; protected set; }
 
-        public Client(int id, string ip, DateTime time)
+        public Client(int id, string ip, DateTime time, int totalCores)
         {
             this.id = id;
             this.computed = 0;
             this.ip = ip;
             this.connectionTime = time;
+            this.totalCores = totalCores;
+            this.connectedCores = 1;
         }
 
         public void increaseComputed()
         {
             computed++;
+        }
+
+        public void increaseConnectedCores()
+        {
+            connectedCores++;
         }
     }
 }

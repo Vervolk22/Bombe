@@ -33,6 +33,17 @@ namespace BombeClient
         private void makePreparations()
         {
             bindHandlers();
+            setCoresAmount();
+        }
+
+        private void setCoresAmount()
+        {
+            int coresAmount = Bridge.computingSide.findProcessorCoresAmount();
+            for (int i = 1; i <= coresAmount; i++)
+            {
+                coressamount.Items.Add(i);
+            }
+            coressamount.SelectedIndex = coressamount.Items.Count - 1;
         }
 
         private void bindHandlers()

@@ -148,6 +148,20 @@ namespace ComputingHelpers
         }
 
         /// <summary>
+        /// Split received command into parts, using predefined delimiter.
+        /// </summary>
+        /// <param name="s">Received string.</param>
+        /// <returns>Resulting delimeted commands.</returns>
+        protected string[] getCommand(string s)
+        {
+            if (s == null)
+            {
+                return new string[] { null };
+            }
+            return s.Split(':');
+        }
+
+        /// <summary>
         /// Send message to main window, about changes at socket level.
         /// </summary>
         /// <param name="s">Message to send.</param>

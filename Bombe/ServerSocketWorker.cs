@@ -18,8 +18,7 @@ namespace Bombe
     /// </summary>
     internal class ServerSocketWorker : SocketWorker
     {
-        protected const int MAX_CONNECTIONS = 2; //TODO implement real max connections
-
+        protected readonly int MAX_CONNECTIONS = 104;
         protected Socket sockListener;
         protected int clientsCounter = 0;
         public Dictionary<Socket, Client> connectionsList = new Dictionary<Socket, Client>();
@@ -93,8 +92,10 @@ namespace Bombe
                 if (isAlive(sock))
                     sock.Close();
             }
-            Bridge.sendInfoMessageToForm(String.Format("Closed {0} connections.\n", connectionsList.Count));
+            Bridge.sendInfoMessageToForm(String.Format("Closed {0} connections with {1} clients.\n", 
+                    connectionsList.Count, clientsCounter));
             connectionsList.Clear();
+            clientsCounter = 0;
 
             Bridge.changeConnectionStatus(false);
         }
@@ -108,10 +109,32 @@ namespace Bombe
             try
             {
                 Socket socket = sockListener.EndAccept(asyn);
-                Client client = new Client(++clientsCounter, socket.RemoteEndPoint.ToString(), DateTime.Now);
-                connectionsList.Add(socket, client);
+                string str = receiveData(socket);
+                string[] command = getCommand(str);
+                switch (command[0])
+                {
+                    case "newconnection":
+                        Client client = new Client(++clientsCounter, socket.RemoteEndPoint.ToString(), 
+                                DateTime.Now, Int32.Parse(command[1]));
+                        sendData(socket, "clientaccepted:" + clientsCounter);
+                        Bridge.sendInfoMessageToForm(String.Format(
+                                "Client {0} connected with {1} cores.\n", clientsCounter, 
+                                command[1]));
+                        Bridge.sendInfoMessageToForm(String.Format(
+                                "Core 1 of client {0} connected.\n", clientsCounter));
+                        connectionsList.Add(socket, client);
+                        break;
+                    case "newcore":
+                        Bridge.newClientConnected(socket);
+                        connectionsList.Values.ElementAt(Int32.Parse(command[1]) - 1).increaseConnectedCores();
+                        Bridge.sendInfoMessageToForm(String.Format(
+                                "Core {0} of client {1} connected.\n",
+                                connectionsList.Values.ElementAt(Int32.Parse(command[1]) - 1).connectedCores,
+                                command[1]));
+                        connectionsList.Add(socket, connectionsList.Values.ElementAt(Int32.Parse(command[1]) - 1));
+                        break;
+                }
                 sockListener.BeginAccept(new AsyncCallback(establishConnection), null);
-                Bridge.sendInfoMessageToForm(String.Format("Client {0} connected.\n", connectionsList.Count));
                 Bridge.newClientConnected(socket);
                 //sendData(connectionsList.Keys.ElementAt(connectionsList.Count - 1), "Hello new client!");
                 //receiveData(connectionsList.Keys.ElementAt(connectionsList.Count - 1));

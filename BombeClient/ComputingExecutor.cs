@@ -17,8 +17,11 @@ namespace BombeClient
     internal class ComputingExecutor : ComputingSide
     {
         protected ClientSocketWorker sockWorker = null;
+        protected int clientIndex = -1;
+        protected int workersNum = 0;
         protected bool isConnected = false;
         protected Thread[] computingThreads;
+        protected ClientSocketWorker[] workers;
         protected string encryptedMessage;
 
         protected int rotorsCount;
@@ -47,6 +50,12 @@ namespace BombeClient
                 {
                     thread.Abort();
                 }
+                foreach (ClientSocketWorker worker in workers)
+                {
+                    worker.closeConnection();
+                }
+                workers = null;
+                computingThreads = null;
                 isConnected = false;
             }
             else
@@ -58,8 +67,15 @@ namespace BombeClient
                 }
                 sockWorker = worker;
                 isConnected = true;
-                int coresAmount = findProcessorCoresAmount();
+                int coresAmount = getProcessorCoresAmount();
+                worker.sendData(getNewConnectionMessage(coresAmount));
+                string newConnMessage = worker.receiveData();
+                string[] connMessage = getCommand(newConnMessage);
+                clientIndex = Int32.Parse(connMessage[1]);
                 computingThreads = new Thread[coresAmount];
+                workers = new ClientSocketWorker[coresAmount];
+                workers[0] = worker;
+                workersNum = 0;
                 for (int i = 0; i < coresAmount; i++)
                 {
                     computingThreads[i] = new Thread(startComputing);
@@ -69,7 +85,24 @@ namespace BombeClient
             }
         }
 
-        protected int findProcessorCoresAmount()
+        protected string getNewConnectionMessage(int coresAmount)
+        {
+            StringBuilder str = new StringBuilder(64);
+            str.Append("newconnection:" + coresAmount);
+            return str.ToString();
+        }
+
+        protected int getProcessorCoresAmount()
+        {
+            int coresAmount = 0;
+            Bridge.window.Dispatcher.Invoke((Action)(() =>
+            {
+                coresAmount = Int32.Parse(Bridge.window.coressamount.Text);
+            }));
+            return coresAmount;
+        }
+
+        public int findProcessorCoresAmount()
         {
             int coreCount = 0;
             foreach (var item in new System.Management.ManagementObjectSearcher("Select * from Win32_Processor").Get())
@@ -96,6 +129,8 @@ namespace BombeClient
                 {
                     worker = new ClientSocketWorker();
                     worker.establishConnection();
+                    worker.sendData("newcore:" + clientIndex.ToString());
+                    workers[++workersNum] = worker;
                 }
             }
             while (isConnected)
