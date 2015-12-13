@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Server" Height="500" Width="700" Left="20" Top="20" Background="LightBlue">
     <TabControl Background="LightBlue" SelectionChanged="tabSelectionChanged">
-        <TabItem Header="Task" Name="tab1">
+        <TabItem Header="Breaking" Name="tab1">
             <Grid>
                 <StackPanel Background="AliceBlue" HorizontalAlignment="Left" Height="198" Margin="332,11,0,0" VerticalAlignment="Top" Width="337"/>
                 <TextBox Name="mainlist" HorizontalAlignment="Left" Height="407" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="310" VerticalScrollBarVisibility="Auto" AcceptsReturn="True"/>
@@ -19,7 +19,7 @@
                 <Button Name="cmdCompute" Click="cmdCompute_Click" Content="Compute" HorizontalAlignment="Left" Margin="428,164,0,0" VerticalAlignment="Top" Width="162"/>
             </Grid>
         </TabItem>
-        <TabItem Header="Create a task" Name="tab2">
+        <TabItem Header="Confuguration&amp;Task" Name="tab2">
             <Grid>
                 <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Amount of rotors:" VerticalAlignment="Top" Height="35"></TextBlock>
                 <ScrollViewer VerticalContentAlignment="Top" Margin="20,60,0,87" Width="530" HorizontalAlignment="Left">
@@ -88,20 +88,7 @@
                 <TextBox Name="message" HorizontalAlignment="Left" Margin="188,387,0,0" Height="35" TextWrapping="Wrap" Text="SZLD YQ WFF CFZNFC" VerticalAlignment="Top" Width="362" TextChanged="validateMessage" BorderThickness="2"/>
             </Grid>
         </TabItem>
-        <TabItem Header="Clients" Name="tab3">
-            <Grid>
-                <Label Content="Client Info (area for squares=count of clients)" HorizontalAlignment="Left" Margin="33,26,0,0" VerticalAlignment="Top"/>
-                <Canvas Background="AliceBlue" HorizontalAlignment="Left" Height="133" Margin="33,63,0,0" VerticalAlignment="Top" Width="622"/>
-                <Label Content="Label" Name="Speed" HorizontalAlignment="Left" Margin="151,280,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.104,-0.754"/>
-                <Label Content="The best:" HorizontalAlignment="Left" Margin="33,220,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.476,3.86"/>
-                <Label Content="Label" Name="best" HorizontalAlignment="Left" Margin="151,220,0,0" VerticalAlignment="Top"/>
-                <Label Content="Speed:" HorizontalAlignment="Left" Margin="33,280,0,0" VerticalAlignment="Top"/>
-                <Label Content="Score:" HorizontalAlignment="Left" Margin="33,340,0,0" VerticalAlignment="Top"/>
-                <Label Content="Label" Name="score" HorizontalAlignment="Left" Margin="151,340,0,0" VerticalAlignment="Top"/>
-
-            </Grid>
-        </TabItem>
-        <TabItem Header="Test" Name="tab4">
+        <TabItem Header="Encrypt message" Name="tab4">
             <Grid>
                 <TextBox Name="encryptinput" HorizontalAlignment="Left" Height="53" Margin="143,52,0,0" TextWrapping="Wrap" Text="RATE US TEN PLEASE" VerticalAlignment="Top" Width="383"/>
                 <TextBox Name="encryptoutput" HorizontalAlignment="Left" Height="62" Margin="143,276,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="383"/>
