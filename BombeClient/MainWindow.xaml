@@ -11,10 +11,13 @@
         <TextBox x:Name="port" HorizontalAlignment="Left" Height="25" Margin="470,150,0,0" TextWrapping="Wrap" Text="6133" VerticalAlignment="Top" Width="73"/>
         <Label Content="IP address:" HorizontalAlignment="Left" Height="25" Margin="341,80,0,0" VerticalAlignment="Top" Width="103"/>
         <Label Content="Port:" HorizontalAlignment="Left" Margin="341,150,0,0" VerticalAlignment="Top" Width="90"/>
-        <Label Content="Status:" HorizontalAlignment="Left" Height="25" Margin="341,205,0,0" VerticalAlignment="Top" Width="49"/>
-        <Label x:Name="status" Content="not connected" HorizontalAlignment="Left" Height="24" Margin="464,205,0,0" VerticalAlignment="Top" Width="96" Foreground="Red"/>
+        <Label Content="Status:" HorizontalAlignment="Left" Height="25" Margin="341,194,0,0" VerticalAlignment="Top" Width="49"/>
+        <Label x:Name="status" Content="not connected" HorizontalAlignment="Left" Height="24" Margin="470,194,0,0" VerticalAlignment="Top" Width="96" Foreground="Red"/>
+        <Label Content="Chose cores amount:" HorizontalAlignment="Left" Height="25" Margin="341,234,0,0" VerticalAlignment="Top" Width="124"/>
         <Button x:Name="cmdReceiveConnections" Click="cmdListen_Click" Content="Connect" HorizontalAlignment="Left" Margin="341,268,0,0" VerticalAlignment="Top" Width="202" Height="40"/>
         <TextBox x:Name="iplabel" HorizontalAlignment="Left" Height="25" Margin="470,80,0,0" TextWrapping="Wrap" Text="localhost" VerticalAlignment="Top" Width="73"/>
-
+        <ComboBox Name="coressamount" HorizontalAlignment="Left" Margin="470,234,0,0" VerticalAlignment="Top" Width="73">
+            
+        </ComboBox>
     </Grid>
 </Window>
