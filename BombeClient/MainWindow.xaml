@@ -1,7 +1,7 @@
 ﻿<Window x:Class="BombeClient.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="400" Width="600" Left="730" Top="20" Background="LightBlue">
+        Title="Bombe client" Height="400" Width="600" Left="730" Top="20" Background="LightBlue" ResizeMode="NoResize">
     <Grid>
         <DockPanel Background="AliceBlue" HorizontalAlignment="Left" Height="350" LastChildFill="False" Margin="325,10,0,0" VerticalAlignment="Top" Width="246">
             </DockPanel>

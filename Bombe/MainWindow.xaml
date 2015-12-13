@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Bombe.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Server" Height="500" Width="700" Left="20" Top="20" Background="LightBlue">
+        Title="Bombe server" Height="500" Width="700" Left="20" Top="20" Background="LightBlue" ResizeMode="NoResize">
     <TabControl Background="LightBlue" SelectionChanged="tabSelectionChanged">
         <TabItem Header="Breaking" Name="tab1">
             <Grid>
