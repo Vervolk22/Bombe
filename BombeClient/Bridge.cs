@@ -24,7 +24,12 @@ namespace BombeClient
         /// <returns>Port from MainWindow.</returns>
         public static string getPortText()
         {
-            return window.port.Text;
+            string s = null;
+            window.Dispatcher.Invoke((Action)(() =>
+            {
+                s = window.port.Text;
+            }));
+            return s;
         }
 
         /// <summary>
@@ -33,7 +38,12 @@ namespace BombeClient
         /// <returns>Ip address from MainWindow.</returns>
         public static string getIpText()
         {
-            return window.iplabel.Text;
+            string s = null;
+            window.Dispatcher.Invoke((Action)(() =>
+                {
+                    s =  window.iplabel.Text;
+                }));
+            return s;
         }
 
         /// <summary>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
@@ -15,8 +16,9 @@ namespace BombeClient
     /// </summary>
     internal class ComputingExecutor : ComputingSide
     {
+        protected ClientSocketWorker sockWorker = null;
         protected bool isConnected = false;
-        protected Thread computingThread;
+        protected Thread[] computingThreads;
         protected string encryptedMessage;
 
         protected int rotorsCount;
@@ -40,21 +42,41 @@ namespace BombeClient
         {
             if (isConnected)
             {
-                Bridge.socketWorker.closeConnection();
-                computingThread.Abort();
+                //Bridge.socketWorker.closeConnection();
+                foreach (Thread thread in computingThreads)
+                {
+                    thread.Abort();
+                }
                 isConnected = false;
             }
             else
             {
-                if (!Bridge.socketWorker.establishConnection())
+                ClientSocketWorker worker = new ClientSocketWorker();
+                if (!worker.establishConnection())
                 {
                     return;
                 }
-                computingThread = new Thread(startComputing);
+                sockWorker = worker;
                 isConnected = true;
-                computingThread.IsBackground = true;
-                computingThread.Start();
+                int coresAmount = findProcessorCoresAmount();
+                computingThreads = new Thread[coresAmount];
+                for (int i = 0; i < coresAmount; i++)
+                {
+                    computingThreads[i] = new Thread(startComputing);
+                    computingThreads[i].IsBackground = true;
+                    computingThreads[i].Start();
+                }
             }
+        }
+
+        protected int findProcessorCoresAmount()
+        {
+            int coreCount = 0;
+            foreach (var item in new System.Management.ManagementObjectSearcher("Select * from Win32_Processor").Get())
+            {
+                coreCount += int.Parse(item["NumberOfCores"].ToString());
+            }
+            return coreCount;
         }
 
         /// <summary>
@@ -62,15 +84,29 @@ namespace BombeClient
         /// </summary>
         protected void startComputing()
         {
+            ClientSocketWorker worker;
+            lock (this)
+            {
+                if (sockWorker != null)
+                {
+                    worker = sockWorker;
+                    sockWorker = null;
+                }
+                else
+                {
+                    worker = new ClientSocketWorker();
+                    worker.establishConnection();
+                }
+            }
             while (isConnected)
             {
-                string[] parameters = getCommand(newCommand());
+                string[] parameters = getCommand(newCommand(worker));
                 switch (parameters[0])
                 {
                     case "done":
                         return;
                     case "compute":
-                        compute(parameters);
+                        compute(parameters, worker);
                         break;
                     case "setmessage":
                         setEncryptedMessage(parameters[1]);
@@ -122,9 +158,9 @@ namespace BombeClient
         /// Start waiting for new command from the server.
         /// </summary>
         /// <returns>Received command.</returns>
-        protected string newCommand()
+        protected string newCommand(ClientSocketWorker worker)
         {
-            return Bridge.socketWorker.receiveData();
+            return worker.receiveData();
         }
 
         /// <summary>
@@ -142,18 +178,18 @@ namespace BombeClient
         /// A single try to break message, accordingly to received command.
         /// </summary>
         /// <param name="parameters">Received command.</param>
-        protected void compute(string[] parameters)
+        protected void compute(string[] parameters, ClientSocketWorker worker)
         {
             EnigmaBreaker breaker = new EnigmaBreaker(rotorsCount, 4, 
                     getOffsets(rotorsCount, parameters), rotorsLayout, notchPositions);
             breaker.initialize();
             if (breaker.tryBreak(encryptedMessage))
             {
-                Bridge.socketWorker.sendData("success:" + breaker.encrypt(encryptedMessage));
+                worker.sendData("success:" + breaker.encrypt(encryptedMessage));
             }
             else
             {
-                Bridge.socketWorker.sendData("fail");
+                worker.sendData("fail");
             }
         }
 
