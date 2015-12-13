@@ -169,17 +169,24 @@ namespace Bombe
         protected override void checkAlive(object source, System.Timers.ElapsedEventArgs e)
         {
             int i = 0;
+            int[] array = new int[MAX_CONNECTIONS];
             while (i < connectionsList.Count)
             {
                 //Bridge.sendInfoMessageToForm(connectionsList.Keys.ElementAt(i).Connected.ToString() + '\n');
                 if (!isAlive(connectionsList.Keys.ElementAt(i)))
                 {
-                    Bridge.sendInfoMessageToForm(String.Format("Client {0} disconnected.\n", connectionsList.Values.ElementAt(i)));
+                    if (++array[connectionsList.Values.ElementAt(i).id] == 1)
+                    {
+                        Bridge.sendInfoMessageToForm(String.Format("Client {0} disconnected with {1} cores.\n",
+                                connectionsList.Values.ElementAt(i).id, connectionsList.Values.ElementAt(i).totalCores));
+                    }
                     closeConnection(connectionsList.Keys.ElementAt(i));
                     continue;
                 }
                 i++;
             }
         }
+        //Bridge.sendInfoMessageToForm(String.Format("Client {0} disconnected with {1] cores.\n",
+        //                    connectionsList.Values.ElementAt(i).id, connectionsList.Values.ElementAt(i).totalCores));
     }
 }

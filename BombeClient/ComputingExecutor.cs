@@ -18,7 +18,6 @@ namespace BombeClient
     {
         protected object lockObj = new Object();
         protected ClientSocketWorker sockWorker = null;
-        protected int generation = 0;
         protected int clientIndex = -1;
         protected int workersNum = 0;
         protected bool isConnected = false;
@@ -63,7 +62,6 @@ namespace BombeClient
             }
             else
             {
-                generation++;
                 int coresAmount = getProcessorCoresAmount();
                 ClientSocketWorker.resetConnectionsCounter();
                 ClientSocketWorker.setCoresAmount(coresAmount);
@@ -87,7 +85,6 @@ namespace BombeClient
                     computingThreads[i] = new Thread(startComputing);
                     computingThreads[i].IsBackground = true;
                     computingThreads[i].Start();
-                    Bridge.sendInfoMessageToForm("Thread started\n");
                 }
 
             }
@@ -125,8 +122,6 @@ namespace BombeClient
         /// </summary>
         protected void startComputing()
         {
-            int t = 1;
-            int tt = generation;
             ClientSocketWorker worker;
             lock (lockObj)
             {
@@ -137,7 +132,6 @@ namespace BombeClient
                 }
                 else
                 {
-                    t = workersNum + 2;
                     worker = new ClientSocketWorker();
                     worker.establishConnection();
                     worker.sendData("newcore:" + clientIndex.ToString());
@@ -147,7 +141,6 @@ namespace BombeClient
             while (isConnected)
             {
                 string[] parameters = getCommand(newCommand(worker));
-                Bridge.sendInfoMessageToForm("I'm " + t + " " + tt + "\n");
                 switch (parameters[0])
                 {
                     case "done":

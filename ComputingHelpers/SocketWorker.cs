@@ -110,7 +110,7 @@ namespace ComputingHelpers
         {
             try
             {
-                sendInfoMessageToForm("Message sent: " + s + "\n");
+                //sendInfoMessageToForm("Message sent: " + s + "\n");
                 byte[] byData = getBytes(s);
                 // First byte of every message is it's length.
                 socket.Send(getBytes(byData.Length.ToString("000")));
@@ -131,13 +131,13 @@ namespace ComputingHelpers
         {
             try
             {
-                sendInfoMessageToForm("Message received:\n");
+                //sendInfoMessageToForm("Message received:\n");
                 // First byte of every message is it's length.
                 int iRx = socket.Receive(buffer, 6, SocketFlags.None);
                 string str = getString(buffer, iRx);
                 iRx = socket.Receive(buffer, Int32.Parse(str), SocketFlags.None);
                 str = getString(buffer, iRx);
-                sendInfoMessageToForm("---" + str + '\n');
+                //sendInfoMessageToForm("---" + str + '\n');
                 return str;
             }
             catch (Exception se)
