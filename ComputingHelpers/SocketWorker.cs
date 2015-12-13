@@ -118,7 +118,7 @@ namespace ComputingHelpers
             }
             catch (Exception se)
             {
-                sendInfoMessageToForm(se.Message);
+                //sendInfoMessageToForm(se.Message);
             }
         }
 
@@ -142,7 +142,7 @@ namespace ComputingHelpers
             }
             catch (Exception se)
             {
-                sendInfoMessageToForm(se.Message);
+                //sendInfoMessageToForm(se.Message);
                 return null;
             }
         }

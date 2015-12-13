@@ -17,6 +17,8 @@ namespace BombeClient
     /// </summary>
     internal class ClientSocketWorker : SocketWorker
     {
+        protected static int connectionCounter = 0;
+        protected static int coresAmount = 0;
         protected Socket socket;
 
         /// <summary>
@@ -55,13 +57,17 @@ namespace BombeClient
                 System.Net.IPEndPoint remoteEndPoint = new System.Net.IPEndPoint(remoteIPAddress, alPort);
                 
                 socket.Connect(remoteEndPoint);
-                Bridge.sendInfoMessageToForm(String.Format("Connected to {0}.\n", remoteEndPoint));
+                if (++connectionCounter == coresAmount)
+                {
+                    Bridge.sendInfoMessageToForm(String.Format("Connected to {0} with {1} cores.\n",
+                        remoteEndPoint, coresAmount));
+                }
                 Bridge.changeConnectionStatus(true);
                 return true;
             }
             catch (Exception e)
             {
-                Bridge.sendInfoMessageToForm(e.Message);
+                //Bridge.sendInfoMessageToForm(e.Message);
                 return false;
             }
         }
@@ -87,7 +93,7 @@ namespace BombeClient
             try
             {
                 socket.Disconnect(false);
-                Bridge.sendInfoMessageToForm("Connection closed.\n");
+                //Bridge.sendInfoMessageToForm("Connection closed.\n");
                 socket = null;
                 Bridge.changeConnectionStatus(false);
             }
@@ -95,6 +101,16 @@ namespace BombeClient
             {
 
             }
+        }
+
+        public static void resetConnectionsCounter()
+        {
+            connectionCounter = 0;
+        }
+
+        public static void setCoresAmount(int coresAmountIn)
+        {
+            coresAmount = coresAmountIn;
         }
 
         /// <summary>

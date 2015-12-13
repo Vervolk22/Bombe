@@ -55,7 +55,7 @@ namespace Bombe
             }
             catch (SocketException se)
             {
-                Bridge.sendInfoMessageToForm(se.Message);
+                //Bridge.sendInfoMessageToForm(se.Message);
             }
         }
 
@@ -87,13 +87,17 @@ namespace Bombe
         public void closeAllConnections()
         {
             sockListener.Close();
+            int counter = 0;
             foreach (Socket sock in connectionsList.Keys)
             {
                 if (isAlive(sock))
+                {
                     sock.Close();
+                    counter++;
+                }
             }
             Bridge.sendInfoMessageToForm(String.Format("Closed {0} connections with {1} clients.\n", 
-                    connectionsList.Count, clientsCounter));
+                    counter, clientsCounter));
             connectionsList.Clear();
             clientsCounter = 0;
 
@@ -123,15 +127,16 @@ namespace Bombe
                         Bridge.sendInfoMessageToForm(String.Format(
                                 "Core 1 of client {0} connected.\n", clientsCounter));
                         connectionsList.Add(socket, client);
+                        //Bridge.newClientConnected(socket);
                         break;
                     case "newcore":
-                        Bridge.newClientConnected(socket);
-                        connectionsList.Values.ElementAt(Int32.Parse(command[1]) - 1).increaseConnectedCores();
+                        //Bridge.newClientConnected(socket);
+                        connectionsList.Values.ElementAt(connectionsList.Values.Count - 1).increaseConnectedCores();
                         Bridge.sendInfoMessageToForm(String.Format(
                                 "Core {0} of client {1} connected.\n",
-                                connectionsList.Values.ElementAt(Int32.Parse(command[1]) - 1).connectedCores,
+                                connectionsList.Values.ElementAt(connectionsList.Values.Count - 1).connectedCores,
                                 command[1]));
-                        connectionsList.Add(socket, connectionsList.Values.ElementAt(Int32.Parse(command[1]) - 1));
+                        connectionsList.Add(socket, connectionsList.Values.ElementAt(connectionsList.Values.Count - 1));
                         break;
                 }
                 sockListener.BeginAccept(new AsyncCallback(establishConnection), null);
@@ -141,8 +146,8 @@ namespace Bombe
             }
             catch (Exception e)
             {
-                if (sockListener.Connected == true)
-                    Bridge.sendInfoMessageToForm(e.Message);
+                //if (sockListener.Connected == true)
+                //    Bridge.sendInfoMessageToForm(e.Message);
             }
         }
 

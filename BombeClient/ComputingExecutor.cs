@@ -16,7 +16,9 @@ namespace BombeClient
     /// </summary>
     internal class ComputingExecutor : ComputingSide
     {
+        protected object lockObj = new Object();
         protected ClientSocketWorker sockWorker = null;
+        protected int generation = 0;
         protected int clientIndex = -1;
         protected int workersNum = 0;
         protected bool isConnected = false;
@@ -54,12 +56,17 @@ namespace BombeClient
                 {
                     worker.closeConnection();
                 }
+                Bridge.sendInfoMessageToForm("Connection with server closed.\n");
                 workers = null;
                 computingThreads = null;
                 isConnected = false;
             }
             else
             {
+                generation++;
+                int coresAmount = getProcessorCoresAmount();
+                ClientSocketWorker.resetConnectionsCounter();
+                ClientSocketWorker.setCoresAmount(coresAmount);
                 ClientSocketWorker worker = new ClientSocketWorker();
                 if (!worker.establishConnection())
                 {
@@ -67,7 +74,6 @@ namespace BombeClient
                 }
                 sockWorker = worker;
                 isConnected = true;
-                int coresAmount = getProcessorCoresAmount();
                 worker.sendData(getNewConnectionMessage(coresAmount));
                 string newConnMessage = worker.receiveData();
                 string[] connMessage = getCommand(newConnMessage);
@@ -81,7 +87,9 @@ namespace BombeClient
                     computingThreads[i] = new Thread(startComputing);
                     computingThreads[i].IsBackground = true;
                     computingThreads[i].Start();
+                    Bridge.sendInfoMessageToForm("Thread started\n");
                 }
+
             }
         }
 
@@ -117,8 +125,10 @@ namespace BombeClient
         /// </summary>
         protected void startComputing()
         {
+            int t = 1;
+            int tt = generation;
             ClientSocketWorker worker;
-            lock (this)
+            lock (lockObj)
             {
                 if (sockWorker != null)
                 {
@@ -127,6 +137,7 @@ namespace BombeClient
                 }
                 else
                 {
+                    t = workersNum + 2;
                     worker = new ClientSocketWorker();
                     worker.establishConnection();
                     worker.sendData("newcore:" + clientIndex.ToString());
@@ -136,6 +147,7 @@ namespace BombeClient
             while (isConnected)
             {
                 string[] parameters = getCommand(newCommand(worker));
+                Bridge.sendInfoMessageToForm("I'm " + t + " " + tt + "\n");
                 switch (parameters[0])
                 {
                     case "done":
