@@ -136,11 +136,12 @@ namespace Bombe
             breaker.initialize();
             if (breaker.tryBreak(encryptedMessage))
             {
-                Bridge.sendInfoMessageToForm("Easy success");
+                Bridge.sendInfoMessageToForm("Message decrypted! Message: " + 
+                    breaker.encrypt(encryptedMessage) + '\n');
             }
             else
             {
-                Bridge.sendInfoMessageToForm("Easy fail");
+                Bridge.sendInfoMessageToForm("Breaking completed. Solution was not found.\n");
             }
         }
 
@@ -203,7 +204,7 @@ namespace Bombe
                         continue;
                     case "success":
                         solutionStatus = 2;
-                        Bridge.sendInfoMessageToForm("Message decrypted! Message: " + array[1]);
+                        Bridge.sendInfoMessageToForm("Message decrypted! Message: " + array[1] + '\n');
                         changePartStatuses(arrayUsed, num, 3);
                         isDone = true;
                         break;
@@ -328,6 +329,7 @@ namespace Bombe
             if (position >= checkingGroups.Length)
             {
                 isDone = true;
+                Bridge.sendInfoMessageToForm("Breaking completed. Solution was not found.\n");
                 return;
             }
 

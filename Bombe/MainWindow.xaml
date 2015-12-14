@@ -92,7 +92,7 @@
             <Grid>
                 <TextBox Name="encryptinput" HorizontalAlignment="Left" Height="53" Margin="143,52,0,0" TextWrapping="Wrap" Text="RATE US TEN PLEASE" VerticalAlignment="Top" Width="383"/>
                 <TextBox Name="encryptoutput" HorizontalAlignment="Left" Height="62" Margin="143,276,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="383"/>
-                <Button Name="cmdecrypt" Content="Badabum!" Click="cmdEncrypt_Click" HorizontalAlignment="Left" Margin="143,122,0,0" VerticalAlignment="Top" Width="383" Height="93"/>
+                <Button Name="cmdecrypt" Content="Encrypt" Click="cmdEncrypt_Click" HorizontalAlignment="Left" Margin="143,122,0,0" VerticalAlignment="Top" Width="383" Height="93"/>
                 <Label Content="Enter your message:" HorizontalAlignment="Left" Margin="224,10,0,0" VerticalAlignment="Top"/>
                 <Label Content="Your decoded message:" HorizontalAlignment="Left" Margin="224,234,0,0" VerticalAlignment="Top"/>
                 <WrapPanel Margin="20,60,530,87" HorizontalAlignment="Left">

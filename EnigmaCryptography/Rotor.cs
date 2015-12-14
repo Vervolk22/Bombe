@@ -13,9 +13,9 @@ namespace EnigmaCryptography
     {
         protected string layout;
         protected byte offset;
-        protected byte savedOffset;
         protected Rotor previous, next;
         protected char cIn = '\0', notchPos;
+        private byte savedOffset;
 
         /// <summary>
         /// Constructor.
